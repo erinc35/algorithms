@@ -91,3 +91,26 @@ function max_consecutive_ones(input){
   }
   return max;
 }
+
+// Given a base and an exponent, create a function to find the power using
+//  *     Helper Method Recursion
+//  *
+//  * Input:   Two Integers, base and exponent
+//  * Output:  Integer
+//  *
+//  * Example: power(3, 4) => 81
+//  */
+function power(a, b){
+  result = 1;
+  function helper(counter){
+    if (counter === b){
+      return
+
+    }
+     result = result * a
+      helper(counter + 1)
+
+  }
+  helper(0)
+  return result
+}
