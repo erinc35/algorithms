@@ -89,5 +89,5 @@ function max_consecutive_ones(input){
       current = 0
     }
   }
-  return max
+  return max;
 }
