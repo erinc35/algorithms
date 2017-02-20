@@ -21,7 +21,7 @@ function ones(arr){
     if(arr[mid] === 1 ){
       end = mid -1
       if (arr[mid-1] === 0){
-        return arr.length - mid
+        return arr.length - mid;
       }
     }else{
       start = mid + 1
