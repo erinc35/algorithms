@@ -114,3 +114,29 @@ function power(a, b){
   helper(0)
   return result
 }
+
+
+// Given an array of integers, create an array of two-item arrays using
+//  *     Helper Method Recursion
+//  *
+//  * Input:   Array of Integers
+//  * Output:  Array of two-item Arrays
+//  *
+//  * Example: arrayPairs([1, 2, 3, 4, 5, 6])  =>    [[1,2], [3,4], [5,6]]
+//  * Example: arrayPairs([1, 2, 3, 4, 5])     =>    [[1,2], [3,4], [5, undefined]]
+//  */
+
+var arrayPairs = [1, 2, 3, 4, 5, 6]
+
+function pair(arrayPairs){
+  var result = [];
+  function helper(ind){
+    if (ind >= arrayPairs.length){
+      return;
+    }
+    result.push([arrayPairs[ind],arrayPairs[ind + 1]])
+    helper(ind + 2)
+  }
+  helper(0);
+  return result
+}
