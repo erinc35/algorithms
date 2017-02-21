@@ -140,3 +140,34 @@ function pair(arrayPairs){
   helper(0);
   return result
 }
+
+
+// *  Problem 1: Max Consecutive Sum
+//  *
+//  *  Prompt:    Given an array of integers find the sum of consecutive
+//  *             values in the array that produces the maximum value.
+//  *
+//  *  Input:     Unsorted array of positive and negative integers
+//  *  Output:    Integer (max consecutive sum)
+//  *
+//  *  Example:   input = [6, -1, 3, 5, -10]
+//  *             output = 13 (6 + -1 + 3 + 5 = 13)
+//  *
+//  *  Time Complexity: O(n)
+//  *  Auxiliary Space Complexity: O(1)
+
+
+function maxConsecutiveSum(arr){
+  var current_max = 0;
+  var max_sofar = 0;
+
+  for(var i=0; i<arr.length; i++){
+   current_max += arr[i];
+   if (current_max < 0){
+     current_max = 0;
+   }else if(max_sofar < current_max){
+     max_sofar = current_max
+   }
+  }
+  return max_sofar
+}
