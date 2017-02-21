@@ -224,3 +224,27 @@ function latticePaths(a){
     }
     return grids[a-1][a-1];
 }
+
+// Two Sum
+// Given an array of integers and a target, return a pair of indices where the corresponding values in the array add up to the target.
+
+// Input: Array of Integers, Target Integer
+// Output: Two element Array of Integers
+// Example
+// Input: [1, 6, -5, 7, 3], -2      => Output: [2,4]
+
+
+function twoSum(numbers, target){
+  var targetHash = {};
+
+  for(var i=0; i<numbers.length; i++){
+    if(targetHash[numbers[i]] !== undefined){
+      return [targetHash[numbers[i]], i];
+    } else {
+      targetHash[target-numbers[i]] = i;
+    }
+  }
+  return [-1,-1];
+}
+
+
