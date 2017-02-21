@@ -244,7 +244,6 @@ function twoSum(numbers, target){
       targetHash[target-numbers[i]] = i;
     }
   }
-
   return [-1,-1];
 }
 
