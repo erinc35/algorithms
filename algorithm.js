@@ -171,3 +171,56 @@ function maxConsecutiveSum(arr){
   }
   return max_sofar
 }
+
+// *  Problem 2: Lattice Paths (Dynamic Programming Approach)
+//  *
+//  *  Prompt:    Count the number of unique paths to travel from the top left
+//  *             to the bottom right of a lattice of squares.
+//  *
+//  *  Input:     An interger N (which is the size of the lattice)
+//  *  Output:    An interger (which represents the number of unique paths)
+//  *
+//  *  Example:   input: 2
+//  *
+//  *             (2 x 2 lattice of squares)
+//  *              __ __
+//  *             |__|__|
+//  *             |__|__|
+//  *
+//  *             output: 6 (number of unique paths from top left corner to bottom
+//  *                     right)
+//  *
+//  *  Notes:     What is the time and auxilliary space complexity of your solution?
+//  *
+//  *             When moving through the lattice, you can only move either down or
+//  *             to the left.
+//  *
+//  *             You did this problem before with recursion. Try implementing it
+//  *             now with dynamic programming!
+
+function latticePaths(a){
+      if(a === 0){
+        return 0;
+    }
+
+    var grids = [[1]];
+
+
+    for(var i = 1; i < a; i++){
+        grids[0][i] = 1;
+
+    }
+
+    for(var j = 1; j < a; j++){
+       grids.push([]);
+        grids[j][0] = 1;
+
+    }
+
+    for(i = 1; i < a; i++){
+        for(j = 1; j < a; j++){
+            grids[i][j] = grids[i-1][j] + grids[i][j-1];
+        }
+    }
+    return grids[a-1][a-1];
+}
