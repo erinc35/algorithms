@@ -297,5 +297,43 @@ var maxDepth = function(root) {
   return 1+ Math.max(maxDepth(root.left), maxDepth(root.right));
 };
 
+// *
+//  *  Homework IX
+//  *
+//  *  Problem: Lattice Paths
+//  *
+//  *  Prompt:  Count the number of unique paths to travel from the top left
+//  *           corder to the bottom right corner of a lattice of N x N squares.
+//  *
+//  *           When moving through the lattice, one can only travel to the adjacent
+//  *           corner on the right or down.
+//  *
+//  *  Input:   An integer N representing the size of the lattice
+//  *  Output:  An integer representing the number of unique number of paths
+//  *
+//  *  Example: input: 2
+//  *
+//  *           (2 x 2 lattice of squares)
+//  *            __ __
+//  *           |__|__|
+//  *           |__|__|
+//  *
+//  *           output: 6 (number of unique paths from top left corner to bottom right)
+//  *
+//  *  Notes:   What is the time and auxiliary space complexity of your solution?
+//  *
+//  *           Try implementing your solution using recursion with side effects.
+//  *
+//  *  Resource:
+//  *             1) https://projecteuler.net/problem=15
+//  *
+//  */
 
+function latticePaths(n, i, j) {
+  if(i === undefined) { i = 0; }
+  if(j === undefined) { j = 0; }
+  if(i === n && j === n) { return 1; }
+  if(i > n || j > n) { return 0; }
+  return latticePaths(n, i + 1, j) + latticePaths(n, i, j + 1);
+}
 
