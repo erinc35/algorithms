@@ -247,4 +247,46 @@ function twoSum(numbers, target){
   return [-1,-1];
 }
 
+// Kth Largest in an Array
+// Given an array of integers and a number K, find the Kth largest value in the array.
+
+// Input: Array of integers and an Integer
+// Output: Integer
+// Example
+// Input: [3, 1, 6, 4, 9, 8], 3     => Output: 6
+// Input: [1, 9, 5, 3], 1    =>  Output: 9
+// Constraints
+// Time Complexity: Average O(N)
+// Auxiliary Space Complexity: Average O(log(N))
+
+//  use quick select
+var findKthLargest = function(nums, k) {
+    var smaller = [];
+    var larger = [];
+    var pivot = nums[parseInt(nums.length/2)];
+    var pivotCnt = 0;
+
+    for(var i = 0; i < nums.length; i++) {
+        var num = nums[i];
+
+        if(num > pivot) {
+            larger.push(num);
+        } else if(num < pivot) {
+            smaller.push(num);
+        } else {
+            pivotCnt++;
+        }
+    }
+
+    if(k <= larger.length) { // if larger includes k
+        return findKthLargest(larger, k);
+    } else if(k - larger.length - pivotCnt <= 0) { // k is part of pivot
+        return pivot;
+    } else { // if smaller inclues k
+        return findKthLargest(smaller, k - larger.length - pivotCnt);
+    }
+};
+
+
+
 
