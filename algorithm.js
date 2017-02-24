@@ -352,6 +352,6 @@ var selectionSort = function(array){
   }
   return array;
 };
-
+var array = [3,2,10,1]
 
 
