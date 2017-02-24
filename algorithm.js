@@ -364,3 +364,26 @@ function palindrome(str){
   }
 }
 
+var longestPalindrome = function(s) {
+    var map = {};
+    var sArray = s.split('');
+    var result = 0;
+    var n = 0;
+
+    for(var i=0;i<sArray.length;i++){
+      map[sArray[i]] = map[sArray[i]] + 1 || 1;
+    }
+
+    Object.keys(map).forEach(function(x){
+        if(map[x]%2 === 0){
+          result += map[x];
+        }
+        else{
+            result += map[x]-1;
+            //n for the one which we can put it in the middle
+            n=1;
+        }
+    });
+
+    return result+n;
+};
