@@ -387,3 +387,12 @@ var longestPalindrome = function(s) {
 
     return result+n;
 };
+
+var containsDuplicate = function(nums) {
+    var dup = {};
+    for(var i=0; i<nums.length; i++){
+      if(dup[nums[i]]) return true;
+      dup[nums[i]] = true;
+    }
+    return false;
+};
