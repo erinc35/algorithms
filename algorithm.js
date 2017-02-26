@@ -444,6 +444,5 @@ var nextGreaterElement = function(findNums, nums) {
     if (!hasNextGreaterElement)
       ans.push(-1);
   });
-
   return ans;
 };
