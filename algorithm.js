@@ -365,6 +365,7 @@ function palindrome(str){
 }
 
 var longestPalindrome = function(s) {
+
     var map = {};
     var sArray = s.split('');
     var result = 0;
