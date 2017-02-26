@@ -421,6 +421,4 @@ var detectCapitalUse = function(word) {
     if (chars.every(cap) || chars.every(lower) || chars.slice(1,chars.length).every(lower)) return true
     return false
   }
-
-
 }
