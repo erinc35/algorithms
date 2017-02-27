@@ -446,3 +446,35 @@ function bitArraySort(arr){
 
 
 bitArraySort(arr)
+
+
+var arr1 = [1,3,5]
+var arr2 = [2,4,6,8,10]
+
+
+// MERGE AND SORT TWO SORTED ARRAYS
+
+function merge(arr1, arr2){
+  var i = 0;
+  var j = 0;
+  var new_arr = []
+
+  while (i < arr1.length && j < arr2.length){
+    if (arr1[i] > arr2[j]){
+      new_arr.push(arr2[j]);
+      j++;
+    }else{
+      new_arr.push(arr1[i]);
+      i++;
+    }
+  }
+  if(i < arr1.length){
+    new_arr = new_arr.concat(arr1.slice(i,arr1.length))
+  }else if (j < arr2.length){
+    new_arr = new_arr.concat(arr2.slice(j,arr2.length))
+  }
+  return new_arr
+}
+
+
+merge(arr1, arr2)
