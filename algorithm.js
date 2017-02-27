@@ -424,5 +424,25 @@ var detectCapitalUse = function(word) {
   }
 }
 
+//
+var arr = [1,1,0,1,0,1,0]
 
 
+function bitArraySort(arr){
+  var left = 0;
+  var right = arr.length - 1;
+
+  while(left < right){
+    while(arr[left] === 0) left++;
+    while(arr[right] === 1) right--;
+
+    if (left<right){
+      [arr[left], arr[right]] = [arr[right], arr[left]];
+
+    }
+  }
+  return arr;
+}
+
+
+bitArraySort(arr)
