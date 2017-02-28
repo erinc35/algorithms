@@ -478,3 +478,19 @@ function merge(arr1, arr2){
 
 
 merge(arr1, arr2)
+
+
+// RECURSIVE FACTORIAL
+
+function factorial(n){
+  var result = 1;
+
+  function multiplyInt(count){
+    if(count>n){ return; }
+
+    result *= count;
+    multiplyInt(count+1)
+  }
+  multiplyInt(1);
+  return result;
+}
