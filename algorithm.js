@@ -510,8 +510,23 @@ function factorial(n){
 // *
 // */
 
-
 function powerSet(str){
+  var results = [];
 
+  function traverse(build, depth){
+
+    if (depth === str.length) {
+      results.push(build);
+      return;
+    }
+
+    traverse(build, depth + 1);
+    traverse(build + str[depth], depth + 1);
+  }
+
+  traverse("", 0);
+  return results;
 }
+
+console.log(powerSet('abc'));
 
