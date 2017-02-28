@@ -494,3 +494,24 @@ function factorial(n){
   multiplyInt(1);
   return result;
 }
+
+// *
+// * Prompt:   Given a set S, return the power set P(S), which is
+// *           a set of all subsets of S.
+// *
+// * Input:    A String
+// * Output:   An Array of Strings representing the power set of the input
+// *
+// * Example:  S = "abc", P(S) = ['', 'a', 'b','c','ab','ac','bc','abc']
+// *
+// * Note:     The input string will not contain duplicate characters
+// *           The letters in the subset string must be in the same order
+// *           as the original input.
+// *
+// */
+
+
+function powerSet(str){
+
+}
+
