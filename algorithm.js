@@ -531,22 +531,4 @@ function powerSet(str){
 console.log(powerSet('abc'));
 
 
-Problem 1: Node class
-*
-*  Prompt:    Create a Node class
-*             The Node class should contain the following properties:
-*
-*                 value:   integer value (initially null)
-*                  next:   pointer to another node (initially null)
-*
-*               Example:   var sample1 = new Node(1)
-*                          sample1.value     // 1
-*                          sample1.next      // null
-*
-*               Example:   var sample2 = new Node()
-*                          sample2.value     // null
-*                          sample2.next      // null
-*
-*
-
 
