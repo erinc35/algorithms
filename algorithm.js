@@ -549,39 +549,4 @@ Problem 1: Node class
 *
 *
 
-Create a LinkedList class
-*              The LinkedList class should contain the following properties:
-*
-*                length:   The number of nodes in the linked list
-*                  head:   A pointer to the head node
-*                  tail:   A pointer to the tail node
-*
-*              The LinkedList class should also contain the following methods:
-*
-*                append:   A method appends a value to the end of the
-*                          LinkedList.
-*
-*                          Input:     Integer
-*                          Output:    LinkedList w/ appended Node instance
-*
-*                insert:   A method that inserts an integer value at a set
-*                          index in the LinkedList (assume head index is 0).
-*
-*                          Input:     Integer value, Integer index
-*                          Output:    LinkedList w/ appended Node instance
-*
-*                delete:   A method that removes a node at a specified index.
-*
-*                          Input:     Integer index
-*                          Output:    LinkedList w/ removed Node
-*
-*              contains:   A method that checks to see if a value is contained
-*                          in the list.
-*
-*                          Input:     Integer value
-*                          Output:    Boolean
-*
-*    What are the time and auxiliary space complexity of the various
-*    methods?
-*
-*/
+
