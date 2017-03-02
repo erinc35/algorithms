@@ -530,5 +530,11 @@ function powerSet(str){
 
 console.log(powerSet('abc'));
 
-
+//
+function isPowerOfTwo(n){
+  while (n % 3 === 0) {
+      n /= 3;
+  }
+  return n === 1;
+}
 
