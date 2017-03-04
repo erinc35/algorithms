@@ -571,3 +571,26 @@ var isPowerOfThree = function(n) {
     }
     return isPowerOfThree(n/3);
 };
+
+
+var nums = [1,3,5,6];
+
+var searchInsert = function(nums, target) {
+    for(var i=0; i<nums.length;i++){
+      if(nums[i]===target){
+        return i;
+      }
+    }
+    for(var j=0; j<nums.length;j++){
+      if(nums[j]> target){
+        return j
+        }else if(nums[nums.length-1] < target){
+          return nums.length
+        }
+      }
+
+};
+
+searchInsert(nums, 3)
+
+
