@@ -157,20 +157,19 @@ function pair(arrayPairs){
 //  *  Auxiliary Space Complexity: O(1)
 
 
-function maxConsecutiveSum(arr){
-  var current_max = 0;
-  var max_sofar = 0;
+var maxSubArray = function(nums) {
+    var current_max = 0;
+    var max = Number.NEGATIVE_INFINITY;
+    // if(nums.length ===1) return nums[0];
 
-  for(var i=0; i<arr.length; i++){
-   current_max += arr[i];
-   if (current_max < 0){
-     current_max = 0;
-   }else if(max_sofar < current_max){
-     max_sofar = current_max
-   }
-  }
-  return max_sofar
-}
+    for(var i=0;i<nums.length;i++){
+        current_max += nums[i];
+        max = Math.max(current_max, max)
+        if(current_max<0) current_max = 0;
+
+    }
+    return max;
+};
 
 // *  Problem 2: Lattice Paths (Dynamic Programming Approach)
 //  *
