@@ -621,3 +621,24 @@ var isUgly = function(num) {
     return num === 1;
 };
 
+// Given a positive integer num, write a function which returns True if num is a perfect square else False.
+
+// Note: Do not use any built-in library function such as sqrt.
+
+var isPerfectSquare = function(num) {
+    var left = 0;
+    var right = num;
+
+    while(left <= right) {
+        var mid = left + parseInt((right - left)/2);
+        var pow = mid*mid;
+        if(pow === num) {
+            return true;
+        } else if(pow < num) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return false;
+};
