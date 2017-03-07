@@ -337,6 +337,7 @@ function latticePaths(n, i, j) {
 }
 
 var selectionSort = function(array){
+
   for(var i = 0; i < array.length; i++){
     //set min to the current iteration of i
     var min = i;
