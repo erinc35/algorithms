@@ -640,5 +640,6 @@ var isPerfectSquare = function(num) {
             right = mid - 1;
         }
     }
+
     return false;
 };
