@@ -720,7 +720,6 @@ var containsNearbyDuplicate = function(nums, k) {
             map[nums[i]] = i;
         }
     }
-
     return false;
 };
 var numDecodings = function(s) {
