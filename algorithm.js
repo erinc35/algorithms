@@ -756,6 +756,5 @@ var numDecodings = function(s) {
             return 0;
         }
     }
-
     return dp[len];
 };
