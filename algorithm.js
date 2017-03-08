@@ -723,3 +723,39 @@ var containsNearbyDuplicate = function(nums, k) {
 
     return false;
 };
+var numDecodings = function(s) {
+    var len = s.length,
+        dp = [],
+        x,
+        y,
+        cur,
+        i;
+
+    dp[0] = 1;
+    dp[1] = 1;
+
+    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
+        return 0;
+    }
+
+    for (i = 1; i < len; i++) {
+        x = s.charAt(i - 1) - '0';
+        y = s.charAt(i) - '0';
+        cur = x * 10 + y;
+        dp[i + 1] = 0;
+
+        if (cur > 9 && cur <= 26) {
+            dp[i + 1] += dp[i - 1];
+        }
+
+        if (y !== 0) {
+            dp[i + 1] += dp[i];
+        }
+
+        if (dp[i + 1] === 0) {
+            return 0;
+        }
+    }
+
+    return dp[len];
+};
