@@ -722,25 +722,28 @@ var containsNearbyDuplicate = function(nums, k) {
     }
     return false;
 };
-WordDistance.prototype.shortest = function(word1, word2) {
-    var i = 0;
-    var j = 0;
-    var dist = Infinity;
-    var pos1 = this.positions[word1];
-    var pos2 = this.positions[word2];
+var groupStrings = function(strings) {
+    var result = [];
+    var map = new Map();
 
-    while(i < pos1.length && j < pos2.length) {
-        var i1 = pos1[i];
-        var i2 = pos2[j];
-
-        dist = Math.min(dist, Math.abs(i1 - i2));
-
-        if(i1 < i2) {
-            i++;
+    for(var i = 0; i < strings.length; i++) {
+        var shift = '';
+        var string = strings[i]
+        for(var j = 0; j < string.length; j++) {
+            shift += (string.charCodeAt(j) - string.charCodeAt(0) + 26)%26;
+            shift += ' ';
+        }
+        if(map.has(shift)) {
+            map.get(shift).push(string);
         } else {
-            j++;
+            map.set(shift, [string]);
         }
     }
 
-    return dist;
+    map.forEach((value, key)=> {
+        result.push(value);
+    });
+
+
+    return result;
 };
