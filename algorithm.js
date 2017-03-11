@@ -722,18 +722,32 @@ var containsNearbyDuplicate = function(nums, k) {
     }
     return false;
 };
-var computeArea = function(A, B, C, D, E, F, G, H) {
-    var area = (C-A)*(D-B) + (G-E)*(H-F);
+var isAnagram = function(s, t) {
+   var slen = s.length;
+   var tlen = t.length;
 
-    if((A > G || C < E) || (D < F || B > H)) {
-        return area;
-    }
+   if(slen !== tlen) {
+       return false;
+   }
 
-    var left = Math.max(A,E);
-    var top = Math.min(D,H);
-    var right = Math.min(C,G);
-    var bottom = Math.max(B,F);
+   var hash = {};
 
-    return area - (right - left)*(top - bottom);
+   for(var i = 0; i < slen; i++) {
+       var char = s[i];
+       hash[char] = hash[char] || 0;
+       hash[char]++;
+      console.log(hash)
+   }
+
+   for(i = 0; i < tlen; i++) {
+       char = t[i];
+
+       if(hash[char] === undefined || hash[char] === 0) {
+           return false;
+       }
+
+       hash[char]--;
+   }
+
+   return true;
 };
-
