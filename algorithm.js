@@ -722,32 +722,18 @@ var containsNearbyDuplicate = function(nums, k) {
     }
     return false;
 };
-var containsNearbyDuplicate = function(nums, k) {
-    if(k <= 0){
-        return false;
+var computeArea = function(A, B, C, D, E, F, G, H) {
+    var area = (C-A)*(D-B) + (G-E)*(H-F);
+
+    if((A > G || C < E) || (D < F || B > H)) {
+        return area;
     }
 
-    if(nums === null || nums.length === 0){
-        return false;
-    }
+    var left = Math.max(A,E);
+    var top = Math.min(D,H);
+    var right = Math.min(C,G);
+    var bottom = Math.max(B,F);
 
-    var hash = {};
-
-    for(var i = 0; i < nums.length; i++){
-        var val = nums[i];
-        if(hash[val] !== undefined){
-            if((i - hash[val]) <= k){
-                return true;
-            } else {
-                hash[val] = i;
-            }
-        } else {
-            hash[val] = i;
-        }
-
-
-    }
-
-    return false;
+    return area - (right - left)*(top - bottom);
 };
 
