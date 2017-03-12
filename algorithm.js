@@ -722,28 +722,27 @@ var containsNearbyDuplicate = function(nums, k) {
     }
     return false;
 };
-var groupStrings = function(strings) {
-    var result = [];
-    var map = new Map();
+// Equiliubrim index
 
-    for(var i = 0; i < strings.length; i++) {
-        var shift = '';
-        var string = strings[i]
-        for(var j = 0; j < string.length; j++) {
-            shift += (string.charCodeAt(j) - string.charCodeAt(0) + 26)%26;
-            shift += ' ';
-        }
-        if(map.has(shift)) {
-            map.get(shift).push(string);
-        } else {
-            map.set(shift, [string]);
-        }
+
+var input = [-1,3,-4,5,1,-6,2,1];
+
+function solution(input) {
+  var sum = 0;
+  var leftSum = 0;
+  var rightSum = 0;
+
+  for(var i=0; i<input.length;i++){
+    sum+=input[i];
+  }
+  for(var j=0; j<input.length; j++){
+    rightSum = sum - leftSum - input[j];
+    if(rightSum === leftSum){
+      return j;
     }
+    leftSum += input[j]
+  }
+  return -1;
+}
 
-    map.forEach((value, key)=> {
-        result.push(value);
-    });
-
-
-    return result;
-};
+solution(input)
