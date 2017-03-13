@@ -768,3 +768,61 @@ function solution(input) {
 }
 
 solution(input)
+
+// There is an elevator in a building with M floors. This elevator can take a max of X people at a time or max of total weight Y. Given that a set of people and their weight and the floor they need to stop, how many stops has the elevator taken to serve all the people? Consider the elevator serves in “first come first serve” basis and the order for the queue can not be changed.
+
+// Example:
+
+// Let Array A be the weight of each person A = [60, 80, 40].
+// Let Array B be the floors where each person needs to be dropped off B = [2, 3, 5].
+
+// The building has 5 floors, maximum of 2 persons are allowed in the elevator at a time with max weight capacity being 200. For this example, the elevator would take total of 5 stops in floors: 2, 3, G, 5 and finally G.
+
+var A = [40,40,100,80,20,70]
+var B = [3,3,2,2,3,4]
+var M = 3
+var X = 5
+var Y = 200
+
+function uniq(A){
+    var already_seen = {};
+    var uniq_arr = [];
+    var j = 0;
+    for(var i=0; i<A.length; i++){
+        if(already_seen[A[i]] !== 1){
+            already_seen[A[i]] = 1;
+            uniq_arr[j++] = A[i]
+        }
+    }
+    return uniq_arr
+}
+
+function solution(A, B, M, X, Y) {
+    var trip = 0;
+    var totalWeight = 0;
+    var cycles = [];
+
+    for(var i=0; i<A.length; i++){
+        if(cycles[trip]){
+            if(cycles[trip].length === X || totalWeight + A[i] > Y){
+                trip++;
+                totalWeight = 0;
+            }
+        }
+        cycles[trip] = cycles[trip] || [];
+        cycles[trip].push(B[i]);
+        totalWeight += A[i];
+    }
+    var cyclesWithoutDups= [];
+    for (var j = 0; j < cycles.length; j++){
+        cyclesWithoutDups.push(uniq(cycles[j]).length + 1)
+    }
+
+    var sum = cyclesWithoutDups.reduce(function(acc,val){
+        return acc + val;
+    },0);
+
+    return sum;
+}
+
+solution(A, B, M, X, Y)
