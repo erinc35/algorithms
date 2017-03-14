@@ -860,16 +860,23 @@ LRUCache.prototype.get = function(key) {
  * @param {number} value
  * @returns {void}
  */
-var lengthOfLastWord = function(s) {
-    var arr = s.split(' '),
-        len = arr.length,
-        i;
+var grayCode = function(n) {
+    var result = [],
+        cur,
+        i,
+        j;
 
-    for (i = len - 1; i >= 0; i--) {
-        if (arr[i] !== '' && arr[i] !== ' ') {
-            return arr[i].length;
+    result [0] = 0;
+
+    if (n === 0) {
+        return result;
+    }
+
+    for (i = 1; i <= n; i++) {
+        for (j = Math.pow(2, i - 1); j > 0; j--) {
+            result.push(result[j - 1] + (1 << (i - 1)));
         }
     }
 
-    return 0;
+    return result;
 };
