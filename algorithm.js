@@ -860,43 +860,16 @@ LRUCache.prototype.get = function(key) {
  * @param {number} value
  * @returns {void}
  */
-LRUCache.prototype.set = function(key, value) {
-    let newNode = new Node(key, value);
+var lengthOfLastWord = function(s) {
+    var arr = s.split(' '),
+        len = arr.length,
+        i;
 
-    if (this.curSize === 0) {
-        this.head = newNode;
-        this.tail = newNode;
-        this.curSize++;
-    } else {
-        newNode.next = this.head;
-        this.head.prev = newNode;
-        this.head = newNode;
-        this.curSize++;
+    for (i = len - 1; i >= 0; i--) {
+        if (arr[i] !== '' && arr[i] !== ' ') {
+            return arr[i].length;
+        }
     }
 
-    // update
-    if (this.map.get(key)) {
-        let oldNode = this.map.get(key);
-
-        if (oldNode === this.tail) {
-            this.tail = this.tail.prev;
-            this.tail.next = null;
-        } else {
-            oldNode.prev.next = oldNode.next;
-            oldNode.next.prev = oldNode.prev;
-        }
-
-        this.curSize--;
-        this.map.set(key, newNode);
-    } else {
-        if (this.curSize > this.size) {
-            //delete tail
-            this.map.delete(this.tail.key);
-            this.tail = this.tail.prev;
-            this.tail.next = null;
-            this.curSize--;
-        }
-
-        this.map.set(key, newNode);
-    }
+    return 0;
 };
