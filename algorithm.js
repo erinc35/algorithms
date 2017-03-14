@@ -827,19 +827,76 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var canJump = function(nums) {
-    var len = nums.length,
-        cover = 0,
-        i;
+LRUCache.prototype.get = function(key) {
+    if (!this.map.get(key)) {
+        return -1;
+    }
 
-    for(i = 0; i < len; i++) {
-        if (cover >= i) {
-            cover = Math.max(cover, nums[i] + i);
-            if (cover >= len - 1) {
-                return true;
-            }
+    let node = this.map.get(key);
+
+    if (node === this.head) {
+        return node.val;
+    }
+
+    // remove node from list
+    if (node === this.tail) {
+        this.tail.prev.next = null;
+        this.tail = this.tail.prev;
+    } else {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    // insert node to head
+    node.next = this.head;
+    this.head.prev = node;
+    this.head = node;
+
+    return node.val;
+};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @returns {void}
+ */
+LRUCache.prototype.set = function(key, value) {
+    let newNode = new Node(key, value);
+
+    if (this.curSize === 0) {
+        this.head = newNode;
+        this.tail = newNode;
+        this.curSize++;
+    } else {
+        newNode.next = this.head;
+        this.head.prev = newNode;
+        this.head = newNode;
+        this.curSize++;
+    }
+
+    // update
+    if (this.map.get(key)) {
+        let oldNode = this.map.get(key);
+
+        if (oldNode === this.tail) {
+            this.tail = this.tail.prev;
+            this.tail.next = null;
         } else {
-            return false;
+            oldNode.prev.next = oldNode.next;
+            oldNode.next.prev = oldNode.prev;
         }
+
+        this.curSize--;
+        this.map.set(key, newNode);
+    } else {
+        if (this.curSize > this.size) {
+            //delete tail
+            this.map.delete(this.tail.key);
+            this.tail = this.tail.prev;
+            this.tail.next = null;
+            this.curSize--;
+        }
+
+        this.map.set(key, newNode);
     }
 };
