@@ -826,24 +826,38 @@ function solution(A, B, M, X, Y) {
 }
 
 solution(A, B, M, X, Y)
+var isAdditiveNumber = function(num) {
+    var len = num.length,
+        i,
+        j;
 
-var preorderTraversal = function(root) {
-    var store = [],
-        result = [],
-        cur;
-    if (root === null) {
-        return store;
-    }
-    store.push(root);
-    while(store.length > 0) {
-        cur = store.pop();
-        result.push(cur.val);
-        if (cur.right) {
-            store.push(cur.right);
-        }
-        if (cur.left) {
-            store.push(cur.left);
+    for (i = 1; i <= len / 2; i++) {
+        for (j = 1; j <= len / 2; j++) {
+            if (canBeAdded(num.substr(0, i), num.substr(i, j), num.substr(i + j))) {
+                return true;
+            }
         }
     }
-    return result;
+
+    return false;
 };
+
+function canBeAdded(a, b, c) {
+    if ((a.length > 1 && a.charAt(0) === '0') || (b.length > 1 && b.charAt(0) === '0') || (c.length >= 1 && c.charAt(0) === '0')) {
+        return false;
+    }
+
+    var aNum = parseInt(a),
+        bNum = parseInt(b),
+        sum = aNum + bNum + '';
+
+    if (c === sum) {
+        return true;
+    }
+
+    if (c.substr(0, sum.length) !== sum) {
+        return false;
+    }
+
+    return canBeAdded(b, sum, c.substr(sum.length));
+}
