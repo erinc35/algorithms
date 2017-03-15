@@ -855,31 +855,57 @@ LRUCache.prototype.get = function(key) {
     return node.val;
 };
 
-var isBalanced = function(root) {
-    return findDepth(root) === -1 ? false : true;
+
+Given a binary tree, return all root-to-leaf paths.
+For example, given the following binary tree:
+   1
+ /   \
+2     3
+ \
+  5
+All root-to-leaf paths are:
+["1->2->5", "1->3"]
+*/
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+    var result = [];
+
+    getPaths(root, null, result);
+
+    return result;
 };
 
-function findDepth(root) {
-    if (root === null) {
-        return 0;
+function getPaths(node, curStr, result) {
+    if (node === null) {
+        return;
     }
 
-    var leftDepth = findDepth(root.left),
-        rightDepth;
-
-    if (leftDepth === -1) {
-        return -1;
+    if (!curStr) {
+        curStr = '' + node.val;
+    } else {
+        curStr += '->' + node.val;
     }
 
-    rightDepth = findDepth(root.right);
-
-    if (rightDepth === -1) {
-        return -1;
+    if (node.left) {
+        getPaths(node.left, curStr, result);
     }
 
-    if (Math.abs(leftDepth - rightDepth) > 1) {
-        return -1;
+    if (node.right) {
+        getPaths(node.right, curStr, result);
     }
 
-    return Math.max(leftDepth, rightDepth) + 1;
+    if (!node.left && !node.right) {
+        result.push(curStr);
+    }
 }
