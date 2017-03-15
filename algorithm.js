@@ -855,28 +855,31 @@ LRUCache.prototype.get = function(key) {
     return node.val;
 };
 
-/**
- * @param {number} key
- * @param {number} value
- * @returns {void}
- */
-var grayCode = function(n) {
-    var result = [],
-        cur,
-        i,
-        j;
-
-    result [0] = 0;
-
-    if (n === 0) {
-        return result;
-    }
-
-    for (i = 1; i <= n; i++) {
-        for (j = Math.pow(2, i - 1); j > 0; j--) {
-            result.push(result[j - 1] + (1 << (i - 1)));
-        }
-    }
-
-    return result;
+var isBalanced = function(root) {
+    return findDepth(root) === -1 ? false : true;
 };
+
+function findDepth(root) {
+    if (root === null) {
+        return 0;
+    }
+
+    var leftDepth = findDepth(root.left),
+        rightDepth;
+
+    if (leftDepth === -1) {
+        return -1;
+    }
+
+    rightDepth = findDepth(root.right);
+
+    if (rightDepth === -1) {
+        return -1;
+    }
+
+    if (Math.abs(leftDepth - rightDepth) > 1) {
+        return -1;
+    }
+
+    return Math.max(leftDepth, rightDepth) + 1;
+}
