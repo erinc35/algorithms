@@ -827,85 +827,23 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-LRUCache.prototype.get = function(key) {
-    if (!this.map.get(key)) {
-        return -1;
+var preorderTraversal = function(root) {
+    var store = [],
+        result = [],
+        cur;
+    if (root === null) {
+        return store;
     }
-
-    let node = this.map.get(key);
-
-    if (node === this.head) {
-        return node.val;
+    store.push(root);
+    while(store.length > 0) {
+        cur = store.pop();
+        result.push(cur.val);
+        if (cur.right) {
+            store.push(cur.right);
+        }
+        if (cur.left) {
+            store.push(cur.left);
+        }
     }
-
-    // remove node from list
-    if (node === this.tail) {
-        this.tail.prev.next = null;
-        this.tail = this.tail.prev;
-    } else {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-
-    // insert node to head
-    node.next = this.head;
-    this.head.prev = node;
-    this.head = node;
-
-    return node.val;
-};
-
-
-Given a binary tree, return all root-to-leaf paths.
-For example, given the following binary tree:
-   1
- /   \
-2     3
- \
-  5
-All root-to-leaf paths are:
-["1->2->5", "1->3"]
-*/
-
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {string[]}
- */
-var binaryTreePaths = function(root) {
-    var result = [];
-
-    getPaths(root, null, result);
-
     return result;
 };
-
-function getPaths(node, curStr, result) {
-    if (node === null) {
-        return;
-    }
-
-    if (!curStr) {
-        curStr = '' + node.val;
-    } else {
-        curStr += '->' + node.val;
-    }
-
-    if (node.left) {
-        getPaths(node.left, curStr, result);
-    }
-
-    if (node.right) {
-        getPaths(node.right, curStr, result);
-    }
-
-    if (!node.left && !node.right) {
-        result.push(curStr);
-    }
-}
