@@ -827,36 +827,24 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var candy = function(ratings) {
-    let len = ratings.length;
-    let candies = [];
-    let sum = 1;
+var coinChange = function(coins, amount) {
+    var i = 0,
+        arr = [],
+        len = coins.length,
+        j;
 
-    candies[0] = 1;
+    while (i <= amount) {
+        arr.push(Number.MAX_VALUE);
+        i++;
+    }
 
-    for (let i = 1; i < len; i++) {
-        if (ratings[i] <= ratings[i - 1]) {
-            if (candies[i - 1] > 1) {
-                candies[i] = 1;
-                sum++;
-            } else {
-                candies[i] = 1;
-                sum++;
-                let k = i;
+    arr[0] = 0;
 
-                while (k > 0 && (ratings[k] < ratings[k - 1]) && (candies[k - 1] <= candies[k])) {
-                    candies[k - 1]++;
-                    sum++;
-                    k--;
-                }
-
-
-            }
-        } else {
-            candies[i] = candies[i - 1] + 1;
-            sum += candies[i];
+    for (i = 0; i < len; i++) {
+        for (j = coins[i]; j <= amount; j++) {
+            arr[j] = Math.min(arr[j], arr[j - coins[i]] + 1);
         }
     }
 
-    return sum;
+    return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
 };
