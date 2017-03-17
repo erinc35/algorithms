@@ -827,24 +827,26 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var coinChange = function(coins, amount) {
-    var i = 0,
-        arr = [],
-        len = coins.length,
-        j;
+var combine = function(n, k) {
+    var result = [];
 
-    while (i <= amount) {
-        arr.push(Number.MAX_VALUE);
-        i++;
-    }
+    helper(1, [], n, k, result);
 
-    arr[0] = 0;
-
-    for (i = 0; i < len; i++) {
-        for (j = coins[i]; j <= amount; j++) {
-            arr[j] = Math.min(arr[j], arr[j - coins[i]] + 1);
-        }
-    }
-
-    return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
+    return result;
 };
+
+function helper(start, curArr, n, k, result) {
+    if (curArr.length === k) {
+        result.push(curArr);
+        return;
+    }
+
+    var i,
+        temp;
+
+    for (i = start; i <= n; i++) {
+        curArr.push(i);
+        helper(i + 1, curArr.concat(), n, k, result);
+        curArr.pop();
+    }
+}
