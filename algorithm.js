@@ -835,18 +835,25 @@ var combine = function(n, k) {
     return result;
 };
 
-function helper(start, curArr, n, k, result) {
-    if (curArr.length === k) {
-        result.push(curArr);
-        return;
-    }
-
+var countPrimes = function(n) {
     var i,
-        temp;
-
-    for (i = start; i <= n; i++) {
-        curArr.push(i);
-        helper(i + 1, curArr.concat(), n, k, result);
-        curArr.pop();
+        j,
+        result = 0,
+        prime;
+    if (n === 1) {
+        return 0;
     }
-}
+    for (i = 2; i < n; i++) {
+        prime = true;
+        for (j = 2; j*j <= i; j++) {
+            if (i%j === 0) {
+                prime = false;
+                break;
+            }
+        }
+        if (prime) {
+            result++;
+        }
+    }
+    return result;
+};
