@@ -835,25 +835,35 @@ var combine = function(n, k) {
     return result;
 };
 
-var countPrimes = function(n) {
-    var i,
-        j,
-        result = 0,
-        prime;
-    if (n === 1) {
-        return 0;
-    }
-    for (i = 2; i < n; i++) {
-        prime = true;
-        for (j = 2; j*j <= i; j++) {
-            if (i%j === 0) {
-                prime = false;
-                break;
+var countAndSay = function(n) {
+    function interpret(s, accum, sum) {
+        var times = 1,
+            num,
+            len = s.length,
+            i,
+            result = '';
+
+        num = s.charAt(0);
+
+        for (i = 1; i < len; i++) {
+            if (s.charAt(i) !== num) {
+                result += times + num;
+                num = s.charAt(i);
+                times = 1;
+            } else {
+                times++;
             }
         }
-        if (prime) {
-            result++;
+        if (accum === 1) {
+            result = '1';
+        } else {
+            result += times + num;
+        }
+        if (accum === sum) {
+            return result;
+        } else {
+            return interpret(result, accum + 1, sum);
         }
     }
-    return result;
+    return interpret('1', 1, n);
 };
