@@ -835,21 +835,65 @@ var combine = function(n, k) {
     return result;
 };
 
-var countBits = function(num) {
-    var result = [],
-        pow = 1,
-        i;
+var findOrder = function(numCourses, prerequisites) {
+    var courses = [],
+        prereqCounts = [],
+        queue = [],
+        temp,
+        result = [],
+        i,
+        j,
+        k;
 
-    result[0] = 0;
+    for (i = 0; i < numCourses; i++) {
+        courses.push(new Set());
+    }
 
-    for (i = 1; i < num; i++) {
-        if (i === pow) {
-            result[i] = 1;
-            pow *= 2;
-        } else {
-            result[i] = result[pow] + result[i - pow];
+    // [1] is [0]'s prerequisite
+    // To take course [0] you should have finished course [1]
+    for (i = 0; i < prerequisites.length; i++) {
+        courses[prerequisites[i][1]].add(prerequisites[i][0]);
+    }
+
+    for (i = 0; i < numCourses; i++) {
+        prereqCounts[i] = 0;
+    }
+
+    // count the pre-courses
+    for (i = 0; i < numCourses; i++) {
+        temp = Array.from(courses[i]);
+
+        for (j = 0; j < temp.length; j++) {
+            prereqCounts[temp[j]]++;
         }
     }
 
-    return result;
+    for (i = 0; i < numCourses; i++) {
+        if (prereqCounts[i] === 0) {
+            queue.push(i);
+            prereqCounts[i] = -1;
+        }
+    }
+
+    while (queue.length > 0) {
+        j = queue.shift();
+        result.push(j);
+
+        temp = Array.from(courses[j]);
+
+        for (i = 0; i < temp.length; i++) {
+            prereqCounts[temp[i]]--;
+
+            if (prereqCounts[temp[i]] === 0) {
+                queue.push(temp[i]);
+                prereqCounts[temp[i]] = -1;
+            }
+        }
+    }
+
+    if (result.length === numCourses) {
+        return result;
+    }
+
+    return [];
 };
