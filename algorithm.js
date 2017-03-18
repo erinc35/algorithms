@@ -835,65 +835,39 @@ var combine = function(n, k) {
     return result;
 };
 
-var findOrder = function(numCourses, prerequisites) {
-    var courses = [],
-        prereqCounts = [],
-        queue = [],
-        temp,
-        result = [],
-        i,
-        j,
-        k;
+var numDecodings = function(s) {
+    var len = s.length,
+        dp = [],
+        x,
+        y,
+        cur,
+        i;
 
-    for (i = 0; i < numCourses; i++) {
-        courses.push(new Set());
+    dp[0] = 1;
+    dp[1] = 1;
+
+    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
+        return 0;
     }
 
-    // [1] is [0]'s prerequisite
-    // To take course [0] you should have finished course [1]
-    for (i = 0; i < prerequisites.length; i++) {
-        courses[prerequisites[i][1]].add(prerequisites[i][0]);
-    }
+    for (i = 1; i < len; i++) {
+        x = s.charAt(i - 1) - '0';
+        y = s.charAt(i) - '0';
+        cur = x * 10 + y;
+        dp[i + 1] = 0;
 
-    for (i = 0; i < numCourses; i++) {
-        prereqCounts[i] = 0;
-    }
+        if (cur > 9 && cur <= 26) {
+            dp[i + 1] += dp[i - 1];
+        }
 
-    // count the pre-courses
-    for (i = 0; i < numCourses; i++) {
-        temp = Array.from(courses[i]);
+        if (y !== 0) {
+            dp[i + 1] += dp[i];
+        }
 
-        for (j = 0; j < temp.length; j++) {
-            prereqCounts[temp[j]]++;
+        if (dp[i + 1] === 0) {
+            return 0;
         }
     }
 
-    for (i = 0; i < numCourses; i++) {
-        if (prereqCounts[i] === 0) {
-            queue.push(i);
-            prereqCounts[i] = -1;
-        }
-    }
-
-    while (queue.length > 0) {
-        j = queue.shift();
-        result.push(j);
-
-        temp = Array.from(courses[j]);
-
-        for (i = 0; i < temp.length; i++) {
-            prereqCounts[temp[i]]--;
-
-            if (prereqCounts[temp[i]] === 0) {
-                queue.push(temp[i]);
-                prereqCounts[temp[i]] = -1;
-            }
-        }
-    }
-
-    if (result.length === numCourses) {
-        return result;
-    }
-
-    return [];
+    return dp[len];
 };
