@@ -835,20 +835,87 @@ var combine = function(n, k) {
     return result;
 };
 
-var countBits = function(num) {
-    var result = [],
-        pow = 1,
+var countRangeSum = function(nums, lower, upper) {
+    function SegmentTreeNode(min, max) {
+        this.min = min;
+        this.max = max;
+        this.count = 0;
+    }
+
+    function buildSegmentTree(valArr, low, high) {
+        if (low > high) {
+            return null;
+        }
+
+        var mid = parseInt((low + high) / 2),
+            node = new SegmentTreeNode(valArr[low], valArr[high]);
+
+        if (low === high) {
+            return node;
+        }
+
+        node.left = buildSegmentTree(valArr, low, mid);
+        node.right = buildSegmentTree(valArr, mid + 1, high);
+
+        return node;
+    }
+
+    function updateSegmentTree(node, val) {
+        if (!node) {
+            return;
+        }
+
+        if (val >= node.min && val <= node.max) {
+            node.count++;
+            updateSegmentTree(node.left, val);
+            updateSegmentTree(node.right, val);
+        }
+    }
+
+    function rangeCount(node, min, max) {
+        if (!node) {
+            return 0;
+        }
+
+        if (min > node.max || max < node.min) {
+            return 0;
+        }
+
+        if (min <= node.min && max >= node.max) {
+            return node.count;
+        }
+
+        return rangeCount(node.left, min, max) + rangeCount(node.right, min, max);
+    }
+
+    var len = nums.length,
+        sumSet = new Set(),
+        sum = 0,
+        result = 0,
+        arr,
+        root,
         i;
 
-    result[0] = 0;
+    if (len === 0) {
+        return 0;
+    }
 
-    for (i = 1; i < num; i++) {
-        if (i === pow) {
-            result[i] = 1;
-            pow *= 2;
-        } else {
-            result[i] = result[pow] + result[i - pow];
-        }
+    for (i = 0; i < len; i++) {
+        sum += nums[i];
+        sumSet.add(sum);
+    }
+
+    arr = Array.from(sumSet);
+    arr.sort(function(a, b) {
+        return a - b;
+    });
+
+    root = buildSegmentTree(arr, 0, arr.length - 1);
+
+    for (i = len - 1; i >= 0; i--) {
+        updateSegmentTree(root, sum);
+        sum -= nums[i];
+        result += rangeCount(root, lower + sum, upper + sum);
     }
 
     return result;
