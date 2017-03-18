@@ -835,40 +835,45 @@ var combine = function(n, k) {
     return result;
 };
 
-var diffWaysToCompute = function(input) {
-    var len = input.length,
-        result = [],
-        left,
-        right,
-        curChar,
+var numDistinct = function(s, t) {
+    var lenS = s.length,
+        lenT = t.length,
         i,
         j,
-        k;
+        dp;
 
-    for (i = 0; i < len; i++) {
-        curChar = input.charAt(i);
+    if (lenS < lenT) {
+        return 0;
+    }
 
-        if (curChar === '+' || curChar === '-' || curChar === '*') {
-            left = diffWaysToCompute(input.substring(0, i));
-            right = diffWaysToCompute(input.substring(i + 1));
+    if (lenS === lenT) {
+        return s === t? 1 : 0;
+    }
 
-            for (j = 0; j < left.length; j++) {
-                for (k = 0; k < right.length; k++) {
-                    if (curChar === '+') {
-                        result.push(left[j] + right[k]);
-                    } else if (curChar === '-') {
-                        result.push(left[j] - right[k]);
-                    } else {
-                        result.push(left[j] * right[k]);
-                    }
-                }
+    dp = [];
+
+    for (i = 0; i <= lenT; i++) {
+        dp.push(new Array(lenS + 1));
+
+        for (j = 0; j <= lenS; j++) {
+            dp[i][j] = 0;
+        }
+    }
+
+    for (j = 0; j <= lenS; j++) {
+        dp[0][j] = 1;
+    }
+
+
+    for (i = 0; i < lenT; i++) {
+        for (j = 0; j < lenS; j++) {
+            dp[i + 1][j + 1] = dp[i + 1][j];
+
+            if (s.charAt(j) === t.charAt(i)) {
+                dp[i + 1][j + 1] += dp[i][j];
             }
         }
     }
 
-    if (result.length === 0) {
-        result.push(parseInt(input));
-    }
-
-    return result;
+    return dp[lenT][lenS];
 };
