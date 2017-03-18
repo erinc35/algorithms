@@ -835,39 +835,40 @@ var combine = function(n, k) {
     return result;
 };
 
-var numDecodings = function(s) {
-    var len = s.length,
-        dp = [],
-        x,
-        y,
-        cur,
-        i;
+var diffWaysToCompute = function(input) {
+    var len = input.length,
+        result = [],
+        left,
+        right,
+        curChar,
+        i,
+        j,
+        k;
 
-    dp[0] = 1;
-    dp[1] = 1;
+    for (i = 0; i < len; i++) {
+        curChar = input.charAt(i);
 
-    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
-        return 0;
-    }
+        if (curChar === '+' || curChar === '-' || curChar === '*') {
+            left = diffWaysToCompute(input.substring(0, i));
+            right = diffWaysToCompute(input.substring(i + 1));
 
-    for (i = 1; i < len; i++) {
-        x = s.charAt(i - 1) - '0';
-        y = s.charAt(i) - '0';
-        cur = x * 10 + y;
-        dp[i + 1] = 0;
-
-        if (cur > 9 && cur <= 26) {
-            dp[i + 1] += dp[i - 1];
-        }
-
-        if (y !== 0) {
-            dp[i + 1] += dp[i];
-        }
-
-        if (dp[i + 1] === 0) {
-            return 0;
+            for (j = 0; j < left.length; j++) {
+                for (k = 0; k < right.length; k++) {
+                    if (curChar === '+') {
+                        result.push(left[j] + right[k]);
+                    } else if (curChar === '-') {
+                        result.push(left[j] - right[k]);
+                    } else {
+                        result.push(left[j] * right[k]);
+                    }
+                }
+            }
         }
     }
 
-    return dp[len];
+    if (result.length === 0) {
+        result.push(parseInt(input));
+    }
+
+    return result;
 };
