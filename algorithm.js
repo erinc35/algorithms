@@ -835,39 +835,33 @@ var combine = function(n, k) {
     return result;
 };
 
-var numDecodings = function(s) {
-    var len = s.length,
-        dp = [],
-        x,
-        y,
-        cur,
-        i;
+var minDistance = function(word1, word2) {
+    var len1 = word1.length,
+        len2 = word2.length,
+        matrix = [],
+        i,
+        j;
 
-    dp[0] = 1;
-    dp[1] = 1;
-
-    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
-        return 0;
+    if(len1 === 0 || len2 === 0) {
+        return Math.max(len1, len2);
+    }
+    //initialization
+    for(i = 0; i <= len1; i++) {
+        matrix[i] = [];
+        matrix[i][0] = i;
+    }
+    for (j = 0; j <= len2; j++) {
+        matrix[0][j] = j;
     }
 
-    for (i = 1; i < len; i++) {
-        x = s.charAt(i - 1) - '0';
-        y = s.charAt(i) - '0';
-        cur = x * 10 + y;
-        dp[i + 1] = 0;
-
-        if (cur > 9 && cur <= 26) {
-            dp[i + 1] += dp[i - 1];
-        }
-
-        if (y !== 0) {
-            dp[i + 1] += dp[i];
-        }
-
-        if (dp[i + 1] === 0) {
-            return 0;
+    for (i = 1; i <= len1; i++) {
+        for (j = 1; j <= len2; j++) {
+            if (word1.charAt(i - 1) === word2.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i - 1][j], matrix[i][j - 1], matrix[i - 1][j - 1]) + 1;
+            }
         }
     }
-
-    return dp[len];
+    return matrix[len1][len2];
 };
