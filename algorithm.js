@@ -835,42 +835,39 @@ var combine = function(n, k) {
     return result;
 };
 
-var constructGraph = function(numNodes, pre) {
-    var nodes = [];
-    for (var i = 0; i < numNodes; i++) {
-        var node = {};
-        node.neighbors = [];
-        nodes[i] = node;
-    }
-    for (var j = 0; j < pre.length; j++) {
-        var s = pre[j][1];
-        var d = pre[j][0];
-        nodes[s].neighbors.push(nodes[d]);
-    }
-    return nodes;
-}
+var numDecodings = function(s) {
+    var len = s.length,
+        dp = [],
+        x,
+        y,
+        cur,
+        i;
 
-// Return true if there is a cycle detected.
-var dfs = function(startNode, parents) {
-    if (parents.indexOf(startNode) >= 0) return true;
-    if (startNode.visited) return false;
+    dp[0] = 1;
+    dp[1] = 1;
 
-    startNode.visited = true;
-    var neighbors = startNode.neighbors;
-    parents.push(startNode);
-    for (var i = 0; i < neighbors.length; i++) {
-        var hasCycle = dfs(neighbors[i], parents);
-        if (hasCycle) return true;
+    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
+        return 0;
     }
-    parents.pop();
-}
 
-var canFinish = function(numCourses, prerequisites) {
-    var nodes = constructGraph(numCourses, prerequisites);
-    for (var i = 0; i < nodes.length; i++) {
-        var hasCycle = dfs(nodes[i], []);
-        if (hasCycle) return false;
+    for (i = 1; i < len; i++) {
+        x = s.charAt(i - 1) - '0';
+        y = s.charAt(i) - '0';
+        cur = x * 10 + y;
+        dp[i + 1] = 0;
+
+        if (cur > 9 && cur <= 26) {
+            dp[i + 1] += dp[i - 1];
+        }
+
+        if (y !== 0) {
+            dp[i + 1] += dp[i];
+        }
+
+        if (dp[i + 1] === 0) {
+            return 0;
+        }
     }
-    return true;
+
+    return dp[len];
 };
-
