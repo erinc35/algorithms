@@ -835,45 +835,42 @@ var combine = function(n, k) {
     return result;
 };
 
-var numDistinct = function(s, t) {
-    var lenS = s.length,
-        lenT = t.length,
-        i,
-        j,
-        dp;
-
-    if (lenS < lenT) {
-        return 0;
+var constructGraph = function(numNodes, pre) {
+    var nodes = [];
+    for (var i = 0; i < numNodes; i++) {
+        var node = {};
+        node.neighbors = [];
+        nodes[i] = node;
     }
-
-    if (lenS === lenT) {
-        return s === t? 1 : 0;
+    for (var j = 0; j < pre.length; j++) {
+        var s = pre[j][1];
+        var d = pre[j][0];
+        nodes[s].neighbors.push(nodes[d]);
     }
+    return nodes;
+}
 
-    dp = [];
+// Return true if there is a cycle detected.
+var dfs = function(startNode, parents) {
+    if (parents.indexOf(startNode) >= 0) return true;
+    if (startNode.visited) return false;
 
-    for (i = 0; i <= lenT; i++) {
-        dp.push(new Array(lenS + 1));
-
-        for (j = 0; j <= lenS; j++) {
-            dp[i][j] = 0;
-        }
+    startNode.visited = true;
+    var neighbors = startNode.neighbors;
+    parents.push(startNode);
+    for (var i = 0; i < neighbors.length; i++) {
+        var hasCycle = dfs(neighbors[i], parents);
+        if (hasCycle) return true;
     }
+    parents.pop();
+}
 
-    for (j = 0; j <= lenS; j++) {
-        dp[0][j] = 1;
+var canFinish = function(numCourses, prerequisites) {
+    var nodes = constructGraph(numCourses, prerequisites);
+    for (var i = 0; i < nodes.length; i++) {
+        var hasCycle = dfs(nodes[i], []);
+        if (hasCycle) return false;
     }
-
-
-    for (i = 0; i < lenT; i++) {
-        for (j = 0; j < lenS; j++) {
-            dp[i + 1][j + 1] = dp[i + 1][j];
-
-            if (s.charAt(j) === t.charAt(i)) {
-                dp[i + 1][j + 1] += dp[i][j];
-            }
-        }
-    }
-
-    return dp[lenT][lenS];
+    return true;
 };
+
