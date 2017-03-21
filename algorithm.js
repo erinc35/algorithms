@@ -827,44 +827,17 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var combine = function(n, k) {
-    var result = [];
+var convertToTitle = function(n) {
+    var result = '',
+        cur;
 
-    helper(1, [], n, k, result);
+    //97 is the ASCII code for lower case 'a'. If you want uppercase letters, replace 97 with 65 (uppercase 'A').
 
-    return result;
-};
-
-var evalRPN = function(tokens) {
-    var stack = [],
-        len = tokens.length,
-        ch,
-        num,
-        i;
-
-    for (i = 0; i < len; i++) {
-        ch = tokens[i];
-
-        if (isNaN(parseInt(ch))) {
-            if (ch === '+') {
-                num = stack.pop() + stack.pop();
-                stack.push(num);
-            } else if (ch === '-') {
-                num = stack.pop();
-                num = stack.pop() - num;
-                stack.push(num);
-            } else if (ch === '*') {
-                num = stack.pop() * stack.pop();
-                stack.push(num);
-            } else if (ch === '/') {
-                num = stack.pop();
-                num = parseInt(stack.pop() / num);
-                stack.push(num);
-            }
-        } else {
-            stack.push(parseInt(ch));
-        }
+    while (n > 0) {
+        cur = (n - 1) % 26;
+        result = String.fromCharCode(65 + cur) + result;
+        n = Math.floor((n - 1) / 26);
     }
 
-    return stack.pop();
+    return result;
 };
