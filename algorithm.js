@@ -827,17 +827,14 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var convertToTitle = function(n) {
-    var result = '',
-        cur;
+var trailingZeroes = function(n) {
+    var divider = 5,
+        reminder = 0;
 
-    //97 is the ASCII code for lower case 'a'. If you want uppercase letters, replace 97 with 65 (uppercase 'A').
-
-    while (n > 0) {
-        cur = (n - 1) % 26;
-        result = String.fromCharCode(65 + cur) + result;
-        n = Math.floor((n - 1) / 26);
+    while (divider <= n) {
+        reminder += Math.floor(n/divider);
+        divider = divider * 5;
     }
 
-    return result;
+    return reminder;
 };
