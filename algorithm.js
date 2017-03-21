@@ -827,14 +827,28 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var trailingZeroes = function(n) {
-    var divider = 5,
-        reminder = 0;
+var solution = function(knows) {
+    /**
+     * @param {integer} n Total people
+     * @return {integer} The celebrity
+     */
+    return function(n) {
+        let candidate = 0;
 
-    while (divider <= n) {
-        reminder += Math.floor(n/divider);
-        divider = divider * 5;
-    }
+        for (let i = 1; i < n; i++) {
+            // if candidate know i, then swap
+            if (knows(candidate, i)) {
+                candidate = i;
+            }
+        }
 
-    return reminder;
+        // check if a candidate if valid
+        for (let i = 0; i < n; i++) {
+            if (i !== candidate && (!knows(i, candidate) || knows(candidate, i))) {
+                return -1;
+            }
+        }
+
+        return candidate;
+    };
 };
