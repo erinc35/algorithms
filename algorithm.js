@@ -827,41 +827,29 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var gameOfLife = function(board) {
-    var len = board.length,
-        lives,
-        cLen,
+var canCompleteCircuit = function(gas, cost) {
+    var len = gas.length,
+        diff = [],
+        curSum = 0,
+        sum = 0,
         i,
-        j,
-        x,
-        y;
+        startNode = 0;
 
-    if (len === 0) {
-        return;
-    }
+    for(i = 0; i < len; i++) {
+        diff[i] = gas[i] - cost[i];
+        sum += diff[i];
+        curSum += diff[i];
 
-    cLen = board[0].length;
-
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < cLen; j++) {
-            lives = 0;
-
-            for (x = Math.max(i - 1, 0); x <= Math.min(i + 1, len - 1); x++) {
-                for (y = Math.max(j - 1, 0); y <= Math.min(j + 1, cLen - 1); y++) {
-                    lives += (board[x][y] & 1);
-                }
-            }
-
-            // only care the ones that'll be live
-            if (lives === 3 || lives - board[i][j] === 3) {
-                board[i][j] |= 2;
-            }
+        if (curSum < 0) {
+            startNode = i + 1;
+            curSum = 0;
         }
     }
 
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < cLen; j++) {
-            board[i][j] >>= 1;
-        }
+    if (sum < 0) {
+        return -1;
+    } else {
+        return startNode;
     }
+
 };
