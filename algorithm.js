@@ -827,23 +827,25 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var grayCode = function(n) {
-    var result = [],
-        cur,
-        i,
-        j;
+var hIndex = function(citations) {
+    var len = citations.length,
+        start = 0,
+        end = len - 1,
+        mid;
 
-    result [0] = 0;
+    while (start <= end) {
+        mid = parseInt((start + end) / 2);
 
-    if (n === 0) {
-        return result;
-    }
+        if (citations[mid] === len - mid) {
+            return len - mid;
+        }
 
-    for (i = 1; i <= n; i++) {
-        for (j = Math.pow(2, i - 1); j > 0; j--) {
-            result.push(result[j - 1] + (1 << (i - 1)));
+        if (citations[mid] > len - mid) {
+            end = mid - 1;
+        } else {
+            start = mid + 1;
         }
     }
 
-    return result;
+    return len - start;
 };
