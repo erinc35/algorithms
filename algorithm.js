@@ -827,35 +827,34 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var isHappy = function(n) {
-    var cur = n,
-        num,
-        i,
-        len,
-        result = [],
-        sum = 0,
-        sums = [];
-    while (true) {
-        while (cur !== 0) {
-            num = cur%10;
-            result.push(num);
-            cur = (cur - num)/10;
-        }
-        len = result.length;
-        for(i = 0; i < len; i++) {
-            sum += Math.pow(result[i], 2);
-        }
-        if (sum === 1) {
-            return true;
-        } else {
-            if (sums.indexOf(sum) !== -1) {
-                return false;
-            } else {
-                sums.push(sum);
-                result = [];
-                cur = sum;
-                sum = 0;
-            }
-        }
+var rob = function(nums) {
+    var len = nums.length;
+
+    if (len === 0) {
+        return 0;
     }
+
+    if (len === 1) {
+        return nums[0];
+    }
+
+    return Math.max(getMax(0, len - 1, nums), getMax(1, len, nums));
 };
+
+function getMax(start, end, nums) {
+    var arr = [],
+        i;
+
+    if (end - start <= 1) {
+        return nums[start];
+    }
+
+    arr[start] = nums[start];
+    arr[start + 1] = Math.max(nums[start], nums[start + 1]);
+
+    for (i = start + 2; i < end; i++) {
+        arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
+    }
+
+    return arr[end - 1];
+}
