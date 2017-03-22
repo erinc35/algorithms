@@ -827,26 +827,26 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var solution = function(isBadVersion) {
-                /**
-                 * @param {integer} n Total versions
-                 * @return {integer} The first bad version
-                 */
-                return function(n) {
-                    var start = 1,
-                        end = n,
-                        mid = parseInt(n/2);
+var firstMissingPositive = function(nums) {
+    var len = nums.length,
+        temp,
+        i;
 
-                    while (start < end) {
-                        if (isBadVersion(mid)) {
-                            end = mid;
-                        } else {
-                            start = mid + 1;
-                        }
+    for (i = 0 ; i < len; i++) {
+        while (nums[i] !== i + 1) {
+            if (nums[i] > len || nums[i] < 1 || nums[i] === nums[nums[i] - 1]) {
+                break;
+            }
+            temp = nums[nums[i] - 1];
+            nums[nums[i] - 1] = nums[i];
+            nums[i] = temp;
+        }
+    }
 
-                        mid = parseInt((start + end)/2);
-                    }
-
-                    return start;
-                };
-            };
+    for(i = 0; i < len; i++) {
+        if (nums[i] !== i + 1) {
+            return i + 1;
+        }
+    }
+    return len + 1;
+};
