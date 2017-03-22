@@ -827,26 +827,41 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var firstMissingPositive = function(nums) {
-    var len = nums.length,
-        temp,
-        i;
+var gameOfLife = function(board) {
+    var len = board.length,
+        lives,
+        cLen,
+        i,
+        j,
+        x,
+        y;
 
-    for (i = 0 ; i < len; i++) {
-        while (nums[i] !== i + 1) {
-            if (nums[i] > len || nums[i] < 1 || nums[i] === nums[nums[i] - 1]) {
-                break;
+    if (len === 0) {
+        return;
+    }
+
+    cLen = board[0].length;
+
+    for (i = 0; i < len; i++) {
+        for (j = 0; j < cLen; j++) {
+            lives = 0;
+
+            for (x = Math.max(i - 1, 0); x <= Math.min(i + 1, len - 1); x++) {
+                for (y = Math.max(j - 1, 0); y <= Math.min(j + 1, cLen - 1); y++) {
+                    lives += (board[x][y] & 1);
+                }
             }
-            temp = nums[nums[i] - 1];
-            nums[nums[i] - 1] = nums[i];
-            nums[i] = temp;
+
+            // only care the ones that'll be live
+            if (lives === 3 || lives - board[i][j] === 3) {
+                board[i][j] |= 2;
+            }
         }
     }
 
-    for(i = 0; i < len; i++) {
-        if (nums[i] !== i + 1) {
-            return i + 1;
+    for (i = 0; i < len; i++) {
+        for (j = 0; j < cLen; j++) {
+            board[i][j] >>= 1;
         }
     }
-    return len + 1;
 };
