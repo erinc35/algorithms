@@ -827,29 +827,46 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var canCompleteCircuit = function(gas, cost) {
-    var len = gas.length,
-        diff = [],
-        curSum = 0,
-        sum = 0,
+var generateParenthesis = function(n) {
+    var i = 1,
+        result = [];
+
+    if (n === 0) {
+        return result;
+    }
+
+    result.push('()');
+
+    while (i < n) {
+        result = helper(result);
+        i++;
+    }
+
+    return result;
+};
+
+function helper(arr) {
+    var len = arr.length,
+        result = [],
+        len1,
+        curStr,
+        tmp,
         i,
-        startNode = 0;
+        j;
 
-    for(i = 0; i < len; i++) {
-        diff[i] = gas[i] - cost[i];
-        sum += diff[i];
-        curSum += diff[i];
+    len1 = arr[0].length;
 
-        if (curSum < 0) {
-            startNode = i + 1;
-            curSum = 0;
+    for (i = 0; i < len; i++) {
+        curStr = arr[i];
+
+        for (j = 0; j < len1; j++) {
+            tmp = curStr.substring(0, j) + '()' + curStr.substring(j);
+
+            if (result.indexOf(tmp) === -1) {
+                result.push(tmp);
+            }
         }
     }
 
-    if (sum < 0) {
-        return -1;
-    } else {
-        return startNode;
-    }
-
-};
+    return result;
+}
