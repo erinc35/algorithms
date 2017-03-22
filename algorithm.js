@@ -827,27 +827,28 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var strStr = function(haystack, needle) {
-    var len1 = haystack.length,
-        len2 = needle.length,
-        i,
-        j;
+var insert = function(intervals, newInterval) {
+    var len = intervals.length,
+        result = [],
+        insertIndex = 0,
+        curInterval,
+        i;
 
-    if (len2 === 0) {
-        return 0;
-    }
+    for (i = 0; i < len; i++) {
+        curInterval = intervals[i];
 
-    if (len1 === 0 || len1 < len2) {
-        return -1;
-    }
-
-    i = 0;
-    while (i <= len1 - len2) {
-        if (haystack.substring(i, i + len2) === needle) {
-            return i;
+        if (curInterval.end < newInterval.start) {
+            result.push(curInterval);
+            insertIndex++;
+        } else if (curInterval.start > newInterval.end) {
+            result.push(curInterval);
+        } else {
+            newInterval.start = Math.min(newInterval.start, curInterval.start);
+            newInterval.end = Math.max(newInterval.end, curInterval.end);
         }
-        i++;
     }
 
-    return -1;
+    result.splice(insertIndex, 0, newInterval);
+
+    return result;
 };
