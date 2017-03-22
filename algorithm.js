@@ -827,25 +827,35 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var hIndex = function(citations) {
-    var len = citations.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = parseInt((start + end) / 2);
-
-        if (citations[mid] === len - mid) {
-            return len - mid;
+var isHappy = function(n) {
+    var cur = n,
+        num,
+        i,
+        len,
+        result = [],
+        sum = 0,
+        sums = [];
+    while (true) {
+        while (cur !== 0) {
+            num = cur%10;
+            result.push(num);
+            cur = (cur - num)/10;
         }
-
-        if (citations[mid] > len - mid) {
-            end = mid - 1;
+        len = result.length;
+        for(i = 0; i < len; i++) {
+            sum += Math.pow(result[i], 2);
+        }
+        if (sum === 1) {
+            return true;
         } else {
-            start = mid + 1;
+            if (sums.indexOf(sum) !== -1) {
+                return false;
+            } else {
+                sums.push(sum);
+                result = [];
+                cur = sum;
+                sum = 0;
+            }
         }
     }
-
-    return len - start;
 };
