@@ -827,32 +827,23 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var validTree = function(n, edges) {
-    let nodes = [];
+var grayCode = function(n) {
+    var result = [],
+        cur,
+        i,
+        j;
 
-    for (let i = 0; i < n; i++) {
-        nodes[i] = i;
+    result [0] = 0;
+
+    if (n === 0) {
+        return result;
     }
 
-    for (let i = 0; i < edges.length; i++) {
-        let start = edges[i][0];
-        let end = edges[i][1];
-
-        while (nodes[start] !== start) {
-            start = nodes[start];
+    for (i = 1; i <= n; i++) {
+        for (j = Math.pow(2, i - 1); j > 0; j--) {
+            result.push(result[j - 1] + (1 << (i - 1)));
         }
-
-        while (nodes[end] !== end) {
-            end = nodes[end];
-        }
-
-        // cycle detected
-        if (start === end) {
-            return false;
-        }
-
-        nodes[start] = end;
     }
-    // edges are enough to connect each node
-    return edges.length >= n - 1;
+
+    return result;
 };
