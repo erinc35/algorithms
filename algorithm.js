@@ -827,47 +827,27 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-Queue.prototype.push = function(x) {
-    var len = this.stack2.length,
-        i;
+var strStr = function(haystack, needle) {
+    var len1 = haystack.length,
+        len2 = needle.length,
+        i,
+        j;
 
-    for (i = 0; i < len; i++) {
-        this.stack1.push(this.stack2.pop());
+    if (len2 === 0) {
+        return 0;
     }
 
-    this.stack1.push(x);
-
-    for (i = 0; i < len + 1; i++) {
-        this.stack2.push(this.stack1.pop());
-    }
-};
-
-/**
- * @returns {void}
- */
-Queue.prototype.pop = function() {
-    this.stack2.pop();
-};
-
-/**
- * @returns {number}
- */
-Queue.prototype.peek = function() {
-    var x = this.stack2.pop();
-
-    this.stack2.push(x);
-    return x;
-};
-
-/**
- * @returns {boolean}
- */
-Queue.prototype.empty = function() {
-    var len = this.stack2.length;
-
-    if (len === 0) {
-        return true;
+    if (len1 === 0 || len1 < len2) {
+        return -1;
     }
 
-    return false;
+    i = 0;
+    while (i <= len1 - len2) {
+        if (haystack.substring(i, i + len2) === needle) {
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
 };
