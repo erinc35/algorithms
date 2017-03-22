@@ -827,34 +827,47 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var rob = function(nums) {
-    var len = nums.length;
-
-    if (len === 0) {
-        return 0;
-    }
-
-    if (len === 1) {
-        return nums[0];
-    }
-
-    return Math.max(getMax(0, len - 1, nums), getMax(1, len, nums));
-};
-
-function getMax(start, end, nums) {
-    var arr = [],
+Queue.prototype.push = function(x) {
+    var len = this.stack2.length,
         i;
 
-    if (end - start <= 1) {
-        return nums[start];
+    for (i = 0; i < len; i++) {
+        this.stack1.push(this.stack2.pop());
     }
 
-    arr[start] = nums[start];
-    arr[start + 1] = Math.max(nums[start], nums[start + 1]);
+    this.stack1.push(x);
 
-    for (i = start + 2; i < end; i++) {
-        arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
+    for (i = 0; i < len + 1; i++) {
+        this.stack2.push(this.stack1.pop());
+    }
+};
+
+/**
+ * @returns {void}
+ */
+Queue.prototype.pop = function() {
+    this.stack2.pop();
+};
+
+/**
+ * @returns {number}
+ */
+Queue.prototype.peek = function() {
+    var x = this.stack2.pop();
+
+    this.stack2.push(x);
+    return x;
+};
+
+/**
+ * @returns {boolean}
+ */
+Queue.prototype.empty = function() {
+    var len = this.stack2.length;
+
+    if (len === 0) {
+        return true;
     }
 
-    return arr[end - 1];
-}
+    return false;
+};
