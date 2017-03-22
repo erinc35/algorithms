@@ -827,46 +827,32 @@ function solution(A, B, M, X, Y) {
 
 solution(A, B, M, X, Y)
 
-var generateParenthesis = function(n) {
-    var i = 1,
-        result = [];
+var validTree = function(n, edges) {
+    let nodes = [];
 
-    if (n === 0) {
-        return result;
+    for (let i = 0; i < n; i++) {
+        nodes[i] = i;
     }
 
-    result.push('()');
+    for (let i = 0; i < edges.length; i++) {
+        let start = edges[i][0];
+        let end = edges[i][1];
 
-    while (i < n) {
-        result = helper(result);
-        i++;
-    }
-
-    return result;
-};
-
-function helper(arr) {
-    var len = arr.length,
-        result = [],
-        len1,
-        curStr,
-        tmp,
-        i,
-        j;
-
-    len1 = arr[0].length;
-
-    for (i = 0; i < len; i++) {
-        curStr = arr[i];
-
-        for (j = 0; j < len1; j++) {
-            tmp = curStr.substring(0, j) + '()' + curStr.substring(j);
-
-            if (result.indexOf(tmp) === -1) {
-                result.push(tmp);
-            }
+        while (nodes[start] !== start) {
+            start = nodes[start];
         }
-    }
 
-    return result;
-}
+        while (nodes[end] !== end) {
+            end = nodes[end];
+        }
+
+        // cycle detected
+        if (start === end) {
+            return false;
+        }
+
+        nodes[start] = end;
+    }
+    // edges are enough to connect each node
+    return edges.length >= n - 1;
+};
