@@ -852,3 +852,19 @@ var insert = function(intervals, newInterval) {
 
     return result;
 };
+
+var nums = [0,1,2,3,4]
+
+var missingNumber = function(nums) {
+    var len = nums.length,
+        sum = 0,
+        i;
+
+    for (i = 0; i < len; i++) {
+        sum += nums[i];
+    }
+
+    return len*(len + 1)/2 - sum;
+};
+
+missingNumber(nums)
