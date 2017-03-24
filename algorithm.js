@@ -925,10 +925,41 @@ var coinChange = function(coins, amount) {
 
 /////////////
 
-var computeArea = function(A, B, C, D, E, F, G, H) {
-    // S(M ∪ N) = S(M) + S(N) - S(M ∩ N)
-    var M = (D - B) * (C - A),
-        N = (H - F) * (G - E);
+var rotateRight = function(head, k) {
+    var pointerA = head,
+        pointerB = head,
+        len = 0,
+        newHead,
+        i;
 
-    return M + N - Math.max(Math.min(D, H) - Math.max(B, F), 0) * Math.max(Math.min(C, G) - Math.max(A, E), 0);
+    if (head === null) {
+        return null;
+    }
+
+    while (pointerA) {
+        pointerA = pointerA.next;
+        len++;
+    }
+
+    k = k % len;
+
+    if (k === 0 || len === 1) {
+        return head;
+    }
+
+    pointerA = head;
+    for (i = 0; i < k; i++) {
+        pointerA = pointerA.next;
+    }
+
+    while (pointerA && pointerA.next) {
+        pointerA = pointerA.next;
+        pointerB = pointerB.next;
+    }
+
+    newHead = pointerB.next;
+    pointerB.next = null;
+    pointerA.next = head;
+
+    return newHead;
 };
