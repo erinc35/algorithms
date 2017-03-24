@@ -925,41 +925,69 @@ var coinChange = function(coins, amount) {
 
 /////////////
 
-var rotateRight = function(head, k) {
-    var pointerA = head,
-        pointerB = head,
-        len = 0,
-        newHead,
-        i;
+var generateMatrix = function(n) {
+    var curNum = 1,
+        total = parseInt(n / 2),
+        result = [],
+        temp,
+        level,
+        i,
+        j;
 
-    if (head === null) {
-        return null;
+    if (n === 0) {
+        return result;
     }
 
-    while (pointerA) {
-        pointerA = pointerA.next;
-        len++;
+    if (n === 1) {
+        temp = [1];
+        result.push(temp);
+        return result;
+    }
+    // initialization
+    for (i = 0; i < n; i++) {
+        temp = [];
+        for (j = 0; j < n; j++) {
+            temp.push(0);
+        }
+
+        result.push(temp);
     }
 
-    k = k % len;
 
-    if (k === 0 || len === 1) {
-        return head;
+    for (level = 0; level < total; level++) {
+        // top
+        for (i = level; i < n - level - 1; i++) {
+            result[level][i] = curNum;
+
+            if (curNum === n * n) {
+                return result;
+            }
+
+            curNum++;
+        }
+
+        // right
+        for (i = level; i < n - level - 1; i++) {
+            result[i][n - level - 1] = curNum;
+            curNum++;
+        }
+
+        // bottom
+        for (i = n - level - 1; i > level; i--) {
+            result[n - level - 1][i] = curNum;
+            curNum++;
+        }
+
+        // left
+        for (i = n - level - 1; i > level; i--) {
+            result[i][level] = curNum;
+            curNum++;
+        }
     }
 
-    pointerA = head;
-    for (i = 0; i < k; i++) {
-        pointerA = pointerA.next;
+    if (curNum === n * n) {
+        result[total][total] = curNum;
     }
 
-    while (pointerA && pointerA.next) {
-        pointerA = pointerA.next;
-        pointerB = pointerB.next;
-    }
-
-    newHead = pointerB.next;
-    pointerB.next = null;
-    pointerA.next = head;
-
-    return newHead;
+    return result;
 };
