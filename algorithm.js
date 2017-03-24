@@ -900,3 +900,25 @@ var maxDepth = function(root) {
     return getGreater(maxDepth(root.left), maxDepth(root.right)) + 1;
 };
 //////////
+
+var coinChange = function(coins, amount) {
+    var i = 0,
+        arr = [],
+        len = coins.length,
+        j;
+
+    while (i <= amount) {
+        arr.push(Number.MAX_VALUE);
+        i++;
+    }
+
+    arr[0] = 0;
+
+    for (i = 0; i < len; i++) {
+        for (j = coins[i]; j <= amount; j++) {
+            arr[j] = Math.min(arr[j], arr[j - coins[i]] + 1);
+        }
+    }
+
+    return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
+};
