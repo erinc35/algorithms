@@ -925,27 +925,16 @@ var coinChange = function(coins, amount) {
 
 /////////////
 
-var subsets = function(nums) {
-    var result = [],
-        len = nums.length;
+var findComplement = function(num) {
+  var binaryNum = num.toString(2).split("")
+  for(var i=0;i<binaryNum.length; i++){
+    if(binaryNum[i] === '0'){
+      binaryNum[i] = '1'
+    }else if(binaryNum[i] === '1'){
+      binaryNum[i] = '0'
+    }
+  }
 
-    nums.sort(function(a, b) {
-        return a - b;
-    });
-
-    helper(nums, 0, len - 1, [], result);
-
-    return result;
+  return parseInt(binaryNum.join(""), 2)
 };
 
-function helper(nums, start, end, curArr, result) {
-    result.push(curArr);
-
-    var i;
-
-    for (i = start; i <= end; i++) {
-        curArr.push(nums[i]);
-        helper(nums, i + 1, end, curArr.concat(), result);
-        curArr.pop();
-    }
-}
