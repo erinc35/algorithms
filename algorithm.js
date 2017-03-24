@@ -889,4 +889,14 @@ var addStrings = function(num1, num2) {
   add && (ans = add + ans);
   return ans;
 };
-
+/////////
+var maxDepth = function(root) {
+    function getGreater(a, b) {
+        return a > b? a : b;
+    }
+    if (root === null) {
+        return 0;
+    }
+    return getGreater(maxDepth(root.left), maxDepth(root.right)) + 1;
+};
+//////////
