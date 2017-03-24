@@ -922,3 +922,13 @@ var coinChange = function(coins, amount) {
 
     return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
 };
+
+/////////////
+
+var computeArea = function(A, B, C, D, E, F, G, H) {
+    // S(M ∪ N) = S(M) + S(N) - S(M ∩ N)
+    var M = (D - B) * (C - A),
+        N = (H - F) * (G - E);
+
+    return M + N - Math.max(Math.min(D, H) - Math.max(B, F), 0) * Math.max(Math.min(C, G) - Math.max(A, E), 0);
+};
