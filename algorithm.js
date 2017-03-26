@@ -938,15 +938,43 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var singleNumber = function(A) {
-    var length = A.length,
+var solve = function(board) {
+    if (board === null) {
+        return;
+    }
+
+    var rowL = board.length,
+        columnL,
         i,
-        result = 0;
-    if (length === 1) {
-        return A[0];
+        j;
+
+    if (rowL <= 1) {
+        return;
     }
-    for (i = 0; i < length; i++) {
-        result = result ^ A[i];
+
+    columnL = board[0].length;
+
+    // visit borders
+    for (i = 0; i < rowL; i++) {
+        visit(board, i, 0, rowL, columnL);
+        visit(board, i, columnL - 1, rowL, columnL);
     }
-    return result;
+
+    // visit borders
+    for (i = 1; i < columnL - 1; i++) {
+        visit(board, 0, i, rowL, columnL);
+        visit(board, rowL - 1, i, rowL, columnL);
+    }
+
+    // flip all 'O' to 'X' and flip all 'Y' to 'O'
+    for (i = 0; i < rowL; i++) {
+        for (j = 0; j <columnL; j++) {
+            if (board[i][j] === 'O') {
+                board[i][j] = 'X';
+            } else if (board[i][j] === 'Y') {
+                board[i][j] = 'O';
+            }
+        }
+    }
 };
+
