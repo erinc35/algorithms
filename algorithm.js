@@ -937,4 +937,46 @@ var findComplement = function(num) {
 
   return parseInt(binaryNum.join(""), 2)
 };
+////
+var uniquePathsWithObstacles = function(obstacle) {
+    var rLen = obstacle.length,
+        matrix = [],
+        cLen,
+        i,
+        j;
 
+    if (rLen === 0) {
+        return 0;
+    }
+
+    cLen = obstacle[0].length;
+
+    if (obstacle[0][0] === 1) {
+        return 0;
+    }
+
+    for (i = 0; i < rLen; i++) {
+        matrix.push(new Array(cLen));
+    }
+
+    matrix[0][0] = 1;
+    for (i = 1; i < cLen; i++) {
+        matrix[0][i] = (obstacle[0][i] || !matrix[0][i - 1])? 0 : 1;
+    }
+
+    for (i = 1; i < rLen; i++) {
+        matrix[i][0] = (obstacle[i][0] || !matrix[i - 1][0])? 0 : 1;
+    }
+
+    for (i = 1; i < rLen; i++) {
+        for (j = 1; j < cLen; j++) {
+            if (obstacle[i][j]) {
+                matrix[i][j] = 0;
+            } else {
+                matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1];
+            }
+        }
+    }
+
+    return matrix[rLen - 1][cLen - 1];
+};
