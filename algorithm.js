@@ -938,20 +938,27 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var minimumTotal = function(triangle) {
-    var arr = [],
-        len = triangle.length - 1,
-        i,
-        j;
+var ValidWordAbbr = function(dictionary) {
+    this.map = new Map();
+    this.getAbbr = function(str) {
+        const len = str.length;
 
-    for (i = 0; i <= len; i++) {
-        arr[i] = triangle[len][i];
-    }
-
-    for(i = len - 1; i >= 0; i--) {
-        for(j = 0; j <= i; j++) {
-            arr[j] = triangle[i][j] + Math.min(arr[j], arr[j + 1]);
+        if (len <= 2) {
+            return str;
         }
-    }
-    return arr[0];
+
+        return str.charAt(0) + (len - 2) + str.charAt(len - 1);
+    };
+
+    dictionary.forEach(word => {
+        const abbr = this.getAbbr(word);
+
+        if (!this.map.has(abbr)) {
+            this.map.set(abbr, word);
+        } else {
+            if (this.map.get(abbr) !== word) {
+                this.map.set(abbr, '');
+            }
+        }
+    });
 };
