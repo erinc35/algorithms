@@ -938,47 +938,15 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var myAtoi = function(str) {
-    var len = str.length,
-        isNegative = null,
-        result = 0,
-        numberStarted = false,
-        cur,
-        i;
-
-    for (i = 0; i < len; i++) {
-        if (str.charAt(i) === ' ') {
-            if (!numberStarted) {
-                continue;
-            } else {
-                return getResult(isNegative, result);
-            }
-        }
-
-        if (isNegative === null) {
-            if (str.charAt(i) === '-') {
-                isNegative = true;
-                numberStarted = true;
-                continue;
-            } else if (str.charAt(i) === '+') {
-                isNegative = false;
-                numberStarted = true;
-                continue;
-            }
-        }
-
-        cur = parseInt(str.charAt(i));
-
-        if (!isNaN(cur)) {
-            result = result*10 + cur;
-
-            if (!numberStarted) {
-                numberStarted = true;
-            }
-        } else {
-            return getResult(isNegative, result);
-        }
+var singleNumber = function(A) {
+    var length = A.length,
+        i,
+        result = 0;
+    if (length === 1) {
+        return A[0];
     }
-
-    return getResult(isNegative, result);
+    for (i = 0; i < length; i++) {
+        result = result ^ A[i];
+    }
+    return result;
 };
