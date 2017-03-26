@@ -938,27 +938,47 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var ValidWordAbbr = function(dictionary) {
-    this.map = new Map();
-    this.getAbbr = function(str) {
-        const len = str.length;
+var myAtoi = function(str) {
+    var len = str.length,
+        isNegative = null,
+        result = 0,
+        numberStarted = false,
+        cur,
+        i;
 
-        if (len <= 2) {
-            return str;
-        }
-
-        return str.charAt(0) + (len - 2) + str.charAt(len - 1);
-    };
-
-    dictionary.forEach(word => {
-        const abbr = this.getAbbr(word);
-
-        if (!this.map.has(abbr)) {
-            this.map.set(abbr, word);
-        } else {
-            if (this.map.get(abbr) !== word) {
-                this.map.set(abbr, '');
+    for (i = 0; i < len; i++) {
+        if (str.charAt(i) === ' ') {
+            if (!numberStarted) {
+                continue;
+            } else {
+                return getResult(isNegative, result);
             }
         }
-    });
+
+        if (isNegative === null) {
+            if (str.charAt(i) === '-') {
+                isNegative = true;
+                numberStarted = true;
+                continue;
+            } else if (str.charAt(i) === '+') {
+                isNegative = false;
+                numberStarted = true;
+                continue;
+            }
+        }
+
+        cur = parseInt(str.charAt(i));
+
+        if (!isNaN(cur)) {
+            result = result*10 + cur;
+
+            if (!numberStarted) {
+                numberStarted = true;
+            }
+        } else {
+            return getResult(isNegative, result);
+        }
+    }
+
+    return getResult(isNegative, result);
 };
