@@ -939,6 +939,34 @@ var findComplement = function(num) {
 };
 ////
 
+// You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1's elements in the corresponding places of nums2.
+
+// The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.
+
+function  findIndex(arr,num){
+  for(var i=0; i<arr.length; i++){
+    if(arr[i] === num){
+      return i
+    }
+  }
+}
+
+var nextGreaterElement = function(nums1, nums2) {
+  var target = []
+    startAgain:
+    for(var i=0; i< nums1.length; i++){
+      var ind = findIndex(nums2, nums1[i])
+      while(ind<nums2.length){
+        if(nums1[i] < nums2[ind+1]){
+          target.push(nums2[ind+1])
+          continue startAgain;
+        }
+        ind++
+    }
+    target.push(-1)
+  }
+    return target
+};
 
 
 
