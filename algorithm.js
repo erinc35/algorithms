@@ -938,17 +938,31 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var hasCycle = function(head) {
-    var slow = head,
-        fast = head;
+var isIsomorphic = function(s, t) {
+    var len = s.length,
+        mapS = {},
+        mapT = {},
+        curS,
+        curT,
+        i;
 
-    while(fast !== null && fast.next !== null) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow === fast || (fast && fast.next === slow)) {
-            return true;
+    for (i = 0; i < len; i++) {
+        curS = s.charAt(i);
+        curT = t.charAt(i);
+
+        if (!mapS.hasOwnProperty(curS)) {
+            mapS[curS] = curT;
+        } else if (mapS[curS] !== curT) {
+            return false;
+        }
+
+        if (!mapT.hasOwnProperty(curT)) {
+            mapT[curT] = curS;
+        } else if (mapT[curT] !== curS) {
+            return false;
         }
     }
-    return false;
+
+    return true;
 };
 
