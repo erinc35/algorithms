@@ -938,43 +938,44 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var solve = function(board) {
-    if (board === null) {
-        return;
+LRUCache.prototype.set = function(key, value) {
+    let newNode = new Node(key, value);
+
+    if (this.curSize === 0) {
+        this.head = newNode;
+        this.tail = newNode;
+        this.curSize++;
+    } else {
+        newNode.next = this.head;
+        this.head.prev = newNode;
+        this.head = newNode;
+        this.curSize++;
     }
 
-    var rowL = board.length,
-        columnL,
-        i,
-        j;
+    // update
+    if (this.map.get(key)) {
+        let oldNode = this.map.get(key);
 
-    if (rowL <= 1) {
-        return;
-    }
-
-    columnL = board[0].length;
-
-    // visit borders
-    for (i = 0; i < rowL; i++) {
-        visit(board, i, 0, rowL, columnL);
-        visit(board, i, columnL - 1, rowL, columnL);
-    }
-
-    // visit borders
-    for (i = 1; i < columnL - 1; i++) {
-        visit(board, 0, i, rowL, columnL);
-        visit(board, rowL - 1, i, rowL, columnL);
-    }
-
-    // flip all 'O' to 'X' and flip all 'Y' to 'O'
-    for (i = 0; i < rowL; i++) {
-        for (j = 0; j <columnL; j++) {
-            if (board[i][j] === 'O') {
-                board[i][j] = 'X';
-            } else if (board[i][j] === 'Y') {
-                board[i][j] = 'O';
-            }
+        if (oldNode === this.tail) {
+            this.tail = this.tail.prev;
+            this.tail.next = null;
+        } else {
+            oldNode.prev.next = oldNode.next;
+            oldNode.next.prev = oldNode.prev;
         }
+
+        this.curSize--;
+        this.map.set(key, newNode);
+    } else {
+        if (this.curSize > this.size) {
+            //delete tail
+            this.map.delete(this.tail.key);
+            this.tail = this.tail.prev;
+            this.tail.next = null;
+            this.curSize--;
+        }
+
+        this.map.set(key, newNode);
     }
 };
 
