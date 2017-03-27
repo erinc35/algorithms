@@ -938,31 +938,29 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-var isIsomorphic = function(s, t) {
-    var len = s.length,
-        mapS = {},
-        mapT = {},
-        curS,
-        curT,
+var intToRoman = function(num) {
+    var dict = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"],
+        val = [1000,900,500,400,100,90,50,40,10,9,5,4,1],
+        len = 13,
+        result = '',
+        count,
         i;
 
     for (i = 0; i < len; i++) {
-        curS = s.charAt(i);
-        curT = t.charAt(i);
+        if (num >= val[i]) {
+            count = Math.floor(num / val[i]);
 
-        if (!mapS.hasOwnProperty(curS)) {
-            mapS[curS] = curT;
-        } else if (mapS[curS] !== curT) {
-            return false;
-        }
+            while (count > 0) {
+                result += dict[i];
+                count--;
+            }
 
-        if (!mapT.hasOwnProperty(curT)) {
-            mapT[curT] = curS;
-        } else if (mapT[curT] !== curS) {
-            return false;
+            num %= val[i];
         }
     }
 
-    return true;
+    return result;
 };
+
+
 
