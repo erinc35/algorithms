@@ -938,44 +938,17 @@ var findComplement = function(num) {
   return parseInt(binaryNum.join(""), 2)
 };
 ////
-LRUCache.prototype.set = function(key, value) {
-    let newNode = new Node(key, value);
+var hasCycle = function(head) {
+    var slow = head,
+        fast = head;
 
-    if (this.curSize === 0) {
-        this.head = newNode;
-        this.tail = newNode;
-        this.curSize++;
-    } else {
-        newNode.next = this.head;
-        this.head.prev = newNode;
-        this.head = newNode;
-        this.curSize++;
-    }
-
-    // update
-    if (this.map.get(key)) {
-        let oldNode = this.map.get(key);
-
-        if (oldNode === this.tail) {
-            this.tail = this.tail.prev;
-            this.tail.next = null;
-        } else {
-            oldNode.prev.next = oldNode.next;
-            oldNode.next.prev = oldNode.prev;
+    while(fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast || (fast && fast.next === slow)) {
+            return true;
         }
-
-        this.curSize--;
-        this.map.set(key, newNode);
-    } else {
-        if (this.curSize > this.size) {
-            //delete tail
-            this.map.delete(this.tail.key);
-            this.tail = this.tail.prev;
-            this.tail.next = null;
-            this.curSize--;
-        }
-
-        this.map.set(key, newNode);
     }
+    return false;
 };
 
