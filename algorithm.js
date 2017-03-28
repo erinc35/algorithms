@@ -969,19 +969,28 @@ var nextGreaterElement = function(nums1, nums2) {
 };
 
 //////
-var isOneEditDistance = function(s, t) {
-    for (let i = 0; i < Math.min(s.length, t.length); i++) {
-        if (s.charAt(i) !== t.charAt(i)) {
-            if (s.length === t.length) {
-                return s.substring(i + 1) === t.substring(i + 1);
-            } else if (s.length < t.length) {
-                return s.substring(i) === t.substring(i + 1);
-            } else {
-                return s.substring(i + 1) === t.substring(i);
-            }
-        }
+var isPalindrome = function(head) {
+    var fast = head,
+        slow = head,
+        midPoint;
+
+    if (head === null || head.next === null) {
+        return true;
     }
 
-    return Math.abs(s.length - t.length) === 1;
+    while (fast && fast.next) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+
+    midPoint = reverse(slow);
+    fast = head;
+
+    while (midPoint && fast && (fast.val === midPoint.val)) {
+        midPoint = midPoint.next;
+        fast = fast.next;
+    }
+
+    return midPoint === null;
 };
 
