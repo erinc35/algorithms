@@ -969,28 +969,22 @@ var nextGreaterElement = function(nums1, nums2) {
 };
 
 //////
-var isPalindrome = function(head) {
-    var fast = head,
-        slow = head,
-        midPoint;
 
-    if (head === null || head.next === null) {
-        return true;
+function genPath(result, root, curArr, curSum, target) {
+    curArr.push(root.val);
+    curSum += root.val;
+
+    if ((curSum === target) && !root.left && !root.right) {
+        result.push(curArr);
+        return;
     }
 
-    while (fast && fast.next) {
-        fast = fast.next.next;
-        slow = slow.next;
+    if (root.left) {
+        genPath(result, root.left, curArr.concat(), curSum, target);
     }
 
-    midPoint = reverse(slow);
-    fast = head;
-
-    while (midPoint && fast && (fast.val === midPoint.val)) {
-        midPoint = midPoint.next;
-        fast = fast.next;
+    if (root.right) {
+        genPath(result, root.right, curArr.concat(), curSum, target);
     }
-
-    return midPoint === null;
-};
+}
 
