@@ -968,5 +968,28 @@ var nextGreaterElement = function(nums1, nums2) {
     return target
 };
 
+//////
+var oddEvenList = function(head) {
+    if (head === null) {
+        return null;
+    }
 
+    var oddHead = head,
+        evenHead = head.next,
+        oddTail = oddHead,
+        evenTail = evenHead,
+        node = head.next;
+
+    while (node && node.next) {
+        oddTail.next = node.next;
+        evenTail.next = node.next.next;
+        oddTail = oddTail.next;
+        evenTail = evenTail.next;
+        node = oddTail.next;
+    }
+
+    oddTail.next = evenHead;
+
+    return oddHead;
+};
 
