@@ -969,22 +969,25 @@ var nextGreaterElement = function(nums1, nums2) {
 };
 
 //////
-
-function genPath(result, root, curArr, curSum, target) {
-    curArr.push(root.val);
-    curSum += root.val;
-
-    if ((curSum === target) && !root.left && !root.right) {
-        result.push(curArr);
-        return;
+var myPow = function(x, n) {
+    if (n < 0) {
+        return 1 / power(x, n);
     }
 
-    if (root.left) {
-        genPath(result, root.left, curArr.concat(), curSum, target);
+    return power(x, n);
+};
+
+function power(x, n) {
+    if (n === 0) {
+        return 1;
     }
 
-    if (root.right) {
-        genPath(result, root.right, curArr.concat(), curSum, target);
+    var v = power(x, parseInt(n/2));
+
+    if (n % 2 === 0) {
+        return v * v;
     }
+
+    return v * v * x;
 }
 
