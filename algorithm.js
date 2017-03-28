@@ -969,27 +969,19 @@ var nextGreaterElement = function(nums1, nums2) {
 };
 
 //////
-var oddEvenList = function(head) {
-    if (head === null) {
-        return null;
+var isOneEditDistance = function(s, t) {
+    for (let i = 0; i < Math.min(s.length, t.length); i++) {
+        if (s.charAt(i) !== t.charAt(i)) {
+            if (s.length === t.length) {
+                return s.substring(i + 1) === t.substring(i + 1);
+            } else if (s.length < t.length) {
+                return s.substring(i) === t.substring(i + 1);
+            } else {
+                return s.substring(i + 1) === t.substring(i);
+            }
+        }
     }
 
-    var oddHead = head,
-        evenHead = head.next,
-        oddTail = oddHead,
-        evenTail = evenHead,
-        node = head.next;
-
-    while (node && node.next) {
-        oddTail.next = node.next;
-        evenTail.next = node.next.next;
-        oddTail = oddTail.next;
-        evenTail = evenTail.next;
-        node = oddTail.next;
-    }
-
-    oddTail.next = evenHead;
-
-    return oddHead;
+    return Math.abs(s.length - t.length) === 1;
 };
 
