@@ -1043,28 +1043,39 @@ mostProfit(stocks)
 }
 
 ////
-var NumArray = function(nums) {
-    this.nums = nums;
+// You have an array of integers, and for each index you want to find the product of every integer except the integer at that index.
+  function getProductsOfAllIntsExceptAtIndex(intArray) {
 
-    var length = nums.length,
-        i,
-        j,
-        sum = [];
-
-    for (i = 0; i < length; i++) {
-        sum.push(new Array(length));
+    // make sure we have at least 2 prices
+    if (intArray.length < 2) {
+        throw new Error('Getting the product of numbers at other indices requires at least 2 numbers');
     }
 
-    for (i = 0; i < length; i++) {
-        for (j = i; j < length; j++) {
-            if (i === j) {
-                sum[i][j] = nums[i];
-            } else {
-                sum[i][j] = sum[i][j - 1] + nums[j];
-            }
-        }
+    var productsOfAllIntsExceptAtIndex = [];
+
+    // for each integer, we find the product of all the integers
+    // before it, storing the total product so far each time
+    var productSoFar = 1;
+    for (var i = 0; i < intArray.length; i++) {
+        productsOfAllIntsExceptAtIndex[i] = productSoFar;
+        console.log(productsOfAllIntsExceptAtIndex)
+        productSoFar *= intArray[i];
+        console.log(productSoFar)
+    // console.log(productsOfAllIntsExceptAtIndex)
+    }
+  // console.log(productsOfAllIntsExceptAtIndex)
+    // for each integer, we find the product of all the integers
+    // after it. since each index in products already has the
+    // product of all the integers before it, now we're storing
+    // the total product of all other integers
+    productSoFar = 1;
+    for (var j = intArray.length - 1; j >= 0; j--) {
+        productsOfAllIntsExceptAtIndex[j] *= productSoFar;
+        productSoFar *= intArray[j];
     }
 
-    this.sum = sum;
-    this.len = length;
-};
+    return productsOfAllIntsExceptAtIndex;
+}
+
+getProductsOfAllIntsExceptAtIndex([1,7,3,4])
+///
