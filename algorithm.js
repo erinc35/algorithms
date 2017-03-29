@@ -1041,3 +1041,30 @@ mostProfit(stocks)
 
     return maxProfit;
 }
+
+////
+var NumArray = function(nums) {
+    this.nums = nums;
+
+    var length = nums.length,
+        i,
+        j,
+        sum = [];
+
+    for (i = 0; i < length; i++) {
+        sum.push(new Array(length));
+    }
+
+    for (i = 0; i < length; i++) {
+        for (j = i; j < length; j++) {
+            if (i === j) {
+                sum[i][j] = nums[i];
+            } else {
+                sum[i][j] = sum[i][j - 1] + nums[j];
+            }
+        }
+    }
+
+    this.sum = sum;
+    this.len = length;
+};
