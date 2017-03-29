@@ -969,25 +969,38 @@ var nextGreaterElement = function(nums1, nums2) {
 };
 
 //////
-var myPow = function(x, n) {
-    if (n < 0) {
-        return 1 / power(x, n);
+// var stockPricesYesterday = [10, 7, 5, 8, 11, 9];
+
+// getMaxProfit(stockPricesYesterday);
+// returns 6 (buying for $5 and selling for $11)
+
+var stocks = [10,7,5,8,11,9]
+
+function mostProfit(stocks){
+  var maxProfit = 0;
+  var low, high;
+
+  if (stocks.length === 0) {
+        return 0;
     }
 
-    return power(x, n);
-};
+  low = stocks[0]
+  high = low
 
-function power(x, n) {
-    if (n === 0) {
-        return 1;
+  for(var i=1; i<stocks.length; i++){
+    if(stocks[i] > high){
+      high = stocks[i]
+    }else if(stocks[i]< low){
+      low = stocks[i]
+      high = stocks[i]
     }
 
-    var v = power(x, parseInt(n/2));
-
-    if (n % 2 === 0) {
-        return v * v;
+    if(high-low > maxProfit){
+      maxProfit = high-low
     }
-
-    return v * v * x;
+  }
+  return maxProfit
 }
 
+mostProfit(stocks)
+///
