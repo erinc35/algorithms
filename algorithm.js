@@ -1079,3 +1079,41 @@ mostProfit(stocks)
 
 getProductsOfAllIntsExceptAtIndex([1,7,3,4])
 ///
+// Given an array of integers, find the highest product you can get from three of the integers.
+// The input arrayOfInts will always have at least three integers.
+
+function highestProductOf3(arrayOfInts) {
+  if(arrayOfInts.length<3){
+    alert("less than 3 items!")
+  }
+
+  var highest = Math.max(arrayOfInts[1], arrayOfInts[0])
+  var lowest = Math.min(arrayOfInts[0], arrayOfInts[1])
+
+  var highestProductOf2 = arrayOfInts[0]*arrayOfInts[1]
+  var lowestProductOf2 = arrayOfInts[0]*arrayOfInts[1]
+
+  var highestProductOf3 = arrayOfInts[0]*arrayOfInts[1] * arrayOfInts[2]
+
+  for(var i=2; i<arrayOfInts.length; i++){
+    var current = arrayOfInts[i];
+
+    highestProductOf3 = Math.max(highestProductOf3, current*highestProductOf2, current*lowestProductOf2)
+
+    highestProductOf2 = Math.max(highestProductOf2, current*highest, current*lowest)
+
+    lowestProductOf2 = Math.min(lowestProductOf2, current*highest, current*lowest)
+
+    highest = Math.max(highest, current)
+
+    lowest= Math.min(lowest, current)
+
+
+  }
+
+  return highestProductOf3
+}
+
+
+highestProductOf3([-1,-10,1,3,2,-40])
+///
