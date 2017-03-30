@@ -1153,3 +1153,20 @@ function highestProductOf3(arrayOfInts) {
 
 highestProductOf3([9,-10,-10,1,3,-2])
 ///
+
+var arr = [2000,120,111,215,5,78],
+biggest = -Infinity,
+next_biggest = -Infinity;
+
+for (var i = 0, n = arr.length; i < n; ++i) {
+    // var nr = arr[i]; // convert to number first
+
+    if (arr[i] > biggest) {
+        next_biggest = biggest; // save previous biggest value
+        biggest = arr[i];
+    } else if (arr[i] < biggest && arr[i] > next_biggest) {
+        next_biggest = arr[i]; // new second biggest value
+    }
+}
+
+///
