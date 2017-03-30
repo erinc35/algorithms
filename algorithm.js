@@ -1116,4 +1116,57 @@ function highestProductOf3(arrayOfInts) {
 
 
 highestProductOf3([-1,-10,1,3,2,-40])
+///alternative
+function highestProductOf3(arrayOfInts) {
+  if(arrayOfInts.length<3){
+    alert("less than 3 items!")
+  }
+
+  var highest = Math.max(arrayOfInts[1], arrayOfInts[0])
+  var lowest = Math.min(arrayOfInts[0], arrayOfInts[1])
+
+  var highest2 = arrayOfInts[0]*arrayOfInts[1]
+  var lowest2 = arrayOfInts[0]*arrayOfInts[1]
+
+  var highestProductOf3 = arrayOfInts[0]*arrayOfInts[1] * arrayOfInts[2]
+
+  for(var i=2; i<arrayOfInts.length; i++){
+
+    var current = arrayOfInts[i];
+
+    highestProductOf3 = Math.max(highestProductOf3, current*highest2, current*lowest2)
+
+    highest2 = Math.max(highest2, current*highest, current*lowest)
+
+    lowest2 = Math.min(lowest2, current*highest, current*lowest)
+
+    highest = Math.max(highest, current)
+
+    lowest= Math.min(lowest, current)
+
+
+  }
+
+  return highestProductOf3
+}
+
+
+highestProductOf3([9,-10,-10,1,3,-2])
+///
+
+var arr = [2000,120,111,215,5,78],
+biggest = -Infinity,
+next_biggest = -Infinity;
+
+for (var i = 0, n = arr.length; i < n; ++i) {
+    // var nr = arr[i]; // convert to number first
+
+    if (arr[i] > biggest) {
+        next_biggest = biggest; // save previous biggest value
+        biggest = arr[i];
+    } else if (arr[i] < biggest && arr[i] > next_biggest) {
+        next_biggest = arr[i]; // new second biggest value
+    }
+}
+
 ///
