@@ -1196,3 +1196,31 @@ function thirdBiggest(arr){
 }
 
 thirdBiggest(arr)
+
+///
+var arr = [20,1200,111,215,500,708]
+
+function topThree(arr){
+  biggest = -Infinity,
+  next_biggest = -Infinity,
+  third_biggest = -Infinity;
+
+  for (var i = 0, n = arr.length; i < n; ++i) {
+      // var nr = arr[i]; // convert to number first
+
+      if (arr[i] > biggest) {
+          third_biggest = next_biggest
+          next_biggest = biggest; // save previous biggest value
+          biggest = arr[i];
+      } else if (arr[i] < biggest && arr[i] > next_biggest) {
+          third_biggest = next_biggest
+          next_biggest = arr[i]; // new second biggest value
+      }else if (arr[i] < next_biggest && arr[i] > third_biggest){
+        third_biggest = arr[i]
+      }
+  }
+
+  return [third_biggest, next_biggest, biggest];
+}
+
+topThree(arr)
