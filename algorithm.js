@@ -1225,27 +1225,22 @@ function topThree(arr){
 
 topThree(arr)
 ///
-var intToRoman = function(num) {
-    var dict = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"],
-        val = [1000,900,500,400,100,90,50,40,10,9,5,4,1],
-        len = 13,
-        result = '',
-        count,
+var integerBreak = function(n) {
+    var dp = [],
         i;
 
-    for (i = 0; i < len; i++) {
-        if (num >= val[i]) {
-            count = Math.floor(num / val[i]);
-
-            while (count > 0) {
-                result += dict[i];
-                count--;
-            }
-
-            num %= val[i];
-        }
+    if (n <= 3) {
+        return n - 1;
     }
 
-    return result;
+    dp[0] = 0;
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 3;
+
+    for (i = 4; i <= n; i++) {
+        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
+    }
+
+    return dp[n];
 };
-///
