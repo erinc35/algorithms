@@ -1225,22 +1225,38 @@ function topThree(arr){
 
 topThree(arr)
 ///
-var integerBreak = function(n) {
-    var dp = [],
-        i;
+var numberToWords = function(num) {
+    const belowTen = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    const belowTwenty = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const belowHundred = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
-    if (n <= 3) {
-        return n - 1;
+    function toWordsHelper(num) {
+        let str;
+
+        if (num < 10) {
+            str = belowTen[num] + ' ';
+        } else if (num < 20) {
+            str = belowTwenty[num - 10] + ' ';
+        } else if (num < 100) {
+            str = belowHundred[parseInt(num / 10) - 2] + ' ' + toWordsHelper(num % 10);
+        } else if (num < 1000) {
+            str = belowTen[parseInt(num / 100)] + ' Hundred ' + toWordsHelper(num % 100);
+        } else if (num < 1000000) {
+            str = toWordsHelper(parseInt(num / 1000)) + ' Thousand ' + toWordsHelper(num % 1000);
+        } else if (num < 1000000000) {
+            str = toWordsHelper(parseInt(num / 1000000)) + ' Million ' + toWordsHelper(num % 1000000);
+        } else {
+            str = toWordsHelper(parseInt(num / 1000000000)) + ' Billion ' + toWordsHelper(num % 1000000000);
+        }
+
+        return str.trim();
     }
 
-    dp[0] = 0;
-    dp[1] = 1;
-    dp[2] = 2;
-    dp[3] = 3;
+    let result = toWordsHelper(num);
 
-    for (i = 4; i <= n; i++) {
-        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
+    if (result === '') {
+        return 'Zero';
     }
 
-    return dp[n];
+    return result;
 };
