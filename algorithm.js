@@ -1272,3 +1272,38 @@ var singleNumber = function(nums) {
   }
   return parseInt(Object.keys(hash))
 };
+
+var simplifyPath = function(path) {
+    var paths = [],
+        arr = path.split('/'),
+        len = arr.length,
+        cur,
+        i,
+        result = '';
+
+    for (i = 0; i < len; i++) {
+        cur = arr[i];
+
+        if (cur === '.' || cur.length === 0) {
+            continue;
+        }
+
+        if (cur === '..') {
+            if (paths.length > 0) {
+                paths.pop();
+            }
+        } else {
+            paths.push(cur);
+        }
+    }
+
+    for (i = 0; i < paths.length; i++) {
+        result += '/' + paths[i];
+    }
+
+    if (result === '') {
+        result = '/';
+    }
+
+    return result;
+};
