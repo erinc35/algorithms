@@ -1260,3 +1260,15 @@ var numberToWords = function(num) {
 
     return result;
 };
+/// SINGLE NUMBER
+var singleNumber = function(nums) {
+  var hash = {} ;
+  for(var i=0; i<nums.length; i++){
+    if(!hash[nums[i]]){
+      hash[nums[i]] = true;
+    }else{
+      delete hash[nums[i]]
+    }
+  }
+  return parseInt(Object.keys(hash))
+};
