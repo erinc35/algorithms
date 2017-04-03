@@ -1275,27 +1275,42 @@ var singleNumber = function(nums) {
 
 ////
 
-var subsets = function(nums) {
-    var result = [],
-        len = nums.length;
+var summaryRanges = function(nums) {
+    var len = nums.length,
+        result = [],
+        curStr = '',
+        curLen,
+        curNum,
+        i;
 
-    nums.sort(function(a, b) {
-        return a - b;
-    });
+    if (len === 0) {
+        return result;
+    }
 
-    helper(nums, 0, len - 1, [], result);
+    curNum = nums[0];
+    curStr += curNum;
+    curLen = 1;
 
+    for (i = 1; i < len; i++) {
+        if (curNum + 1 === nums[i]) {
+            curNum++;
+            curLen++;
+        } else {
+            if (curLen > 1) {
+                curStr += '->' + curNum;
+            }
+
+            result.push(curStr);
+            curNum = nums[i];
+            curLen = 1;
+            curStr = '' + curNum;
+        }
+    }
+
+    if (curLen > 1) {
+        curStr += '->' + curNum;
+    }
+
+    result.push(curStr);
     return result;
 };
-
-function helper(nums, start, end, curArr, result) {
-    result.push(curArr);
-
-    var i;
-
-    for (i = start; i <= end; i++) {
-        curArr.push(nums[i]);
-        helper(nums, i + 1, end, curArr.concat(), result);
-        curArr.pop();
-    }
-}
