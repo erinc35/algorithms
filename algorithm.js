@@ -1273,29 +1273,52 @@ var singleNumber = function(nums) {
   return parseInt(Object.keys(hash))
 };
 
-var sortColors = function(nums) {
-    var len = nums.length,
-        redEnds = 0,
-        blueStarts = len - 1,
-        i;
+////
 
-    function swap(m, n, arr) {
-        var temp = arr[m];
+var sortList = function(head) {
+    var slow = head,
+        fast = head,
+        head1 = head,
+        head2 = head;
 
-        arr[m] = arr[n];
-        arr[n] = temp;
+    if (head === null || head.next === null) {
+        return head;
     }
 
-    for (i = 0; i <= blueStarts;) {
-        if (nums[i] === 0) {
-            swap(i, redEnds, nums);
-            i++;
-            redEnds++;
-        } else if (nums[i] === 2) {
-            swap(i, blueStarts, nums);
-            blueStarts--;
-        } else {
-            i++;
-        }
+    while (fast.next !== null && fast.next.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
     }
+
+    head1 = slow.next;
+    slow.next = null;
+
+    head1 = sortList(head1);
+    head2 = sortList(head);
+
+    return merge(head2, head1);
 };
+
+function merge(a, b) {
+    var dummy = new ListNode(0),
+        node = dummy;
+
+    while (a && b) {
+        if (a.val < b.val) {
+            node.next = a;
+            a = a.next;
+        } else {
+            node.next = b;
+            b = b.next;
+        }
+        node = node.next;
+    }
+
+    if (a) {
+        node.next = a;
+    } else {
+        node.next = b;
+    }
+
+    return dummy.next;
+}
