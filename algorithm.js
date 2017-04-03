@@ -1275,65 +1275,45 @@ var singleNumber = function(nums) {
 
 ////
 
-var reorderList = function(head) {
-    var fast = head,
-        slow = head,
-        next1,
-        next2,
-        midHead;
+var partition = function(head, x) {
+    var cur = head,
+        next,
+        preHead,
+        preTail,
+        afterHead,
+        afterTail;
 
-    if (!head || !head.next) {
-        return;
+    if (head === null) {
+        return null;
     }
 
-    while (fast && fast.next) {
-        fast = fast.next.next;
-        slow = slow.next;
+    while(cur) {
+        next = cur.next;
+        cur.next = null;
+        if (cur.val < x) {
+            if (!preHead) {
+                preHead = cur;
+                preTail = cur;
+            } else {
+                preTail.next = cur;
+                preTail = cur;
+            }
+        } else {
+            if (!afterHead) {
+                afterHead = cur;
+                afterTail = cur;
+            } else {
+                afterTail.next = cur;
+                afterTail = cur;
+            }
+        }
+        cur = next;
     }
 
-    if (fast) {
-        midHead = reverse(slow.next);
+    if (preTail) {
+        preTail.next = afterHead;
+        return preHead;
     } else {
-        midHead = reverse(slow);
-    }
-
-    fast = head;
-    slow = midHead;
-
-    while(fast && slow) {
-        next1 = fast.next;
-        next2 = slow.next;
-
-        slow.next = fast.next;
-        fast.next = slow;
-
-        fast = next1;
-        slow = next2;
-    }
-
-    if (fast) {
-        fast.next = null;
+        return afterHead;
     }
 };
-
-function reverse(head) {
-    var dummyNode = new ListNode(0),
-        prev = dummyNode,
-        node,
-        next;
-
-    dummyNode.next = head;
-
-    node = head.next;
-    head.next = null;
-
-    while (node) {
-        next = node.next;
-        node.next = prev.next;
-        prev.next = node;
-
-        node = next;
-    }
-
-    return dummyNode.next;
-}
