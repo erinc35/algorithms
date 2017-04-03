@@ -1275,42 +1275,32 @@ var singleNumber = function(nums) {
 
 ////
 
-var summaryRanges = function(nums) {
-    var len = nums.length,
-        result = [],
-        curStr = '',
-        curLen,
-        curNum,
-        i;
+var sumNumbers = function(root) {
+    var arr = [0];
 
-    if (len === 0) {
-        return result;
-    }
+    helper(root, 0, arr);
 
-    curNum = nums[0];
-    curStr += curNum;
-    curLen = 1;
-
-    for (i = 1; i < len; i++) {
-        if (curNum + 1 === nums[i]) {
-            curNum++;
-            curLen++;
-        } else {
-            if (curLen > 1) {
-                curStr += '->' + curNum;
-            }
-
-            result.push(curStr);
-            curNum = nums[i];
-            curLen = 1;
-            curStr = '' + curNum;
-        }
-    }
-
-    if (curLen > 1) {
-        curStr += '->' + curNum;
-    }
-
-    result.push(curStr);
-    return result;
+    return arr[0];
 };
+
+function helper(node, sum, arr) {
+    if (!node) {
+        return;
+    }
+
+    sum = sum*10 + node.val;
+
+    if (!node.left && !node.right) {
+        arr[0] += sum;
+        return;
+    }
+
+    if (node.left) {
+        helper(node.left, sum, arr);
+    }
+
+    if (node.right) {
+        helper(node.right, sum, arr);
+    }
+
+}
