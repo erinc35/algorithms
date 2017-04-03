@@ -1275,55 +1275,32 @@ var singleNumber = function(nums) {
 
 ////
 
-var findSubstring = function(s, words) {
+var isAnagram = function(s, t) {
     var len = s.length,
-        wordsLen = words.length,
-        wordLen = words[0].length,
-        i,
-        j,
-        m,
-        temp,
-        toFound = {},
-        found = {},
-        result = [];
+        arr = {},
+        i;
 
-    for (i = 0; i < wordsLen; i++) {
-        if (!toFound[words[i]]) {
-            toFound[words[i]] = 1;
+    if (t.length !== len) {
+        return false;
+    }
+
+    if (len === 0) {
+        return true;
+    }
+
+    for (i = 0; i < len; i++) {
+        if (!arr[s.charAt(i)]) {
+            arr[s.charAt(i)] = 1;
         } else {
-            toFound[words[i]]++;
+            arr[s.charAt(i)]++;
         }
     }
 
     for (i = 0; i < len; i++) {
-        found = {};
-        j = i;
-        for (m = 0; m < wordsLen; m++) {
-            temp = s.slice(j, j + wordLen);
-
-            if (!toFound[temp]) {
-                break;
-            }
-
-            if (toFound[temp]) {
-                if (!found[temp]) {
-                    found[temp] = 1;
-                } else {
-                    found[temp]++;
-                }
-            }
-
-            if (found[temp] > toFound[temp]) {
-                break;
-            }
-
-            j += wordLen;
-        }
-
-        if (m === wordsLen) {
-            result.push(i);
+        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
+            return false;
         }
     }
 
-    return result;
+    return true;
 };
