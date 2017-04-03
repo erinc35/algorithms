@@ -1275,50 +1275,27 @@ var singleNumber = function(nums) {
 
 ////
 
-var sortList = function(head) {
-    var slow = head,
-        fast = head,
-        head1 = head,
-        head2 = head;
+var subsets = function(nums) {
+    var result = [],
+        len = nums.length;
 
-    if (head === null || head.next === null) {
-        return head;
-    }
+    nums.sort(function(a, b) {
+        return a - b;
+    });
 
-    while (fast.next !== null && fast.next.next !== null) {
-        slow = slow.next;
-        fast = fast.next.next;
-    }
+    helper(nums, 0, len - 1, [], result);
 
-    head1 = slow.next;
-    slow.next = null;
-
-    head1 = sortList(head1);
-    head2 = sortList(head);
-
-    return merge(head2, head1);
+    return result;
 };
 
-function merge(a, b) {
-    var dummy = new ListNode(0),
-        node = dummy;
+function helper(nums, start, end, curArr, result) {
+    result.push(curArr);
 
-    while (a && b) {
-        if (a.val < b.val) {
-            node.next = a;
-            a = a.next;
-        } else {
-            node.next = b;
-            b = b.next;
-        }
-        node = node.next;
+    var i;
+
+    for (i = start; i <= end; i++) {
+        curArr.push(nums[i]);
+        helper(nums, i + 1, end, curArr.concat(), result);
+        curArr.pop();
     }
-
-    if (a) {
-        node.next = a;
-    } else {
-        node.next = b;
-    }
-
-    return dummy.next;
 }
