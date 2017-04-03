@@ -1273,29 +1273,29 @@ var singleNumber = function(nums) {
   return parseInt(Object.keys(hash))
 };
 
-var sortColors = function(nums) {
-    var len = nums.length,
-        redEnds = 0,
-        blueStarts = len - 1,
-        i;
+////
 
-    function swap(m, n, arr) {
-        var temp = arr[m];
+var subsets = function(nums) {
+    var result = [],
+        len = nums.length;
 
-        arr[m] = arr[n];
-        arr[n] = temp;
-    }
+    nums.sort(function(a, b) {
+        return a - b;
+    });
 
-    for (i = 0; i <= blueStarts;) {
-        if (nums[i] === 0) {
-            swap(i, redEnds, nums);
-            i++;
-            redEnds++;
-        } else if (nums[i] === 2) {
-            swap(i, blueStarts, nums);
-            blueStarts--;
-        } else {
-            i++;
-        }
-    }
+    helper(nums, 0, len - 1, [], result);
+
+    return result;
 };
+
+function helper(nums, start, end, curArr, result) {
+    result.push(curArr);
+
+    var i;
+
+    for (i = start; i <= end; i++) {
+        curArr.push(nums[i]);
+        helper(nums, i + 1, end, curArr.concat(), result);
+        curArr.pop();
+    }
+}
