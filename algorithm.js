@@ -1275,32 +1275,55 @@ var singleNumber = function(nums) {
 
 ////
 
-var sumNumbers = function(root) {
-    var arr = [0];
+var findSubstring = function(s, words) {
+    var len = s.length,
+        wordsLen = words.length,
+        wordLen = words[0].length,
+        i,
+        j,
+        m,
+        temp,
+        toFound = {},
+        found = {},
+        result = [];
 
-    helper(root, 0, arr);
+    for (i = 0; i < wordsLen; i++) {
+        if (!toFound[words[i]]) {
+            toFound[words[i]] = 1;
+        } else {
+            toFound[words[i]]++;
+        }
+    }
 
-    return arr[0];
+    for (i = 0; i < len; i++) {
+        found = {};
+        j = i;
+        for (m = 0; m < wordsLen; m++) {
+            temp = s.slice(j, j + wordLen);
+
+            if (!toFound[temp]) {
+                break;
+            }
+
+            if (toFound[temp]) {
+                if (!found[temp]) {
+                    found[temp] = 1;
+                } else {
+                    found[temp]++;
+                }
+            }
+
+            if (found[temp] > toFound[temp]) {
+                break;
+            }
+
+            j += wordLen;
+        }
+
+        if (m === wordsLen) {
+            result.push(i);
+        }
+    }
+
+    return result;
 };
-
-function helper(node, sum, arr) {
-    if (!node) {
-        return;
-    }
-
-    sum = sum*10 + node.val;
-
-    if (!node.left && !node.right) {
-        arr[0] += sum;
-        return;
-    }
-
-    if (node.left) {
-        helper(node.left, sum, arr);
-    }
-
-    if (node.right) {
-        helper(node.right, sum, arr);
-    }
-
-}
