@@ -852,22 +852,36 @@ var insert = function(intervals, newInterval) {
 
     return result;
 };
+///
+var nums = [4,2,3,7,8,3,1,2,18];
 
-var nums = [0,1,2,3,4]
+var findDisappearedNumbers = function(nums) {
+  var min = Math.min(...nums);
+  var max = Math.max(...nums);
+  var numsHash = {};
+  var missingNums = [];
 
-var missingNumber = function(nums) {
-    var len = nums.length,
-        sum = 0,
-        i;
+  nums.forEach(function(num){
+    numsHash[num]=true;
+  });
 
-    for (i = 0; i < len; i++) {
-        sum += nums[i];
+  var len = Object.keys(numsHash).length
+  var dif = max-min
+
+  for(var i=0; i < dif; i++){
+    if(numsHash[min] === undefined){
+      missingNums.push(min)
+      min++
+    }else{
+      min++
     }
-
-    return len*(len + 1)/2 - sum;
+  }
+  return missingNums
 };
 
-missingNumber(nums)
+findDisappearedNumbers(nums)
+
+
 
 
 ////////////
