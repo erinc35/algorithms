@@ -1296,42 +1296,42 @@ var maxDepth = function(root){
   return Math.max(maxDepth(root.left). maxDepth(root.right)) + 1;
 }
 ///
-var summaryRanges = function(nums) {
-    var len = nums.length,
-        result = [],
-        curStr = '',
-        curLen,
-        curNum,
-        i;
-
-    if (len === 0) {
-        return result;
+var solve = function(board) {
+    if (board === null) {
+        return;
     }
 
-    curNum = nums[0];
-    curStr += curNum;
-    curLen = 1;
+    var rowL = board.length,
+        columnL,
+        i,
+        j;
 
-    for (i = 1; i < len; i++) {
-        if (curNum + 1 === nums[i]) {
-            curNum++;
-            curLen++;
-        } else {
-            if (curLen > 1) {
-                curStr += '->' + curNum;
+    if (rowL <= 1) {
+        return;
+    }
+
+    columnL = board[0].length;
+
+    // visit borders
+    for (i = 0; i < rowL; i++) {
+        visit(board, i, 0, rowL, columnL);
+        visit(board, i, columnL - 1, rowL, columnL);
+    }
+
+    // visit borders
+    for (i = 1; i < columnL - 1; i++) {
+        visit(board, 0, i, rowL, columnL);
+        visit(board, rowL - 1, i, rowL, columnL);
+    }
+
+    // flip all 'O' to 'X' and flip all 'Y' to 'O'
+    for (i = 0; i < rowL; i++) {
+        for (j = 0; j <columnL; j++) {
+            if (board[i][j] === 'O') {
+                board[i][j] = 'X';
+            } else if (board[i][j] === 'Y') {
+                board[i][j] = 'O';
             }
-
-            result.push(curStr);
-            curNum = nums[i];
-            curLen = 1;
-            curStr = '' + curNum;
         }
     }
-
-    if (curLen > 1) {
-        curStr += '->' + curNum;
-    }
-
-    result.push(curStr);
-    return result;
 };
