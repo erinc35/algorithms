@@ -1296,33 +1296,42 @@ var maxDepth = function(root){
   return Math.max(maxDepth(root.left). maxDepth(root.right)) + 1;
 }
 ///
-var swapPairs = function(head) {
-    if (head === null) {
-        return null;
+var solve = function(board) {
+    if (board === null) {
+        return;
     }
 
-    var next = head.next,
-        result = next? next : head,
-        prevTail,
-        curHead,
-        nextHead;
+    var rowL = board.length,
+        columnL,
+        i,
+        j;
 
-    curHead = head;
+    if (rowL <= 1) {
+        return;
+    }
 
-    while(next) {
-        nextHead = next.next;
+    columnL = board[0].length;
 
-        if (prevTail) {
-            prevTail.next = next;
+    // visit borders
+    for (i = 0; i < rowL; i++) {
+        visit(board, i, 0, rowL, columnL);
+        visit(board, i, columnL - 1, rowL, columnL);
+    }
+
+    // visit borders
+    for (i = 1; i < columnL - 1; i++) {
+        visit(board, 0, i, rowL, columnL);
+        visit(board, rowL - 1, i, rowL, columnL);
+    }
+
+    // flip all 'O' to 'X' and flip all 'Y' to 'O'
+    for (i = 0; i < rowL; i++) {
+        for (j = 0; j <columnL; j++) {
+            if (board[i][j] === 'O') {
+                board[i][j] = 'X';
+            } else if (board[i][j] === 'Y') {
+                board[i][j] = 'O';
+            }
         }
-
-        next.next = curHead;
-        curHead.next = nextHead;
-        prevTail = curHead;
-
-        curHead = nextHead;
-        next = curHead && curHead.next;
     }
-
-    return result;
-
+};
