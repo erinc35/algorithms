@@ -1296,42 +1296,33 @@ var maxDepth = function(root){
   return Math.max(maxDepth(root.left). maxDepth(root.right)) + 1;
 }
 ///
-var summaryRanges = function(nums) {
-    var len = nums.length,
-        result = [],
-        curStr = '',
-        curLen,
-        curNum,
-        i;
-
-    if (len === 0) {
-        return result;
+var swapPairs = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    curNum = nums[0];
-    curStr += curNum;
-    curLen = 1;
+    var next = head.next,
+        result = next? next : head,
+        prevTail,
+        curHead,
+        nextHead;
 
-    for (i = 1; i < len; i++) {
-        if (curNum + 1 === nums[i]) {
-            curNum++;
-            curLen++;
-        } else {
-            if (curLen > 1) {
-                curStr += '->' + curNum;
-            }
+    curHead = head;
 
-            result.push(curStr);
-            curNum = nums[i];
-            curLen = 1;
-            curStr = '' + curNum;
+    while(next) {
+        nextHead = next.next;
+
+        if (prevTail) {
+            prevTail.next = next;
         }
+
+        next.next = curHead;
+        curHead.next = nextHead;
+        prevTail = curHead;
+
+        curHead = nextHead;
+        next = curHead && curHead.next;
     }
 
-    if (curLen > 1) {
-        curStr += '->' + curNum;
-    }
-
-    result.push(curStr);
     return result;
-};
+
