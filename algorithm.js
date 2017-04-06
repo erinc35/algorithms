@@ -1296,42 +1296,41 @@ var maxDepth = function(root){
   return Math.max(maxDepth(root.left). maxDepth(root.right)) + 1;
 }
 ///
-var solve = function(board) {
-    if (board === null) {
-        return;
-    }
-
-    var rowL = board.length,
-        columnL,
+var nthSuperUglyNumber = function(n, primes) {
+    var primeIndex = [],
+        result = [],
+        len = primes.length,
+        tmp,
+        min,
+        curPrimeIndex,
         i,
         j;
 
-    if (rowL <= 1) {
-        return;
+    for (i = 0; i < len; i++) {
+        primeIndex.push(0);
     }
 
-    columnL = board[0].length;
+    result.push(1);
 
-    // visit borders
-    for (i = 0; i < rowL; i++) {
-        visit(board, i, 0, rowL, columnL);
-        visit(board, i, columnL - 1, rowL, columnL);
-    }
+    for (i = 1; i < n;) {
+        min = Number.MAX_VALUE;
+        curPrimeIndex = 0;
+        for (j = 0; j < len; j++) {
+            tmp = result[primeIndex[j]] * primes[j];
 
-    // visit borders
-    for (i = 1; i < columnL - 1; i++) {
-        visit(board, 0, i, rowL, columnL);
-        visit(board, rowL - 1, i, rowL, columnL);
-    }
-
-    // flip all 'O' to 'X' and flip all 'Y' to 'O'
-    for (i = 0; i < rowL; i++) {
-        for (j = 0; j <columnL; j++) {
-            if (board[i][j] === 'O') {
-                board[i][j] = 'X';
-            } else if (board[i][j] === 'Y') {
-                board[i][j] = 'O';
+            if (tmp < min) {
+                curPrimeIndex = j;
+                min = tmp;
             }
         }
+
+        primeIndex[curPrimeIndex]++;
+
+        if (min !== result[i - 1]) {
+            result[i] = min;
+            i++;
+        }
     }
+
+    return result[n - 1];
 };
