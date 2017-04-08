@@ -1323,39 +1323,76 @@ var constructRectangle = function(area) {
 };
 ///
 
-var calculate = function(s) {
-    var stack = [],
-        len = s.length,
-        sum = 0,
-        num,
-        ch,
-        j,
-        i;
+var alienOrder = function(words) {
+    if (words.length === 0) {
+        return '';
+    }
 
-    stack.push(1);
-    stack.push(1);
+    const len = words.length;
+    let map = {}; // value is the prerequisite of key
+    let charPreReqCount = {};
+    let i;
+    let queue = [];
+    let result = [];
+    let hasCycle = false;
 
     for (i = 0; i < len; i++) {
-        ch = s.charAt(i);
+        const chars = words[i].split('');
 
-        if (!isNaN(parseInt(ch))) {
-            num = parseInt(ch);
+        let j = 0;
 
-            for (j = i + 1; j < len && !isNaN(parseInt(s.charAt(j))); j++) {
-                num = num * 10 + parseInt(s.charAt(j));
+        for (j = 0; j < chars.length; j++) {
+            if (!map[chars[j]]) {
+                map[chars[j]] = [];
+                charPreReqCount[chars[j]] = 0;
             }
+        }
 
-            sum += stack.pop() * num;
+        if (i === 0 || words[i] === words[i - 1]) {
+            continue;
+        }
 
-            i = j - 1;
-        } else if (ch === '+' || ch === '(') {
-            stack.push(stack[stack.length - 1]);
-        } else if (ch === '-') {
-            stack.push(stack[stack.length - 1] * (-1));
-        } else if (ch === ')') {
-            stack.pop();
+        const cur = words[i];
+        const prev = words[i - 1];
+        j = 0;
+
+        while(j < cur.length && j < prev.length && cur.charAt(j) === prev.charAt(j)) {
+            j++;
+        }
+
+        if (j < prev.length && map[prev.charAt(j)].indexOf(cur.charAt(j)) === -1) {
+            map[prev.charAt(j)].push(cur.charAt(j));
+
+            charPreReqCount[cur.charAt(j)]++;
         }
     }
 
-    return sum;
-};
+    Object.keys(charPreReqCount).forEach(char => {
+        if (charPreReqCount[char] === 0) {
+            queue.push(char);
+        }
+    });
+
+    while(queue.length > 0) {
+        const char = queue.shift();
+
+        result.push(char);
+
+        for (i = 0; i < map[char].length; i++) {
+            charPreReqCount[map[char][i]]--;
+
+            if (charPreReqCount[map[char][i]] === 0) {
+                queue.push(map[char][i]);
+            }
+        }
+    }
+
+    // detect cycle
+    Object.keys(charPreReqCount).forEach(function(char) {
+        if (charPreReqCount[char] !== 0) {
+            hasCycle = true;
+        }
+    });
+
+    return hasCycle ? '' : result.join('');
+
