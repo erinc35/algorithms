@@ -1296,41 +1296,16 @@ var maxDepth = function(root){
   return Math.max(maxDepth(root.left). maxDepth(root.right)) + 1;
 }
 ///
-var nthSuperUglyNumber = function(n, primes) {
-    var primeIndex = [],
-        result = [],
-        len = primes.length,
-        tmp,
-        min,
-        curPrimeIndex,
-        i,
-        j;
 
-    for (i = 0; i < len; i++) {
-        primeIndex.push(0);
+function constructRectangle(area){
+  var mid = Math.ceil(Math.sqrt(area));
+
+  for( ; ; mid++){
+    if(area % mid === 0){
+      return [mid, area/mid];
     }
+  }
+}
 
-    result.push(1);
+///
 
-    for (i = 1; i < n;) {
-        min = Number.MAX_VALUE;
-        curPrimeIndex = 0;
-        for (j = 0; j < len; j++) {
-            tmp = result[primeIndex[j]] * primes[j];
-
-            if (tmp < min) {
-                curPrimeIndex = j;
-                min = tmp;
-            }
-        }
-
-        primeIndex[curPrimeIndex]++;
-
-        if (min !== result[i - 1]) {
-            result[i] = min;
-            i++;
-        }
-    }
-
-    return result[n - 1];
-};
