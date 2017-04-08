@@ -1323,3 +1323,41 @@ var constructRectangle = function(area) {
 };
 ///
 
+var jump = function(nums) {
+    var len = nums.length,
+        step = 0,
+        last = 0,
+        cover = nums[0],
+        i;
+
+    for (i = 1; i < len; i++) {
+        if (i > last) {
+            last = cover;
+            step++;
+        }
+
+        if (last >= len - 1) {
+            break;
+        }
+
+        cover = Math.max(cover, nums[i] + i);
+    }
+
+    return step;
+};
+
+
+// time limit exceeded
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var jump = function(nums) {
+    var len = nums.length,
+        result = [];
+
+    result[0] = Number.MAX_VALUE;
+    helper(0, nums, 0, 0, result);
+
+    return result[0];
+};
