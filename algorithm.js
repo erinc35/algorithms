@@ -1323,41 +1323,39 @@ var constructRectangle = function(area) {
 };
 ///
 
-var jump = function(nums) {
-    var len = nums.length,
-        step = 0,
-        last = 0,
-        cover = nums[0],
+var calculate = function(s) {
+    var stack = [],
+        len = s.length,
+        sum = 0,
+        num,
+        ch,
+        j,
         i;
 
-    for (i = 1; i < len; i++) {
-        if (i > last) {
-            last = cover;
-            step++;
-        }
+    stack.push(1);
+    stack.push(1);
 
-        if (last >= len - 1) {
-            break;
-        }
+    for (i = 0; i < len; i++) {
+        ch = s.charAt(i);
 
-        cover = Math.max(cover, nums[i] + i);
+        if (!isNaN(parseInt(ch))) {
+            num = parseInt(ch);
+
+            for (j = i + 1; j < len && !isNaN(parseInt(s.charAt(j))); j++) {
+                num = num * 10 + parseInt(s.charAt(j));
+            }
+
+            sum += stack.pop() * num;
+
+            i = j - 1;
+        } else if (ch === '+' || ch === '(') {
+            stack.push(stack[stack.length - 1]);
+        } else if (ch === '-') {
+            stack.push(stack[stack.length - 1] * (-1));
+        } else if (ch === ')') {
+            stack.pop();
+        }
     }
 
-    return step;
-};
-
-
-// time limit exceeded
-/**
- * @param {number[]} nums
- * @return {number}
- */
-var jump = function(nums) {
-    var len = nums.length,
-        result = [];
-
-    result[0] = Number.MAX_VALUE;
-    helper(0, nums, 0, 0, result);
-
-    return result[0];
+    return sum;
 };
