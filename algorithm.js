@@ -1323,76 +1323,20 @@ var constructRectangle = function(area) {
 };
 ///
 
-var alienOrder = function(words) {
-    if (words.length === 0) {
-        return '';
-    }
+var maxArea = function(height) {
+    var len = height.length,
+        left = 0,
+        right = len - 1,
+        max = 0;
 
-    const len = words.length;
-    let map = {}; // value is the prerequisite of key
-    let charPreReqCount = {};
-    let i;
-    let queue = [];
-    let result = [];
-    let hasCycle = false;
+    while (left < right) {
+        max = Math.max(max, (right - left)*Math.min(height[left], height[right]));
 
-    for (i = 0; i < len; i++) {
-        const chars = words[i].split('');
-
-        let j = 0;
-
-        for (j = 0; j < chars.length; j++) {
-            if (!map[chars[j]]) {
-                map[chars[j]] = [];
-                charPreReqCount[chars[j]] = 0;
-            }
-        }
-
-        if (i === 0 || words[i] === words[i - 1]) {
-            continue;
-        }
-
-        const cur = words[i];
-        const prev = words[i - 1];
-        j = 0;
-
-        while(j < cur.length && j < prev.length && cur.charAt(j) === prev.charAt(j)) {
-            j++;
-        }
-
-        if (j < prev.length && map[prev.charAt(j)].indexOf(cur.charAt(j)) === -1) {
-            map[prev.charAt(j)].push(cur.charAt(j));
-
-            charPreReqCount[cur.charAt(j)]++;
+        if (height[left] < height[right]) {
+            left ++;
+        } else {
+            right --;
         }
     }
-
-    Object.keys(charPreReqCount).forEach(char => {
-        if (charPreReqCount[char] === 0) {
-            queue.push(char);
-        }
-    });
-
-    while(queue.length > 0) {
-        const char = queue.shift();
-
-        result.push(char);
-
-        for (i = 0; i < map[char].length; i++) {
-            charPreReqCount[map[char][i]]--;
-
-            if (charPreReqCount[map[char][i]] === 0) {
-                queue.push(map[char][i]);
-            }
-        }
-    }
-
-    // detect cycle
-    Object.keys(charPreReqCount).forEach(function(char) {
-        if (charPreReqCount[char] !== 0) {
-            hasCycle = true;
-        }
-    });
-
-    return hasCycle ? '' : result.join('');
-
+    return max;
+};
