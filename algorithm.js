@@ -1323,22 +1323,42 @@ var constructRectangle = function(area) {
 };
 ///
 
-var countBits = function(num) {
-    var result = [],
-        pow = 1,
-        i;
-
-    result[0] = 0;
-
-    for (i = 1; i < num; i++) {
-        if (i === pow) {
-            result[i] = 1;
-            pow *= 2;
-        } else {
-            result[i] = result[pow] + result[i - pow];
-        }
+var constructGraph = function(numNodes, pre) {
+    var nodes = [];
+    for (var i = 0; i < numNodes; i++) {
+        var node = {};
+        node.neighbors = [];
+        nodes[i] = node;
     }
+    for (var j = 0; j < pre.length; j++) {
+        var s = pre[j][1];
+        var d = pre[j][0];
+        nodes[s].neighbors.push(nodes[d]);
+    }
+    return nodes;
+}
 
-    return result;
+// Return true if there is a cycle detected.
+var dfs = function(startNode, parents) {
+    if (parents.indexOf(startNode) >= 0) return true;
+    if (startNode.visited) return false;
+
+    startNode.visited = true;
+    var neighbors = startNode.neighbors;
+    parents.push(startNode);
+    for (var i = 0; i < neighbors.length; i++) {
+        var hasCycle = dfs(neighbors[i], parents);
+        if (hasCycle) return true;
+    }
+    parents.pop();
+}
+
+var canFinish = function(numCourses, prerequisites) {
+    var nodes = constructGraph(numCourses, prerequisites);
+    for (var i = 0; i < nodes.length; i++) {
+        var hasCycle = dfs(nodes[i], []);
+        if (hasCycle) return false;
+    }
+    return true;
 };
 
