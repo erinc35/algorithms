@@ -1323,20 +1323,35 @@ var constructRectangle = function(area) {
 };
 ///
 
-var maxArea = function(height) {
-    var len = height.length,
-        left = 0,
-        right = len - 1,
-        max = 0;
+var countAndSay = function(n) {
+    function interpret(s, accum, sum) {
+        var times = 1,
+            num,
+            len = s.length,
+            i,
+            result = '';
 
-    while (left < right) {
-        max = Math.max(max, (right - left)*Math.min(height[left], height[right]));
+        num = s.charAt(0);
 
-        if (height[left] < height[right]) {
-            left ++;
+        for (i = 1; i < len; i++) {
+            if (s.charAt(i) !== num) {
+                result += times + num;
+                num = s.charAt(i);
+                times = 1;
+            } else {
+                times++;
+            }
+        }
+        if (accum === 1) {
+            result = '1';
         } else {
-            right --;
+            result += times + num;
+        }
+        if (accum === sum) {
+            return result;
+        } else {
+            return interpret(result, accum + 1, sum);
         }
     }
-    return max;
+    return interpret('1', 1, n);
 };
