@@ -1323,41 +1323,16 @@ var constructRectangle = function(area) {
 };
 ///
 
-var containsNearbyAlmostDuplicate = function(nums, k, t) {
-    var len = nums.length,
-        map = {},
-        id,
+var climbStairs = function(n) {
+    var arr = [],
         i;
 
-    if (t < 0) {
-        return false;
+    arr[0] = 0;
+    arr[1] = 1;
+    arr[2] = 2;
+
+    for(i = 3; i <= n; i++) {
+        arr[i] = arr[i - 1] + arr[i - 2];
     }
-
-    for (i = 0; i < len; i++) {
-        id = getBucketId(nums[i], t + 1);
-
-        if (map.hasOwnProperty(id)) {
-            return true;
-        }
-
-        if (map.hasOwnProperty(id - 1) && Math.abs(map[id - 1] - nums[i]) <= t) {
-            return true;
-        }
-
-        if (map.hasOwnProperty(id + 1) && Math.abs(map[id + 1] - nums[i]) <= t) {
-            return true;
-        }
-
-        map[id] = nums[i];
-
-        if (i >= k) {
-            delete map[getBucketId(nums[i - k], t + 1)];
-        }
-    }
-
-    return false;
+    return arr[n];
 };
-
-function getBucketId(num, bucketLength) {
-    return Math.floor(num / bucketLength);
-}
