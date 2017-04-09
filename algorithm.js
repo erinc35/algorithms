@@ -1323,42 +1323,41 @@ var constructRectangle = function(area) {
 };
 ///
 
-var constructGraph = function(numNodes, pre) {
-    var nodes = [];
-    for (var i = 0; i < numNodes; i++) {
-        var node = {};
-        node.neighbors = [];
-        nodes[i] = node;
-    }
-    for (var j = 0; j < pre.length; j++) {
-        var s = pre[j][1];
-        var d = pre[j][0];
-        nodes[s].neighbors.push(nodes[d]);
-    }
-    return nodes;
-}
+var containsNearbyAlmostDuplicate = function(nums, k, t) {
+    var len = nums.length,
+        map = {},
+        id,
+        i;
 
-// Return true if there is a cycle detected.
-var dfs = function(startNode, parents) {
-    if (parents.indexOf(startNode) >= 0) return true;
-    if (startNode.visited) return false;
-
-    startNode.visited = true;
-    var neighbors = startNode.neighbors;
-    parents.push(startNode);
-    for (var i = 0; i < neighbors.length; i++) {
-        var hasCycle = dfs(neighbors[i], parents);
-        if (hasCycle) return true;
+    if (t < 0) {
+        return false;
     }
-    parents.pop();
-}
 
-var canFinish = function(numCourses, prerequisites) {
-    var nodes = constructGraph(numCourses, prerequisites);
-    for (var i = 0; i < nodes.length; i++) {
-        var hasCycle = dfs(nodes[i], []);
-        if (hasCycle) return false;
+    for (i = 0; i < len; i++) {
+        id = getBucketId(nums[i], t + 1);
+
+        if (map.hasOwnProperty(id)) {
+            return true;
+        }
+
+        if (map.hasOwnProperty(id - 1) && Math.abs(map[id - 1] - nums[i]) <= t) {
+            return true;
+        }
+
+        if (map.hasOwnProperty(id + 1) && Math.abs(map[id + 1] - nums[i]) <= t) {
+            return true;
+        }
+
+        map[id] = nums[i];
+
+        if (i >= k) {
+            delete map[getBucketId(nums[i - k], t + 1)];
+        }
     }
-    return true;
+
+    return false;
 };
 
+function getBucketId(num, bucketLength) {
+    return Math.floor(num / bucketLength);
+}
