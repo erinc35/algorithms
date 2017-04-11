@@ -1323,59 +1323,40 @@ var constructRectangle = function(area) {
 };
 ///
 
-class BSTNode {
-    constructor (val) {
-        this.val = val;
-        this.left = null;
-        this.right = null;
-        this.size = 1;
-    }
-}
+var addOperators = function(num, target) {
+    var result = [];
 
-class BST {
-    constructor() {
-        this.root = null;
-    }
+    helper(result, '', 0, num, target, 0, 0);
 
-    add(val, node) {
-        if (!node) {
-            this.root = new BSTNode(val);
-            return;
+    return result;
+};
+
+function helper(result, cur, index, num, target, prev, multi) {
+    if (index === num.length) {
+        if (prev === target) {
+            result.push(cur);
         }
 
-        if (val > node.val) {
-            if (node.right) {
-                this.add(val, node.right);
-            } else {
-                node.right = new BSTNode(val);
-            }
+        return;
+    }
+
+    var len = num.length,
+        temp,
+        i;
+
+    for (i = index; i < len; i++) {
+        if (num.charAt(index) === '0' && i > index) {
+            break;
+        }
+
+        temp = parseInt(num.substring(index, i + 1));
+
+        if (cur.length === 0) {
+            helper(result, cur + temp, i + 1, num, target, temp, temp);
         } else {
-            if (node.left) {
-                this.add(val, node.left);
-            } else {
-                node.left = new BSTNode(val);
-            }
-        }
-
-        node.size++;
-    }
-
-    rank(k) {
-        let node = this.root;
-
-        while(true) {
-            const leftSize = node.left ? node.left.size : 0;
-
-            if (leftSize === k) {
-                return node.val;
-            }
-
-            if (leftSize > k) {
-                node = node.left;
-            } else {
-                node = node.right;
-                k = k - leftSize - 1;
-            }
+            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
+            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
+            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
         }
     }
 }
