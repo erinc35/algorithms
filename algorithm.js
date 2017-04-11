@@ -1323,41 +1323,59 @@ var constructRectangle = function(area) {
 };
 ///
 
-var containsNearbyAlmostDuplicate = function(nums, k, t) {
-    var len = nums.length,
-        map = {},
-        id,
-        i;
+class BSTNode {
+    constructor (val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+        this.size = 1;
+    }
+}
 
-    if (t < 0) {
-        return false;
+class BST {
+    constructor() {
+        this.root = null;
     }
 
-    for (i = 0; i < len; i++) {
-        id = getBucketId(nums[i], t + 1);
-
-        if (map.hasOwnProperty(id)) {
-            return true;
+    add(val, node) {
+        if (!node) {
+            this.root = new BSTNode(val);
+            return;
         }
 
-        if (map.hasOwnProperty(id - 1) && Math.abs(map[id - 1] - nums[i]) <= t) {
-            return true;
+        if (val > node.val) {
+            if (node.right) {
+                this.add(val, node.right);
+            } else {
+                node.right = new BSTNode(val);
+            }
+        } else {
+            if (node.left) {
+                this.add(val, node.left);
+            } else {
+                node.left = new BSTNode(val);
+            }
         }
 
-        if (map.hasOwnProperty(id + 1) && Math.abs(map[id + 1] - nums[i]) <= t) {
-            return true;
-        }
-
-        map[id] = nums[i];
-
-        if (i >= k) {
-            delete map[getBucketId(nums[i - k], t + 1)];
-        }
+        node.size++;
     }
 
-    return false;
-};
+    rank(k) {
+        let node = this.root;
 
-function getBucketId(num, bucketLength) {
-    return Math.floor(num / bucketLength);
+        while(true) {
+            const leftSize = node.left ? node.left.size : 0;
+
+            if (leftSize === k) {
+                return node.val;
+            }
+
+            if (leftSize > k) {
+                node = node.left;
+            } else {
+                node = node.right;
+                k = k - leftSize - 1;
+            }
+        }
+    }
 }
