@@ -1323,16 +1323,59 @@ var constructRectangle = function(area) {
 };
 ///
 
-var climbStairs = function(n) {
-    var arr = [],
-        i;
-
-    arr[0] = 0;
-    arr[1] = 1;
-    arr[2] = 2;
-
-    for(i = 3; i <= n; i++) {
-        arr[i] = arr[i - 1] + arr[i - 2];
+class BSTNode {
+    constructor (val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+        this.size = 1;
     }
-    return arr[n];
-};
+}
+
+class BST {
+    constructor() {
+        this.root = null;
+    }
+
+    add(val, node) {
+        if (!node) {
+            this.root = new BSTNode(val);
+            return;
+        }
+
+        if (val > node.val) {
+            if (node.right) {
+                this.add(val, node.right);
+            } else {
+                node.right = new BSTNode(val);
+            }
+        } else {
+            if (node.left) {
+                this.add(val, node.left);
+            } else {
+                node.left = new BSTNode(val);
+            }
+        }
+
+        node.size++;
+    }
+
+    rank(k) {
+        let node = this.root;
+
+        while(true) {
+            const leftSize = node.left ? node.left.size : 0;
+
+            if (leftSize === k) {
+                return node.val;
+            }
+
+            if (leftSize > k) {
+                node = node.left;
+            } else {
+                node = node.right;
+                k = k - leftSize - 1;
+            }
+        }
+    }
+}
