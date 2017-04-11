@@ -1323,40 +1323,14 @@ var constructRectangle = function(area) {
 };
 ///
 
-var addOperators = function(num, target) {
-    var result = [];
+var trailingZeroes = function(n) {
+    var divider = 5,
+        reminder = 0;
 
-    helper(result, '', 0, num, target, 0, 0);
+    while (divider <= n) {
+        reminder += Math.floor(n/divider);
+        divider = divider * 5;
+    }
 
-    return result;
+    return reminder;
 };
-
-function helper(result, cur, index, num, target, prev, multi) {
-    if (index === num.length) {
-        if (prev === target) {
-            result.push(cur);
-        }
-
-        return;
-    }
-
-    var len = num.length,
-        temp,
-        i;
-
-    for (i = index; i < len; i++) {
-        if (num.charAt(index) === '0' && i > index) {
-            break;
-        }
-
-        temp = parseInt(num.substring(index, i + 1));
-
-        if (cur.length === 0) {
-            helper(result, cur + temp, i + 1, num, target, temp, temp);
-        } else {
-            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
-            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
-            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
-        }
-    }
-}
