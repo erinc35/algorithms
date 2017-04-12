@@ -1364,39 +1364,38 @@ findRelativeRanks([2,4,311,1,43])
 
 
 ///
+var anagrams = function(strs) {
+    var map = {},
+        len = strs.length,
+        curStr,
+        newArr,
+        sortedArr,
+        sortedStr,
+        result = [],
+        i;
 
-var isAdditiveNumber = function(num) {
-    var len = num.length,
-        i,
-        j;
+    for (i = 0; i < len; i++) {
+        curStr = strs[i];
+        sortedArr = curStr.split('');
+        sortedStr = sortedArr.sort().join('');
 
-    for (i = 1; i <= len / 2; i++) {
-        for (j = 1; j <= len / 2; j++) {
-            if (canBeAdded(num.substr(0, i), num.substr(i, j), num.substr(i + j))) {
-                return true;
-            }
+        if (map.hasOwnProperty(sortedStr)) {
+            map[sortedStr].push(curStr);
+        } else {
+            newArr = [];
+            newArr.push(curStr);
+            map[sortedStr] = newArr;
         }
     }
 
-    return false;
+    len = map.length;
+
+    for (var key in map) {
+        if (map[key].length > 1) {
+            result = result.concat(map[key]);
+        }
+    }
+
+    return result;
 };
 
-function canBeAdded(a, b, c) {
-    if ((a.length > 1 && a.charAt(0) === '0') || (b.length > 1 && b.charAt(0) === '0') || (c.length >= 1 && c.charAt(0) === '0')) {
-        return false;
-    }
-
-    var aNum = parseInt(a),
-        bNum = parseInt(b),
-        sum = aNum + bNum + '';
-
-    if (c === sum) {
-        return true;
-    }
-
-    if (c.substr(0, sum.length) !== sum) {
-        return false;
-    }
-
-    return canBeAdded(b, sum, c.substr(sum.length));
-}
