@@ -1365,67 +1365,38 @@ findRelativeRanks([2,4,311,1,43])
 
 ///
 
-var addBinary = function(a, b) {
-    var lenA = a.length,
-        lenB = b.length,
-        overFlow = 0,
-        charA,
-        charB,
-        result = '',
-        curVal,
+var isAdditiveNumber = function(num) {
+    var len = num.length,
         i,
         j;
 
-    for (i = lenA - 1, j = lenB - 1; i >= 0 && j >= 0; i--, j --) {
-        charA = parseInt(a.charAt(i));
-        charB = parseInt(b.charAt(j));
-
-        curVal = charA + charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
+    for (i = 1; i <= len / 2; i++) {
+        for (j = 1; j <= len / 2; j++) {
+            if (canBeAdded(num.substr(0, i), num.substr(i, j), num.substr(i + j))) {
+                return true;
+            }
         }
-
-        result = curVal + result;
     }
 
-    while (i >= 0) {
-        charA = parseInt(a.charAt(i));
-        curVal = charA + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
-        }
-        result = curVal + result;
-
-        i--;
-    }
-
-    while (j >= 0) {
-        charB = parseInt(b.charAt(j));
-        curVal = charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
-        }
-
-        result = curVal + result;
-
-        j--;
-    }
-
-    if (overFlow === 1) {
-        result = '1' + result;
-    }
-
-    return result;
+    return false;
 };
+
+function canBeAdded(a, b, c) {
+    if ((a.length > 1 && a.charAt(0) === '0') || (b.length > 1 && b.charAt(0) === '0') || (c.length >= 1 && c.charAt(0) === '0')) {
+        return false;
+    }
+
+    var aNum = parseInt(a),
+        bNum = parseInt(b),
+        sum = aNum + bNum + '';
+
+    if (c === sum) {
+        return true;
+    }
+
+    if (c.substr(0, sum.length) !== sum) {
+        return false;
+    }
+
+    return canBeAdded(b, sum, c.substr(sum.length));
+}
