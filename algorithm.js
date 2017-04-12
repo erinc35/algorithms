@@ -1323,14 +1323,41 @@ var constructRectangle = function(area) {
 };
 ///
 
-var trailingZeroes = function(n) {
-    var divider = 5,
-        reminder = 0;
+var findRelativeRanks = function(nums) {
+  let res = [];
 
-    while (divider <= n) {
-        reminder += Math.floor(n/divider);
-        divider = divider * 5;
-    }
+  nums.forEach((item, index) => {
+    res.push({
+      index: index,
+      score: item,
+      rank: null
+    });
+  });
 
-    return reminder;
+
+
+  res.sort((a, b) => (b.score - a.score));
+   console.log(res)
+  for (let i = 0, len = res.length; i < len; i++) {
+    if (i === 0)
+      res[i].rank = "Gold Medal";
+    else if (i === 1)
+      res[i].rank = "Silver Medal";
+    else if (i === 2)
+      res[i].rank = "Bronze Medal";
+    else
+      res[i].rank = (i + 1) + '';
+  }
+
+  res.sort((a, b) => (a.index - b.index));
+
+  let ans = [];
+
+  res.forEach((item) => {
+    ans.push(item.rank);
+  });
+
+  return ans;
 };
+
+findRelativeRanks([2,4,311,1,43])
