@@ -1334,8 +1334,6 @@ var findRelativeRanks = function(nums) {
     });
   });
 
-
-
   res.sort((a, b) => (b.score - a.score));
    console.log(res)
   for (let i = 0, len = res.length; i < len; i++) {
@@ -1364,38 +1362,23 @@ findRelativeRanks([2,4,311,1,43])
 
 
 ///
-var anagrams = function(strs) {
-    var map = {},
-        len = strs.length,
-        curStr,
-        newArr,
-        sortedArr,
-        sortedStr,
-        result = [],
-        i;
 
-    for (i = 0; i < len; i++) {
-        curStr = strs[i];
-        sortedArr = curStr.split('');
-        sortedStr = sortedArr.sort().join('');
+function quicksort(data) {
+    if (data.length === 0) return [];
 
-        if (map.hasOwnProperty(sortedStr)) {
-            map[sortedStr].push(curStr);
-        } else {
-            newArr = [];
-            newArr.push(curStr);
-            map[sortedStr] = newArr;
-        }
+    var left = [], right = [], pivot = data[0];
+
+    for (var i = 1; i < data.length; i++) {
+        if(data[i] < pivot)
+            left.push(data[i])
+        else
+            right.push(data[i]);
     }
 
-    len = map.length;
+    return quicksort(left).concat(pivot, quicksort(right));
+}
+///
 
-    for (var key in map) {
-        if (map[key].length > 1) {
-            result = result.concat(map[key]);
-        }
-    }
-
-    return result;
+var bulbSwitch = function(n) {
+    return Math.floor(Math.sqrt(n));
 };
-
