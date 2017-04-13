@@ -1379,6 +1379,34 @@ function quicksort(data) {
 }
 ///
 
-var bulbSwitch = function(n) {
-    return Math.floor(Math.sqrt(n));
+var getHint = function(secret, guess) {
+    var len = secret.length,
+        bullCount = 0,
+        arr = {},
+        cowCount = 0,
+        i;
+
+    for (i = 0; i < len; i++) {
+        if (!arr[secret.charAt(i)]) {
+            arr[secret.charAt(i)] = 1;
+        } else {
+            arr[secret.charAt(i)]++;
+        }
+    }
+
+    for (i = 0; i < len; i++) {
+        if (secret.charAt(i) === guess.charAt(i)) {
+            bullCount++;
+            arr[secret.charAt(i)]--;
+        }
+    }
+
+    for (i = 0; i < len; i++) {
+        if (secret.charAt(i) !== guess.charAt(i) && arr.hasOwnProperty(guess.charAt(i)) && (arr[guess.charAt(i)] > 0)) {
+            cowCount++;
+            arr[guess.charAt(i)]--;
+        }
+    }
+
+    return bullCount + 'A' + cowCount + 'B';
 };
