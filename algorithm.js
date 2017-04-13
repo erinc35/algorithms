@@ -1379,34 +1379,39 @@ function quicksort(data) {
 }
 ///
 
-var getHint = function(secret, guess) {
-    var len = secret.length,
-        bullCount = 0,
-        arr = {},
-        cowCount = 0,
-        i;
+var compareVersion = function(version1, version2) {
+    var arr1 = version1.split('.'),
+        arr2 = version2.split('.'),
+        len1 = arr1.length,
+        len2 = arr2.length,
+        a,
+        b,
+        i,
+        j;
 
-    for (i = 0; i < len; i++) {
-        if (!arr[secret.charAt(i)]) {
-            arr[secret.charAt(i)] = 1;
-        } else {
-            arr[secret.charAt(i)]++;
+    for (i = 0; (i < len1) && (i < len2) ; i++) {
+        a = parseInt(arr1[i]);
+        b = parseInt(arr2[i]);
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
         }
     }
 
-    for (i = 0; i < len; i++) {
-        if (secret.charAt(i) === guess.charAt(i)) {
-            bullCount++;
-            arr[secret.charAt(i)]--;
+    if (len1 > len2) {
+        for (j = i; j < len1; j++) {
+            if (parseInt(arr1[j]) > 0) {
+                return 1;
+            }
+        }
+    } else if (len1 < len2) {
+        for (j = i; j < len2; j++) {
+            if (parseInt(arr2[j]) > 0) {
+                return -1;
+            }
         }
     }
 
-    for (i = 0; i < len; i++) {
-        if (secret.charAt(i) !== guess.charAt(i) && arr.hasOwnProperty(guess.charAt(i)) && (arr[guess.charAt(i)] > 0)) {
-            cowCount++;
-            arr[guess.charAt(i)]--;
-        }
-    }
-
-    return bullCount + 'A' + cowCount + 'B';
+    return 0;
 };
