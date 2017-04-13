@@ -1379,20 +1379,19 @@ function quicksort(data) {
 }
 ///
 
-var maxArea = function(height) {
-    var len = height.length,
-        left = 0,
-        right = len - 1,
-        max = 0;
+var findContentChildren = function(g, s) {
+    var compare = function(a,b) {return b-a};
 
-    while (left < right) {
-        max = Math.max(max, (right - left)*Math.min(height[left], height[right]));
+    g.sort(compare);
+    s.sort(compare);
 
-        if (height[left] < height[right]) {
-            left ++;
-        } else {
-            right --;
+    var j=0;
+
+    for(var i=0; i<g.length; i++){
+        if(g[i] <= s[j]){
+            j++
         }
     }
-    return max;
+    return j
 };
+///
