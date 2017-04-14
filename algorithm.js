@@ -1395,44 +1395,39 @@ var findContentChildren = function(g, s) {
     return j
 };
 ///
-var maxCoins = function(nums) {
-    var len = nums.length,
-        dp = [],
+var compareVersion = function(version1, version2) {
+    var arr1 = version1.split('.'),
+        arr2 = version2.split('.'),
+        len1 = arr1.length,
+        len2 = arr2.length,
+        a,
+        b,
         i,
-        k,
-        l,
-        m,
-        r;
+        j;
 
-    for (i = 0; i <= len + 1; i++) {
-        dp.push(new Array(len + 1));
-    }
-
-    for (i = 0; i <= len + 1; i++) {
-        for (k = 0; k <= len + 1; k++) {
-            dp[i][k] = 0;
+    for (i = 0; (i < len1) && (i < len2) ; i++) {
+        a = parseInt(arr1[i]);
+        b = parseInt(arr2[i]);
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
         }
     }
 
-    nums[len + 1] = 1;
-
-    for (i = len; i > 0; i--) {
-        nums[i] = nums[i - 1];
-    }
-
-    nums[0] = 1;
-
-    len += 2;
-
-    for (k = 2; k < len; k++) {
-        for (l = 0; l < len - k; l++) {
-            r = l + k;
-
-            for (m = l + 1; m < r; m++) {
-                dp[l][r] = Math.max(dp[l][r], dp[l][m] + dp[m][r] + nums[l]*nums[m]*nums[r]);
+    if (len1 > len2) {
+        for (j = i; j < len1; j++) {
+            if (parseInt(arr1[j]) > 0) {
+                return 1;
+            }
+        }
+    } else if (len1 < len2) {
+        for (j = i; j < len2; j++) {
+            if (parseInt(arr2[j]) > 0) {
+                return -1;
             }
         }
     }
 
-    return dp[0][len - 1];
-};
+    return 0;
+
