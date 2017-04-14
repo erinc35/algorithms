@@ -1395,20 +1395,44 @@ var findContentChildren = function(g, s) {
     return j
 };
 ///
-var maxArea = function(height) {
-    var len = height.length,
-        left = 0,
-        right = len - 1,
-        max = 0;
+var maxCoins = function(nums) {
+    var len = nums.length,
+        dp = [],
+        i,
+        k,
+        l,
+        m,
+        r;
 
-    while (left < right) {
-        max = Math.max(max, (right - left)*Math.min(height[left], height[right]));
+    for (i = 0; i <= len + 1; i++) {
+        dp.push(new Array(len + 1));
+    }
 
-        if (height[left] < height[right]) {
-            left ++;
-        } else {
-            right --;
+    for (i = 0; i <= len + 1; i++) {
+        for (k = 0; k <= len + 1; k++) {
+            dp[i][k] = 0;
         }
     }
-    return max;
+
+    nums[len + 1] = 1;
+
+    for (i = len; i > 0; i--) {
+        nums[i] = nums[i - 1];
+    }
+
+    nums[0] = 1;
+
+    len += 2;
+
+    for (k = 2; k < len; k++) {
+        for (l = 0; l < len - k; l++) {
+            r = l + k;
+
+            for (m = l + 1; m < r; m++) {
+                dp[l][r] = Math.max(dp[l][r], dp[l][m] + dp[m][r] + nums[l]*nums[m]*nums[r]);
+            }
+        }
+    }
+
+    return dp[0][len - 1];
 };
