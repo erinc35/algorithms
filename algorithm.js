@@ -1395,3 +1395,20 @@ var findContentChildren = function(g, s) {
     return j
 };
 ///
+var maxArea = function(height) {
+    var len = height.length,
+        left = 0,
+        right = len - 1,
+        max = 0;
+
+    while (left < right) {
+        max = Math.max(max, (right - left)*Math.min(height[left], height[right]));
+
+        if (height[left] < height[right]) {
+            left ++;
+        } else {
+            right --;
+        }
+    }
+    return max;
+};
