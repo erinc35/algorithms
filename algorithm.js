@@ -1435,25 +1435,48 @@ function findDepth(root) {
 }
 ////
 
-var buildTree = function(inorder, postorder) {
-    var iLen = inorder.length,
-        pLen = postorder.length;
-
-    return getRoot(inorder, postorder, 0, iLen - 1, 0, pLen - 1);
-};
-
-function getRoot(inorder, postorder, iStart, iEnd, pStart, pEnd) {
-    if (iStart > iEnd || pStart > pEnd) {
-        return null;
+var divide = function(dividend, divisor) {
+    if (divisor === 0) {
+        return Number.MAX_VALUE;
     }
 
-    var value = postorder[pEnd],
-        node = new TreeNode(value),
-        index = inorder.indexOf(value);
+    if (dividend === 0) {
+        return 0;
+    }
 
-    node.left = getRoot(inorder, postorder, iStart, index - 1, pStart, pStart + index - iStart - 1);
-    node.right = getRoot(inorder, postorder, index + 1, iEnd, pStart + index - iStart, pEnd - 1);
+    var result = 0,
+        isNeg = false,
+        temp,
+        i = 0;
 
-    return node;
-}
+    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
+        isNeg = true;
+    }
+
+    dividend = Math.abs(dividend);
+    divisor = Math.abs(divisor);
+
+    if (divisor === 1 || divisor === -1) {
+        return isNeg? -dividend : dividend;
+    }
+
+    temp = divisor;
+
+    while (divisor << (i + 1) <= dividend) {
+        i++;
+    }
+
+    while (dividend >= divisor) {
+        temp = divisor << i;
+
+        if (dividend >= temp) {
+            result += (1 << i);
+            dividend -= temp;
+        }
+
+        i--;
+    }
+
+    return isNeg? -result : result;
+};
 
