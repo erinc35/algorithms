@@ -1435,3 +1435,38 @@ function findDepth(root) {
 }
 ////
 
+var maxProfit = function(prices) {
+    var i,
+        length = prices.length,
+        low,
+        high,
+        cur,
+        prev,
+        temp = 0
+        max = 0;
+
+    if (length === 0 || length === 1) {
+        return max;
+    }
+    low = prices[0];
+    high = prices[0];
+    prev = low;
+    for (i = 1; i < length; i++) {
+        cur = prices[i];
+        if (cur > prev) {
+            high = cur;
+            temp = high - low;
+        } else if (cur < prev) {
+            max += temp;
+            temp = 0;
+            low = cur;
+            high = cur;
+        }
+        prev = cur;
+    }
+    if (temp !== 0) {
+        max += temp;
+    }
+    return max;
+};
+
