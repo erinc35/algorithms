@@ -1435,38 +1435,45 @@ function findDepth(root) {
 }
 ////
 
-var maxProfit = function(prices) {
-    var i,
-        length = prices.length,
-        low,
-        high,
-        cur,
-        prev,
-        temp = 0
-        max = 0;
+var maxCoins = function(nums) {
+    var len = nums.length,
+        dp = [],
+        i,
+        k,
+        l,
+        m,
+        r;
 
-    if (length === 0 || length === 1) {
-        return max;
+    for (i = 0; i <= len + 1; i++) {
+        dp.push(new Array(len + 1));
     }
-    low = prices[0];
-    high = prices[0];
-    prev = low;
-    for (i = 1; i < length; i++) {
-        cur = prices[i];
-        if (cur > prev) {
-            high = cur;
-            temp = high - low;
-        } else if (cur < prev) {
-            max += temp;
-            temp = 0;
-            low = cur;
-            high = cur;
+
+    for (i = 0; i <= len + 1; i++) {
+        for (k = 0; k <= len + 1; k++) {
+            dp[i][k] = 0;
         }
-        prev = cur;
     }
-    if (temp !== 0) {
-        max += temp;
+
+    nums[len + 1] = 1;
+
+    for (i = len; i > 0; i--) {
+        nums[i] = nums[i - 1];
     }
-    return max;
+
+    nums[0] = 1;
+
+    len += 2;
+
+    for (k = 2; k < len; k++) {
+        for (l = 0; l < len - k; l++) {
+            r = l + k;
+
+            for (m = l + 1; m < r; m++) {
+                dp[l][r] = Math.max(dp[l][r], dp[l][m] + dp[m][r] + nums[l]*nums[m]*nums[r]);
+            }
+        }
+    }
+
+    return dp[0][len - 1];
 };
 
