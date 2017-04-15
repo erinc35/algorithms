@@ -1435,48 +1435,27 @@ function findDepth(root) {
 }
 ////
 
-var divide = function(dividend, divisor) {
-    if (divisor === 0) {
-        return Number.MAX_VALUE;
-    }
-
-    if (dividend === 0) {
-        return 0;
-    }
-
-    var result = 0,
-        isNeg = false,
+var firstMissingPositive = function(nums) {
+    var len = nums.length,
         temp,
-        i = 0;
+        i;
 
-    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
-        isNeg = true;
-    }
-
-    dividend = Math.abs(dividend);
-    divisor = Math.abs(divisor);
-
-    if (divisor === 1 || divisor === -1) {
-        return isNeg? -dividend : dividend;
-    }
-
-    temp = divisor;
-
-    while (divisor << (i + 1) <= dividend) {
-        i++;
-    }
-
-    while (dividend >= divisor) {
-        temp = divisor << i;
-
-        if (dividend >= temp) {
-            result += (1 << i);
-            dividend -= temp;
+    for (i = 0 ; i < len; i++) {
+        while (nums[i] !== i + 1) {
+            if (nums[i] > len || nums[i] < 1 || nums[i] === nums[nums[i] - 1]) {
+                break;
+            }
+            temp = nums[nums[i] - 1];
+            nums[nums[i] - 1] = nums[i];
+            nums[i] = temp;
         }
-
-        i--;
     }
 
-    return isNeg? -result : result;
+    for(i = 0; i < len; i++) {
+        if (nums[i] !== i + 1) {
+            return i + 1;
+        }
+    }
+    return len + 1;
 };
 
