@@ -1435,27 +1435,14 @@ function findDepth(root) {
 }
 ////
 
-var firstMissingPositive = function(nums) {
-    var len = nums.length,
-        temp,
-        i;
+var firstUniqChar = function(s) {
 
-    for (i = 0 ; i < len; i++) {
-        while (nums[i] !== i + 1) {
-            if (nums[i] > len || nums[i] < 1 || nums[i] === nums[nums[i] - 1]) {
-                break;
-            }
-            temp = nums[nums[i] - 1];
-            nums[nums[i] - 1] = nums[i];
-            nums[i] = temp;
-        }
-    }
-
-    for(i = 0; i < len; i++) {
-        if (nums[i] !== i + 1) {
-            return i + 1;
-        }
-    }
-    return len + 1;
+  for(var i=0; i<s.length; i++){
+     if(s.lastIndexOf(s[i]) === s.indexOf(s[i])){
+        return i
+     }
+  }
+  return -1
 };
+///
 
