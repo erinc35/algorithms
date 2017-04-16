@@ -1445,4 +1445,21 @@ var firstUniqChar = function(s) {
   return -1
 };
 ///
+var maxProfit = function(prices) {
+    var max = 0;
+    var sp=0
+
+    for(var i=prices.length-1; i>=0; i--){
+      if(sp<prices[i]){
+        sp = prices[i]
+      }else{
+        if((sp - prices[i]) > max){
+          max = sp- prices[i];
+        }
+      }
+    }
+    return max
+};
+///
+
 
