@@ -1461,5 +1461,11 @@ var maxProfit = function(prices) {
     return max
 };
 ///
+//create object for words with occurences
 
+var obj = {}
 
+for(var i=0; i<arr.length;i++){
+  obj[arr[i]] = (obj[arr[i]] || 0) + 1;
+}
+///
