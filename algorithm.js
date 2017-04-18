@@ -1469,30 +1469,30 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var isIsomorphic = function(s, t) {
-    var len = s.length,
-        mapS = {},
-        mapT = {},
-        curS,
-        curT,
-        i;
+var longestCommonPrefix = function(strs) {
+    var len = strs.length,
+        len1,
+        curChar,
+        i,
+        j;
 
-    for (i = 0; i < len; i++) {
-        curS = s.charAt(i);
-        curT = t.charAt(i);
+    if (len === 0) {
+        return '';
+    }
 
-        if (!mapS.hasOwnProperty(curS)) {
-            mapS[curS] = curT;
-        } else if (mapS[curS] !== curT) {
-            return false;
-        }
+    len1 = strs[0].length;
+    for (i = 0; i < len1; i++) {
+        curChar = strs[0].charAt(i);
+        for (j = 1; j < len; j++) {
+            if (strs[j].charAt(i) !== curChar) {
+                return i === 0? '' : strs[0].substr(0, i);
+            }
 
-        if (!mapT.hasOwnProperty(curT)) {
-            mapT[curT] = curS;
-        } else if (mapT[curT] !== curS) {
-            return false;
+            if (strs[j].length === i) {
+                return strs[j];
+            }
         }
     }
 
-    return true;
+    return strs[0];
 };
