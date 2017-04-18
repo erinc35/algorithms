@@ -1469,3 +1469,30 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
+var isIsomorphic = function(s, t) {
+    var len = s.length,
+        mapS = {},
+        mapT = {},
+        curS,
+        curT,
+        i;
+
+    for (i = 0; i < len; i++) {
+        curS = s.charAt(i);
+        curT = t.charAt(i);
+
+        if (!mapS.hasOwnProperty(curS)) {
+            mapS[curS] = curT;
+        } else if (mapS[curS] !== curT) {
+            return false;
+        }
+
+        if (!mapT.hasOwnProperty(curT)) {
+            mapT[curT] = curS;
+        } else if (mapT[curT] !== curS) {
+            return false;
+        }
+    }
+
+    return true;
+};
