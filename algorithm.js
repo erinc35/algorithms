@@ -1469,30 +1469,22 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var longestCommonPrefix = function(strs) {
-    var len = strs.length,
-        len1,
-        curChar,
-        i,
-        j;
+var integerBreak = function(n) {
+    var dp = [],
+        i;
 
-    if (len === 0) {
-        return '';
+    if (n <= 3) {
+        return n - 1;
     }
 
-    len1 = strs[0].length;
-    for (i = 0; i < len1; i++) {
-        curChar = strs[0].charAt(i);
-        for (j = 1; j < len; j++) {
-            if (strs[j].charAt(i) !== curChar) {
-                return i === 0? '' : strs[0].substr(0, i);
-            }
+    dp[0] = 0;
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 3;
 
-            if (strs[j].length === i) {
-                return strs[j];
-            }
-        }
+    for (i = 4; i <= n; i++) {
+        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
     }
 
-    return strs[0];
+    return dp[n];
 };
