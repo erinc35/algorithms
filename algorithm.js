@@ -1469,16 +1469,30 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var lengthOfLastWord = function(s) {
-    var arr = s.split(' '),
-        len = arr.length,
+var largestRectangleArea = function(heights) {
+    var len = heights.length,
+        stack = [],
+        max = 0,
+        cur,
         i;
 
-    for (i = len - 1; i >= 0; i--) {
-        if (arr[i] !== '' && arr[i] !== ' ') {
-            return arr[i].length;
-        }
+    if (len === 0) {
+        return 0;
     }
 
-    return 0;
+    heights[len] = 0;
+    len++;
+
+    for (i = 0; i < len;) {
+        if (stack.length > 0 && heights[i] <= heights[stack[stack.length - 1]]) {
+            cur = stack.pop();
+            max = Math.max(max, heights[cur] * (stack.length === 0 ? i : i - stack[stack.length - 1] - 1));
+            continue;
+        }
+
+        stack.push(i);
+        i++;
+    }
+
+    return max;
 };
