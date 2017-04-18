@@ -1469,45 +1469,16 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var letterCombinations = function(digits) {
-    var len = digits.length,
-        result = [],
-        map = {
-            '1': [''],
-            '2': ['a', 'b', 'c'],
-            '3': ['d', 'e', 'f'],
-            '4': ['g', 'h', 'i'],
-            '5': ['j', 'k', 'l'],
-            '6': ['m', 'n', 'o'],
-            '7': ['p', 'q', 'r', 's'],
-            '8': ['t', 'u', 'v'],
-            '9': ['w', 'x', 'y', 'z']
-        };
+var lengthOfLastWord = function(s) {
+    var arr = s.split(' '),
+        len = arr.length,
+        i;
 
-    if (len === 0) {
-        return result;
-    }
-
-    return genStrings([''], 0, len, digits, map);
-};
-
-function genStrings(curArr, index, len, digits, map) {
-    var length = curArr.length,
-        next = [],
-        temp,
-        i,
-        j;
-
-    if (index === len) {
-        return curArr;
-    }
-
-    for (i = 0; i < length; i++) {
-        for (j = 0; j < map[digits.charAt(index)].length; j++) {
-            temp = curArr[i] + map[digits.charAt(index)][j];
-            next.push(temp);
+    for (i = len - 1; i >= 0; i--) {
+        if (arr[i] !== '' && arr[i] !== ' ') {
+            return arr[i].length;
         }
     }
 
-    return genStrings(next, index + 1, len, digits, map);
-}
+    return 0;
+};
