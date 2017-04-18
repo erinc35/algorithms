@@ -1469,31 +1469,45 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var detectCycle = function(head) {
-    if (head === null) {
-        return null;
-    }
-    var slow = head,
-        fast = head,
-        met = false;
+var letterCombinations = function(digits) {
+    var len = digits.length,
+        result = [],
+        map = {
+            '1': [''],
+            '2': ['a', 'b', 'c'],
+            '3': ['d', 'e', 'f'],
+            '4': ['g', 'h', 'i'],
+            '5': ['j', 'k', 'l'],
+            '6': ['m', 'n', 'o'],
+            '7': ['p', 'q', 'r', 's'],
+            '8': ['t', 'u', 'v'],
+            '9': ['w', 'x', 'y', 'z']
+        };
 
-    while (fast !== null && fast.next !== null) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow === fast) {
-            met = true;
-            break;
-        }
+    if (len === 0) {
+        return result;
     }
 
-    if (met) {
-        fast = head;
-        while (fast !== slow) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return fast;
-    } else {
-        return null;
-    }
+    return genStrings([''], 0, len, digits, map);
 };
+
+function genStrings(curArr, index, len, digits, map) {
+    var length = curArr.length,
+        next = [],
+        temp,
+        i,
+        j;
+
+    if (index === len) {
+        return curArr;
+    }
+
+    for (i = 0; i < length; i++) {
+        for (j = 0; j < map[digits.charAt(index)].length; j++) {
+            temp = curArr[i] + map[digits.charAt(index)][j];
+            next.push(temp);
+        }
+    }
+
+    return genStrings(next, index + 1, len, digits, map);
+}
