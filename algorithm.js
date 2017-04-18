@@ -1469,22 +1469,31 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var integerBreak = function(n) {
-    var dp = [],
-        i;
+var detectCycle = function(head) {
+    if (head === null) {
+        return null;
+    }
+    var slow = head,
+        fast = head,
+        met = false;
 
-    if (n <= 3) {
-        return n - 1;
+    while (fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast) {
+            met = true;
+            break;
+        }
     }
 
-    dp[0] = 0;
-    dp[1] = 1;
-    dp[2] = 2;
-    dp[3] = 3;
-
-    for (i = 4; i <= n; i++) {
-        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
+    if (met) {
+        fast = head;
+        while (fast !== slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return fast;
+    } else {
+        return null;
     }
-
-    return dp[n];
 };
