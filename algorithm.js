@@ -1490,30 +1490,24 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var jump = function(nums) {
-    var len = nums.length,
-        result = [];
+var insertionSortList = function(head) {
+    var dummy = new ListNode(0),
+        pre = dummy,
+        cur = head,
+        next;
 
-    result[0] = Number.MAX_VALUE;
-    helper(0, nums, 0, 0, result);
+    while(cur !== null) {
+        next = cur.next;
+        pre = dummy;
 
-    return result[0];
+        while (pre.next && pre.next.val <= cur.val) {
+            pre = pre.next;
+        }
+
+        cur.next = pre.next;
+        pre.next = cur;
+        cur = next;
+    }
+
+    return dummy.next;
 };
-
-function helper(index, nums, cover, step, result) {
-    if (cover < index || step > result[0]) {
-        return;
-    }
-
-    if (cover >= nums.length - 1) {
-        result[0] = Math.min(result[0], step);
-        return;
-    }
-
-    var i = index;
-
-    for (i = index; i <= cover; i++) {
-        helper(i + 1, nums, Math.max(cover, nums[i] + i), step + 1, result);
-    }
-}
-
