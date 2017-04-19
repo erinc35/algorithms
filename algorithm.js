@@ -1490,24 +1490,16 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var insertionSortList = function(head) {
-    var dummy = new ListNode(0),
-        pre = dummy,
-        cur = head,
-        next;
+var hasCycle = function(head) {
+    var slow = head,
+        fast = head;
 
-    while(cur !== null) {
-        next = cur.next;
-        pre = dummy;
-
-        while (pre.next && pre.next.val <= cur.val) {
-            pre = pre.next;
+    while(fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast || (fast && fast.next === slow)) {
+            return true;
         }
-
-        cur.next = pre.next;
-        pre.next = cur;
-        cur = next;
     }
-
-    return dummy.next;
+    return false;
 };
