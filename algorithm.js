@@ -1469,30 +1469,24 @@ for(var i=0; i<arr.length;i++){
   obj[arr[i]] = (obj[arr[i]] || 0) + 1;
 }
 ///
-var largestRectangleArea = function(heights) {
-    var len = heights.length,
-        stack = [],
-        max = 0,
-        cur,
-        i;
+var text = "On a long and lonesome highway east of Omaha you can one old listen to the engines moanin out it is one old song you can think about the woman or the girl you knew the night before but your thoughts will soon be wanderin the way they always do"
 
-    if (len === 0) {
-        return 0;
-    }
+function commonPair(text){
+  var hash = {};
+  var wordsArray = text.split(" ")
 
-    heights[len] = 0;
-    len++;
+  for(var i=0; i<wordsArray.length; i++){
+    var pair=[wordsArray[i], wordsArray[i+1]]
+    hash[pair] = (hash[pair] || 0) + 1
+  }
 
-    for (i = 0; i < len;) {
-        if (stack.length > 0 && heights[i] <= heights[stack[stack.length - 1]]) {
-            cur = stack.pop();
-            max = Math.max(max, heights[cur] * (stack.length === 0 ? i : i - stack[stack.length - 1] - 1));
-            continue;
-        }
+  var values = Object.values(hash)
+  for(var k in hash){
+    if(hash[k] === Math.max(...values)) return k
+  }
+}
 
-        stack.push(i);
-        i++;
-    }
 
-    return max;
-};
+commonPair(text)
+
+///
