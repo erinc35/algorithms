@@ -1490,54 +1490,38 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var findMissingRanges = function(nums, lower, upper) {
-    let start, prev, end;
-    let result = [];
-    const len = nums.length;
+var minPathSum = function(grid) {
+    var result = [],
+        rowL = grid.length,
+        columnL,
+        i,
+        j;
 
-    if (len === 0) {
-        if (lower === upper) {
-            result.push(lower + '');
-        } else {
-            result.push(lower + '->' + upper);
-        }
-
+    if (rowL === 0) {
         return result;
     }
 
-    start = nums[0];
-    prev = nums[0];
+    columnL = grid[0].length;
 
-    if (start > lower) {
-        start--;
+    for (i = 0; i < rowL; i++) {
+        result.push(new Array(columnL));
+    }
 
-        if (lower === start) {
-            result.push(lower + '');
-        } else {
-            result.push(lower + '->' + start);
+    result[0][0] = grid[0][0];
+
+    for (i = 1; i < columnL; i++) {
+        result[0][i] = grid[0][i] + result[0][i - 1];
+    }
+
+    for (i = 1; i < rowL; i++) {
+        result[i][0] = grid[i][0] + result[i - 1][0];
+    }
+
+    for (i = 1; i < rowL; i++) {
+        for (j = 1; j < columnL; j++) {
+            result[i][j] = Math.min(result[i - 1][j], result[i][j - 1]) + grid[i][j];
         }
     }
 
-    for (let i = 1; i < len; i++) {
-        if (nums[i] > prev + 1) {
-            start = prev + 1;
-            end = nums[i] - 1;
-
-            if (start === end) {
-                result.push(start + '');
-            } else {
-                result.push(start + '->' + end);
-            }
-        }
-
-        prev = nums[i];
-    }
-
-    if (prev + 1 === upper) {
-        result.push(upper + '');
-    } else if (prev + 1 < upper) {
-        result.push(prev + 1 + '->' + upper);
-    }
-
-    return result;
+    return result[rowL - 1][columnL - 1];
 };
