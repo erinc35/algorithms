@@ -1490,30 +1490,21 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var longestCommonPrefix = function(strs) {
-    var len = strs.length,
-        len1,
-        curChar,
-        i,
-        j;
+var moveZeroes = function(nums) {
+    var len = nums.length,
+        curIndex = 0,
+        i;
 
-    if (len === 0) {
-        return '';
-    }
-
-    len1 = strs[0].length;
-    for (i = 0; i < len1; i++) {
-        curChar = strs[0].charAt(i);
-        for (j = 1; j < len; j++) {
-            if (strs[j].charAt(i) !== curChar) {
-                return i === 0? '' : strs[0].substr(0, i);
-            }
-
-            if (strs[j].length === i) {
-                return strs[j];
-            }
+    for (i = 0; i < len; i++) {
+        if (nums[i] === 0) {
+            continue;
         }
+
+        nums[curIndex] = nums[i];
+        curIndex++;
     }
 
-    return strs[0];
+    for (i = curIndex; i < len; i++) {
+        nums[i] = 0;
+    }
 };
