@@ -1490,21 +1490,54 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var moveZeroes = function(nums) {
-    var len = nums.length,
-        curIndex = 0,
-        i;
+var findMissingRanges = function(nums, lower, upper) {
+    let start, prev, end;
+    let result = [];
+    const len = nums.length;
 
-    for (i = 0; i < len; i++) {
-        if (nums[i] === 0) {
-            continue;
+    if (len === 0) {
+        if (lower === upper) {
+            result.push(lower + '');
+        } else {
+            result.push(lower + '->' + upper);
         }
 
-        nums[curIndex] = nums[i];
-        curIndex++;
+        return result;
     }
 
-    for (i = curIndex; i < len; i++) {
-        nums[i] = 0;
+    start = nums[0];
+    prev = nums[0];
+
+    if (start > lower) {
+        start--;
+
+        if (lower === start) {
+            result.push(lower + '');
+        } else {
+            result.push(lower + '->' + start);
+        }
     }
+
+    for (let i = 1; i < len; i++) {
+        if (nums[i] > prev + 1) {
+            start = prev + 1;
+            end = nums[i] - 1;
+
+            if (start === end) {
+                result.push(start + '');
+            } else {
+                result.push(start + '->' + end);
+            }
+        }
+
+        prev = nums[i];
+    }
+
+    if (prev + 1 === upper) {
+        result.push(upper + '');
+    } else if (prev + 1 < upper) {
+        result.push(prev + 1 + '->' + upper);
+    }
+
+    return result;
 };
