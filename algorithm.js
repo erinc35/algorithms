@@ -1490,30 +1490,54 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var longestCommonPrefix = function(strs) {
-    var len = strs.length,
-        len1,
-        curChar,
-        i,
-        j;
+var findMissingRanges = function(nums, lower, upper) {
+    let start, prev, end;
+    let result = [];
+    const len = nums.length;
 
     if (len === 0) {
-        return '';
+        if (lower === upper) {
+            result.push(lower + '');
+        } else {
+            result.push(lower + '->' + upper);
+        }
+
+        return result;
     }
 
-    len1 = strs[0].length;
-    for (i = 0; i < len1; i++) {
-        curChar = strs[0].charAt(i);
-        for (j = 1; j < len; j++) {
-            if (strs[j].charAt(i) !== curChar) {
-                return i === 0? '' : strs[0].substr(0, i);
-            }
+    start = nums[0];
+    prev = nums[0];
 
-            if (strs[j].length === i) {
-                return strs[j];
-            }
+    if (start > lower) {
+        start--;
+
+        if (lower === start) {
+            result.push(lower + '');
+        } else {
+            result.push(lower + '->' + start);
         }
     }
 
-    return strs[0];
+    for (let i = 1; i < len; i++) {
+        if (nums[i] > prev + 1) {
+            start = prev + 1;
+            end = nums[i] - 1;
+
+            if (start === end) {
+                result.push(start + '');
+            } else {
+                result.push(start + '->' + end);
+            }
+        }
+
+        prev = nums[i];
+    }
+
+    if (prev + 1 === upper) {
+        result.push(upper + '');
+    } else if (prev + 1 < upper) {
+        result.push(prev + 1 + '->' + upper);
+    }
+
+    return result;
 };
