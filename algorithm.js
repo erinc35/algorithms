@@ -1490,38 +1490,45 @@ function commonPair(text){
 commonPair(text)
 
 ///
-var minPathSum = function(grid) {
-    var result = [],
-        rowL = grid.length,
-        columnL,
-        i,
-        j;
+MinStack.prototype.push = function(x) {
+    var len = this.min.length;
+    if (this.arr.length === 0) {
+        this.min.push(x);
+    } else if (this.min[len - 1] >= x) {
+        this.min.push(x);
+    }
+    this.arr.push(x);
+};
 
-    if (rowL === 0) {
-        return result;
+/**
+ * @returns {void}
+ */
+MinStack.prototype.pop = function() {
+    var elem,
+        len = this.min.length;
+    if (this.arr.length > 0) {
+        elem = this.arr.pop();
+    }
+    if (elem === this.min[len - 1]) {
+        this.min.pop();
+    }
+};
+
+/**
+ * @returns {number}
+ */
+MinStack.prototype.top = function() {
+    var len = this.arr.length;
+    if (len > 0) {
+        return this.arr[len - 1];
     }
 
-    columnL = grid[0].length;
+};
 
-    for (i = 0; i < rowL; i++) {
-        result.push(new Array(columnL));
-    }
-
-    result[0][0] = grid[0][0];
-
-    for (i = 1; i < columnL; i++) {
-        result[0][i] = grid[0][i] + result[0][i - 1];
-    }
-
-    for (i = 1; i < rowL; i++) {
-        result[i][0] = grid[i][0] + result[i - 1][0];
-    }
-
-    for (i = 1; i < rowL; i++) {
-        for (j = 1; j < columnL; j++) {
-            result[i][j] = Math.min(result[i - 1][j], result[i][j - 1]) + grid[i][j];
-        }
-    }
-
-    return result[rowL - 1][columnL - 1];
+/**
+ * @returns {number}
+ */
+MinStack.prototype.getMin = function() {
+    var len = this.min.length;
+    return this.min[len - 1];
 };
