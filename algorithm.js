@@ -1489,29 +1489,15 @@ function commonPair(text){
 
 commonPair(text)
 
-///var minMeetingRooms = function(intervals) {
-    let start = [];
-    let end = [];
-    let len = intervals.length;
+/// EXCEL TITLE NUMBER
 
-    for (let i = 0; i < len; i++) {
-        start[i] = intervals[i].start;
-        end[i] = intervals[i].end;
+var titleToNumber = function(s) {
+    var len = s.length,
+        i,
+        result = 0;
+    for (i = 0; i < len; i++) {
+        result += Math.pow(26, len - i - 1) * (s.charAt(i).charCodeAt() - 'A'.charCodeAt() + 1);
     }
-
-    start.sort((a, b) => a - b);
-    end.sort((a, b) => a - b);
-
-    let rooms = 0;
-    let endIndex = 0;
-
-    for (let i = 0; i < len; i++) {
-        if (start[i] < end[endIndex]) {
-            rooms++;
-        } else {
-            endIndex++;
-        }
-    }
-
-    return rooms;
+    return result;
 };
+///
