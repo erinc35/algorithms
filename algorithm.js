@@ -1489,46 +1489,29 @@ function commonPair(text){
 
 commonPair(text)
 
-///var multiply = function(num1, num2) {
-    var len1 = num1.length,
-        len2 = num2.length,
-        result = [],
-        carry,
-        val,
-        arr1,
-        arr2,
-        i,
-        j;
+///var minMeetingRooms = function(intervals) {
+    let start = [];
+    let end = [];
+    let len = intervals.length;
 
-    for (i = 0; i < len1 + len2; i++) {
-        result.push(0);
+    for (let i = 0; i < len; i++) {
+        start[i] = intervals[i].start;
+        end[i] = intervals[i].end;
     }
 
-    arr1 = num1.split('').reverse();
-    arr2 = num2.split('').reverse();
+    start.sort((a, b) => a - b);
+    end.sort((a, b) => a - b);
 
-    for (i = 0; i < len1; i++) {
-        val = arr1[i] - '0';
-        carry = 0;
+    let rooms = 0;
+    let endIndex = 0;
 
-        for (j = 0; j < len2; j++) {
-            carry += val * (arr2[j] - '0') + result[i + j];
-            result[i + j] = carry % 10;
-            carry = parseInt(carry / 10);
-        }
-
-        if (carry !== 0) {
-            result[len2 + i] = carry;
+    for (let i = 0; i < len; i++) {
+        if (start[i] < end[endIndex]) {
+            rooms++;
+        } else {
+            endIndex++;
         }
     }
 
-    result = result.reverse();
-
-    i = 0;
-
-    while (i < len1 + len2 - 1 && result[i] === 0) {
-        i++;
-    }
-
-    return result.slice(i).join('');
+    return rooms;
 };
