@@ -1489,52 +1489,46 @@ function commonPair(text){
 
 commonPair(text)
 
-///var nextPermutation = function(nums) {
-    var len = nums.length,
-        partiIndex,
-        switchIndex,
-        cur,
+///var multiply = function(num1, num2) {
+    var len1 = num1.length,
+        len2 = num2.length,
+        result = [],
+        carry,
+        val,
+        arr1,
+        arr2,
         i,
-        k;
+        j;
 
-    if (len === 0 || len === 1) {
-        return;
+    for (i = 0; i < len1 + len2; i++) {
+        result.push(0);
     }
 
-    //find the num which breaks the increasing from the end
-    for (i = len - 1; i > 0; i--) {
-        if (nums[i] > nums[i - 1]) {
-            partiIndex = i - 1;
-            break;
+    arr1 = num1.split('').reverse();
+    arr2 = num2.split('').reverse();
+
+    for (i = 0; i < len1; i++) {
+        val = arr1[i] - '0';
+        carry = 0;
+
+        for (j = 0; j < len2; j++) {
+            carry += val * (arr2[j] - '0') + result[i + j];
+            result[i + j] = carry % 10;
+            carry = parseInt(carry / 10);
+        }
+
+        if (carry !== 0) {
+            result[len2 + i] = carry;
         }
     }
 
-    if (partiIndex === undefined) {
-        for (i = 0; i < len/2 ; i++) {
-            cur = nums[i];
-            nums[i] = nums[len - i - 1];
-            nums[len - i - 1] = cur;
-        }
-    } else {
-        //find the number that it can be switched with
-        cur = nums[partiIndex];
-        for(i = len - 1; i > partiIndex; i--) {
-            if (nums[i] > cur) {
-                switchIndex = i;
-                break;
-            }
-        }
+    result = result.reverse();
 
-        nums[partiIndex] = nums[switchIndex];
-        nums[switchIndex] = cur;
+    i = 0;
 
-        for (i = 0; i < (len - 1 - partiIndex)/2 ; i++) {
-            k = i + partiIndex + 1;
-            cur = nums[k];
-            nums[k] = nums[len - 1 - i];
-            nums[len - 1 - i] = cur;
-        }
-
+    while (i < len1 + len2 - 1 && result[i] === 0) {
+        i++;
     }
 
+    return result.slice(i).join('');
 };
