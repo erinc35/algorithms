@@ -1489,7 +1489,52 @@ function commonPair(text){
 
 commonPair(text)
 
-///
-var canWinNim = function(n) {
-    return n % 4 > 0
+///var nextPermutation = function(nums) {
+    var len = nums.length,
+        partiIndex,
+        switchIndex,
+        cur,
+        i,
+        k;
+
+    if (len === 0 || len === 1) {
+        return;
+    }
+
+    //find the num which breaks the increasing from the end
+    for (i = len - 1; i > 0; i--) {
+        if (nums[i] > nums[i - 1]) {
+            partiIndex = i - 1;
+            break;
+        }
+    }
+
+    if (partiIndex === undefined) {
+        for (i = 0; i < len/2 ; i++) {
+            cur = nums[i];
+            nums[i] = nums[len - i - 1];
+            nums[len - i - 1] = cur;
+        }
+    } else {
+        //find the number that it can be switched with
+        cur = nums[partiIndex];
+        for(i = len - 1; i > partiIndex; i--) {
+            if (nums[i] > cur) {
+                switchIndex = i;
+                break;
+            }
+        }
+
+        nums[partiIndex] = nums[switchIndex];
+        nums[switchIndex] = cur;
+
+        for (i = 0; i < (len - 1 - partiIndex)/2 ; i++) {
+            k = i + partiIndex + 1;
+            cur = nums[k];
+            nums[k] = nums[len - 1 - i];
+            nums[len - 1 - i] = cur;
+        }
+
+    }
+
 };
