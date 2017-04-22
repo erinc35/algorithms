@@ -1501,3 +1501,21 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
+var countBits = function(num) {
+    var result = [],
+        pow = 1,
+        i;
+
+    result[0] = 0;
+
+    for (i = 1; i < num; i++) {
+        if (i === pow) {
+            result[i] = 1;
+            pow *= 2;
+        } else {
+            result[i] = result[pow] + result[i - pow];
+        }
+    }
+
+    return result;
+};
