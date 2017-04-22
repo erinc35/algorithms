@@ -1501,24 +1501,40 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
-var countPrimes = function(n) {
-    var i,
+var diffWaysToCompute = function(input) {
+    var len = input.length,
+        result = [],
+        left,
+        right,
+        curChar,
+        i,
         j,
-        result = 0,
-        prime;
-    if (n === 1) {
-        return 0;
-    }
-    for (i = 2; i < n; i++) {
-        prime = true;
-        for (j = 2; j*j <= i; j++) {
-            if (i%j === 0) {
-                prime = false;
-                break;
+        k;
+
+    for (i = 0; i < len; i++) {
+        curChar = input.charAt(i);
+
+        if (curChar === '+' || curChar === '-' || curChar === '*') {
+            left = diffWaysToCompute(input.substring(0, i));
+            right = diffWaysToCompute(input.substring(i + 1));
+
+            for (j = 0; j < left.length; j++) {
+                for (k = 0; k < right.length; k++) {
+                    if (curChar === '+') {
+                        result.push(left[j] + right[k]);
+                    } else if (curChar === '-') {
+                        result.push(left[j] - right[k]);
+                    } else {
+                        result.push(left[j] * right[k]);
+                    }
+                }
             }
         }
-        if (prime) {
-            result++;
-        }
     }
+
+    if (result.length === 0) {
+        result.push(parseInt(input));
+    }
+
     return result;
+};
