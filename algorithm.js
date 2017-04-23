@@ -1501,40 +1501,51 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
-var diffWaysToCompute = function(input) {
-    var len = input.length,
-        result = [],
-        left,
-        right,
-        curChar,
+var ladderLength = function(beginWord, endWord, wordList) {
+    var visit = {},
+        len = beginWord.length,
+        queue = [],
+        charArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+        curNode,
+        curStr,
+        tempStr,
+        tempNode,
         i,
-        j,
-        k;
+        j;
 
-    for (i = 0; i < len; i++) {
-        curChar = input.charAt(i);
+    curNode = new node(beginWord, 1);
+    visit[curNode.str] = true;
+    queue.push(curNode);
 
-        if (curChar === '+' || curChar === '-' || curChar === '*') {
-            left = diffWaysToCompute(input.substring(0, i));
-            right = diffWaysToCompute(input.substring(i + 1));
 
-            for (j = 0; j < left.length; j++) {
-                for (k = 0; k < right.length; k++) {
-                    if (curChar === '+') {
-                        result.push(left[j] + right[k]);
-                    } else if (curChar === '-') {
-                        result.push(left[j] - right[k]);
-                    } else {
-                        result.push(left[j] * right[k]);
-                    }
+    while (queue.length > 0) {
+        curNode = queue.shift();
+        curStr = curNode.str;
+        for (i = 0; i < len; i++) {
+            for (j = 0; j < 26; j++) {
+                if (charArr[j] === curStr.charAt(i)) {
+                    continue;
+                }
+
+                tempStr = curStr.substring(0, i) + charArr[j] + curStr.substring(i + 1, len);
+
+                if (tempStr === endWord) {
+                    return curNode.step + 1;
+                }
+
+                if (wordList.has(tempStr) && !visit.hasOwnProperty(tempStr)) {
+                    visit[tempStr] = true;
+                    tempNode = new node(tempStr, curNode.step + 1);
+                    queue.push(tempNode);
                 }
             }
         }
     }
 
-    if (result.length === 0) {
-        result.push(parseInt(input));
-    }
-
-    return result;
+    return 0;
 };
+
+function node(str, step) {
+    this.str = str;
+    this.step = step;
+}
