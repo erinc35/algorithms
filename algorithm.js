@@ -1501,48 +1501,33 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
-var wallsAndGates = function(rooms) {
-    let queue = [];
-    let rowLen = rooms.length;
-    const MAX_VALUE = 2147483647;
-    if (rowLen === 0) {
-        return;
+var swapPairs = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    let colLen = rooms[0].length;
+    var next = head.next,
+        result = next? next : head,
+        prevTail,
+        curHead,
+        nextHead;
 
-    for (let i = 0; i < rowLen; i++) {
-        for (let j = 0; j < colLen; j++) {
-            if (rooms[i][j] === 0) {
-                queue.push([i, j]);
-            }
+    curHead = head;
+
+    while(next) {
+        nextHead = next.next;
+
+        if (prevTail) {
+            prevTail.next = next;
         }
+
+        next.next = curHead;
+        curHead.next = nextHead;
+        prevTail = curHead;
+
+        curHead = nextHead;
+        next = curHead && curHead.next;
     }
 
-    while (queue.length > 0) {
-        const cur = queue.shift();
-        const row = cur[0];
-        const col = cur[1];
-        const val = rooms[row][col];
-
-        if (row + 1 < rowLen && rooms[row + 1][col] === MAX_VALUE) {
-            rooms[row + 1][col] = val + 1;
-            queue.push([row + 1, col])
-        }
-
-        if (row - 1 >= 0 && rooms[row - 1][col] === MAX_VALUE) {
-            rooms[row - 1][col] = val + 1;
-            queue.push([row - 1, col]);
-        }
-
-        if (col + 1 < colLen && rooms[row][col + 1] === MAX_VALUE) {
-            rooms[row][col + 1] = val + 1;
-            queue.push([row, col + 1]);
-        }
-
-        if (col - 1 >= 0 && rooms[row][col - 1] === MAX_VALUE) {
-            rooms[row][col - 1] = val + 1;
-            queue.push([row, col - 1]);
-        }
-    }
+    return result;
 };
