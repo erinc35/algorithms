@@ -1501,32 +1501,33 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
-var isAnagram = function(s, t) {
-    var len = s.length,
-        arr = {},
-        i;
-
-    if (t.length !== len) {
-        return false;
+var swapPairs = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    if (len === 0) {
-        return true;
-    }
+    var next = head.next,
+        result = next? next : head,
+        prevTail,
+        curHead,
+        nextHead;
 
-    for (i = 0; i < len; i++) {
-        if (!arr[s.charAt(i)]) {
-            arr[s.charAt(i)] = 1;
-        } else {
-            arr[s.charAt(i)]++;
+    curHead = head;
+
+    while(next) {
+        nextHead = next.next;
+
+        if (prevTail) {
+            prevTail.next = next;
         }
+
+        next.next = curHead;
+        curHead.next = nextHead;
+        prevTail = curHead;
+
+        curHead = nextHead;
+        next = curHead && curHead.next;
     }
 
-    for (i = 0; i < len; i++) {
-        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
-            return false;
-        }
-    }
-
-    return true;
+    return result;
 };
