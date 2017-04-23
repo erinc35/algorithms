@@ -1501,51 +1501,48 @@ var titleToNumber = function(s) {
     return result;
 };
 ///
-var ladderLength = function(beginWord, endWord, wordList) {
-    var visit = {},
-        len = beginWord.length,
-        queue = [],
-        charArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-        curNode,
-        curStr,
-        tempStr,
-        tempNode,
-        i,
-        j;
+var wallsAndGates = function(rooms) {
+    let queue = [];
+    let rowLen = rooms.length;
+    const MAX_VALUE = 2147483647;
+    if (rowLen === 0) {
+        return;
+    }
 
-    curNode = new node(beginWord, 1);
-    visit[curNode.str] = true;
-    queue.push(curNode);
+    let colLen = rooms[0].length;
 
-
-    while (queue.length > 0) {
-        curNode = queue.shift();
-        curStr = curNode.str;
-        for (i = 0; i < len; i++) {
-            for (j = 0; j < 26; j++) {
-                if (charArr[j] === curStr.charAt(i)) {
-                    continue;
-                }
-
-                tempStr = curStr.substring(0, i) + charArr[j] + curStr.substring(i + 1, len);
-
-                if (tempStr === endWord) {
-                    return curNode.step + 1;
-                }
-
-                if (wordList.has(tempStr) && !visit.hasOwnProperty(tempStr)) {
-                    visit[tempStr] = true;
-                    tempNode = new node(tempStr, curNode.step + 1);
-                    queue.push(tempNode);
-                }
+    for (let i = 0; i < rowLen; i++) {
+        for (let j = 0; j < colLen; j++) {
+            if (rooms[i][j] === 0) {
+                queue.push([i, j]);
             }
         }
     }
 
-    return 0;
-};
+    while (queue.length > 0) {
+        const cur = queue.shift();
+        const row = cur[0];
+        const col = cur[1];
+        const val = rooms[row][col];
 
-function node(str, step) {
-    this.str = str;
-    this.step = step;
-}
+        if (row + 1 < rowLen && rooms[row + 1][col] === MAX_VALUE) {
+            rooms[row + 1][col] = val + 1;
+            queue.push([row + 1, col])
+        }
+
+        if (row - 1 >= 0 && rooms[row - 1][col] === MAX_VALUE) {
+            rooms[row - 1][col] = val + 1;
+            queue.push([row - 1, col]);
+        }
+
+        if (col + 1 < colLen && rooms[row][col + 1] === MAX_VALUE) {
+            rooms[row][col + 1] = val + 1;
+            queue.push([row, col + 1]);
+        }
+
+        if (col - 1 >= 0 && rooms[row][col - 1] === MAX_VALUE) {
+            rooms[row][col - 1] = val + 1;
+            queue.push([row, col - 1]);
+        }
+    }
+};
