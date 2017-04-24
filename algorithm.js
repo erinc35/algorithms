@@ -1558,4 +1558,25 @@ var intersect = function(nums1, nums2) {
   }
   return results
 };
-///
+/// REVERSE LINKED LIST
+var reverseList = function(head) {
+    var cur = head,
+        next;
+
+    head = null;
+
+    while(cur) {
+        next = cur.next;
+        cur.next = head;
+
+        if (next) {
+            head = cur;
+            cur = next;
+        } else {
+            return cur;
+        }
+    }
+
+    return null;
+};
+
