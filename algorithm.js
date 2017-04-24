@@ -1580,3 +1580,22 @@ var reverseList = function(head) {
     return null;
 };
 
+// recursive
+
+var reverseList = function(head) {
+    if (!head) {
+        return null;
+    }
+
+    if (!head.next) {
+        return head;
+    }
+
+    var newHead = reverseList(head.next);
+
+    head.next.next = head;
+    head.next = null;
+
+    return newHead;
+};
+
