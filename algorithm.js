@@ -1531,3 +1531,31 @@ var swapPairs = function(head) {
 
     return result;
 };
+///INTERSECTION OF TWO ARRAYS
+var intersect = function(nums1, nums2) {
+  var hash = {};
+  var results = [];
+  var arr1, arr2;
+
+  if(nums1.length > nums2.length){
+    arr1 = nums2;
+    arr2 = nums1;
+  }else{
+    arr1 = nums1;
+    arr2 = nums2;
+  }
+
+  for(var i=0; i < arr2.length; i++){
+    hash[arr2[i]] = (hash[arr2[i]] || 0) + 1;
+  }
+  console.log(hash)
+
+  for(var j=0; j < arr1.length; j++){
+    if(hash[arr1[j]] > 0){
+      hash[arr1[j]]--
+      results.push(arr1[j])
+    }
+  }
+  return results
+};
+///
