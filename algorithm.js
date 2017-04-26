@@ -1613,36 +1613,68 @@ function main() {
 
 main();
 ///
-var singleNumber = function(nums) {
-    var arr = [],
-        len = nums.length,
-        num,
-        cur,
-        result = 0,
+var generateMatrix = function(n) {
+    var curNum = 1,
+        total = parseInt(n / 2),
+        result = [],
+        temp,
+        level,
         i,
         j;
 
-    for (i = 0; i < 32; i++) {
-        arr[i] = 0;
+    if (n === 0) {
+        return result;
     }
 
-    for (i = 0; i < len; i++) {
-        num = nums[i];
+    if (n === 1) {
+        temp = [1];
+        result.push(temp);
+        return result;
+    }
+    // initialization
+    for (i = 0; i < n; i++) {
+        temp = [];
+        for (j = 0; j < n; j++) {
+            temp.push(0);
+        }
 
-        cur = num;
-        for (j = 0; j < 32; j++) {
-            if (cur === 0) {
-                break;
+        result.push(temp);
+    }
+
+
+    for (level = 0; level < total; level++) {
+        // top
+        for (i = level; i < n - level - 1; i++) {
+            result[level][i] = curNum;
+
+            if (curNum === n * n) {
+                return result;
             }
 
-            arr[j] += (cur & 1);
+            curNum++;
+        }
 
-            cur = (cur >> 1);
+        // right
+        for (i = level; i < n - level - 1; i++) {
+            result[i][n - level - 1] = curNum;
+            curNum++;
+        }
+
+        // bottom
+        for (i = n - level - 1; i > level; i--) {
+            result[n - level - 1][i] = curNum;
+            curNum++;
+        }
+
+        // left
+        for (i = n - level - 1; i > level; i--) {
+            result[i][level] = curNum;
+            curNum++;
         }
     }
 
-    for (i = 0; i < 32; i++) {
-        result += ((arr[i] % 3) << i);
+    if (curNum === n * n) {
+        result[total][total] = curNum;
     }
 
     return result;
