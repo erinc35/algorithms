@@ -1599,27 +1599,27 @@ var reverseList = function(head) {
     return newHead;
 };
 //
-var productExceptSelf = function(nums) {
-    var result = [],
-        len = nums.length,
-        back = 1,
-        i;
+ar reverse = function(x) {
+    var isNegative = x < 0? true: false,
+        divider = 10,
+        result = 0,
+        reminder;
 
-    if (len === 0) {
-        return result;
+    if (isNegative) {
+        x = x * (-1);
     }
 
-    result[0] = 1;
+    while (x !== 0) {
+        reminder = x % 10;
+        result = result * 10 + reminder;
 
-    for (i = 1; i < len; i++) {
-        result[i] = result[i - 1] * nums[i - 1];
+        x = Math.floor(x / 10);
     }
 
-    for (i = len - 2; i >= 0; i--) {
-        back *= nums[i + 1];
-        result[i] *= back;
+    if (result >= 2147483648) {
+        return 0;
     }
 
-    return result;
+    return isNegative? result * (-1) : result;
 };
 
