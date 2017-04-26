@@ -1599,70 +1599,17 @@ var reverseList = function(head) {
     return newHead;
 };
 //
-var findItinerary = function(tickets) {
-    tickets.sort(function(a, b) {
-       if (a[0] < b[0]) {
-           return -1;
-       } else if (a[0] > b[0]) {
-           return 1;
-       } else {
-           if (a[1] < b[1]) {
-               return -1;
-           }
+function main() {
+    var n = 6;
+    var space, hash, stair;
 
-           return 1;
-       }
-    });
-
-    var map = {},
-        len = tickets.length,
-        result = [],
-        i;
-
-    for (i = 0; i < len; i++) {
-        if (map[tickets[i][0]] === undefined) {
-            map[tickets[i][0]] = {};
-            map[tickets[i][0]][tickets[i][1]] = 1;
-        } else {
-            if (map[tickets[i][0]][tickets[i][1]] === undefined) {
-                map[tickets[i][0]][tickets[i][1]] = 1;
-            } else {
-                map[tickets[i][0]][tickets[i][1]]++;
-            }
-        }
+    for (var i = 0; i < n; i++){
+        space = n - 1 - i;
+        hash = i + 1;
+        stair = ' '.repeat(space) + '#'.repeat(hash);
+        console.log(stair);
     }
-
-    result.push('JFK');
-
-    dfs(result, 0, len, map);
-
-    return result;
-};
-
-function dfs(result, index, len, map) {
-    if (index === len) {
-        return true;
-    }
-
-    var cur = result[index],
-        dests = map[cur],
-        count,
-        i;
-
-    for (var dest in dests) {
-        count = dests[dest];
-
-        if (count > 0) {
-            dests[dest]--;
-            result.push(dest);
-            if (dfs(result, index + 1, len, map)) {
-                return true;
-            }
-            dests[dest]++;
-            result.pop();
-        }
-    }
-
-    return false;
 }
+
+main();
 
