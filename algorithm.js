@@ -1598,4 +1598,8 @@ var reverseList = function(head) {
 
     return newHead;
 };
+//
+NumArray.prototype.sumRange = function(i, j) {
+    return this.sums[j + 1] - this.sums[i];
+};
 
