@@ -1599,27 +1599,70 @@ var reverseList = function(head) {
     return newHead;
 };
 //
-ar reverse = function(x) {
-    var isNegative = x < 0? true: false,
-        divider = 10,
-        result = 0,
-        reminder;
+var findItinerary = function(tickets) {
+    tickets.sort(function(a, b) {
+       if (a[0] < b[0]) {
+           return -1;
+       } else if (a[0] > b[0]) {
+           return 1;
+       } else {
+           if (a[1] < b[1]) {
+               return -1;
+           }
 
-    if (isNegative) {
-        x = x * (-1);
+           return 1;
+       }
+    });
+
+    var map = {},
+        len = tickets.length,
+        result = [],
+        i;
+
+    for (i = 0; i < len; i++) {
+        if (map[tickets[i][0]] === undefined) {
+            map[tickets[i][0]] = {};
+            map[tickets[i][0]][tickets[i][1]] = 1;
+        } else {
+            if (map[tickets[i][0]][tickets[i][1]] === undefined) {
+                map[tickets[i][0]][tickets[i][1]] = 1;
+            } else {
+                map[tickets[i][0]][tickets[i][1]]++;
+            }
+        }
     }
 
-    while (x !== 0) {
-        reminder = x % 10;
-        result = result * 10 + reminder;
+    result.push('JFK');
 
-        x = Math.floor(x / 10);
-    }
+    dfs(result, 0, len, map);
 
-    if (result >= 2147483648) {
-        return 0;
-    }
-
-    return isNegative? result * (-1) : result;
+    return result;
 };
+
+function dfs(result, index, len, map) {
+    if (index === len) {
+        return true;
+    }
+
+    var cur = result[index],
+        dests = map[cur],
+        count,
+        i;
+
+    for (var dest in dests) {
+        count = dests[dest];
+
+        if (count > 0) {
+            dests[dest]--;
+            result.push(dest);
+            if (dfs(result, index + 1, len, map)) {
+                return true;
+            }
+            dests[dest]++;
+            result.pop();
+        }
+    }
+
+    return false;
+}
 
