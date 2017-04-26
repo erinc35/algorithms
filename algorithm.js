@@ -1613,23 +1613,38 @@ function main() {
 
 main();
 ///
-var reverseWords = function(str) {
-    var result = '',
-        arr,
-        len,
-        i;
+var singleNumber = function(nums) {
+    var arr = [],
+        len = nums.length,
+        num,
+        cur,
+        result = 0,
+        i,
+        j;
 
-    if (str === null || str === '') {
-        return result;
+    for (i = 0; i < 32; i++) {
+        arr[i] = 0;
     }
-    arr = str.split(' ');
-    len = arr.length;
-    for(i = len - 1; i >= 0; i--) {
-        if (arr[i].length === 0) {
-            continue;
+
+    for (i = 0; i < len; i++) {
+        num = nums[i];
+
+        cur = num;
+        for (j = 0; j < 32; j++) {
+            if (cur === 0) {
+                break;
+            }
+
+            arr[j] += (cur & 1);
+
+            cur = (cur >> 1);
         }
-        result += ' ' + arr[i];
     }
-    return result.trim();
+
+    for (i = 0; i < 32; i++) {
+        result += ((arr[i] % 3) << i);
+    }
+
+    return result;
 };
 
