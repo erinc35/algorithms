@@ -1548,7 +1548,6 @@ var intersect = function(nums1, nums2) {
   for(var i=0; i < arr2.length; i++){
     hash[arr2[i]] = (hash[arr2[i]] || 0) + 1;
   }
-  console.log(hash)
 
   for(var j=0; j < arr1.length; j++){
     if(hash[arr1[j]] > 0){
@@ -1613,70 +1612,27 @@ function main() {
 
 main();
 ///
-var generateMatrix = function(n) {
-    var curNum = 1,
-        total = parseInt(n / 2),
-        result = [],
-        temp,
-        level,
-        i,
-        j;
+var subsets = function(nums) {
+    var result = [],
+        len = nums.length;
 
-    if (n === 0) {
-        return result;
-    }
+    nums.sort(function(a, b) {
+        return a - b;
+    });
 
-    if (n === 1) {
-        temp = [1];
-        result.push(temp);
-        return result;
-    }
-    // initialization
-    for (i = 0; i < n; i++) {
-        temp = [];
-        for (j = 0; j < n; j++) {
-            temp.push(0);
-        }
-
-        result.push(temp);
-    }
-
-
-    for (level = 0; level < total; level++) {
-        // top
-        for (i = level; i < n - level - 1; i++) {
-            result[level][i] = curNum;
-
-            if (curNum === n * n) {
-                return result;
-            }
-
-            curNum++;
-        }
-
-        // right
-        for (i = level; i < n - level - 1; i++) {
-            result[i][n - level - 1] = curNum;
-            curNum++;
-        }
-
-        // bottom
-        for (i = n - level - 1; i > level; i--) {
-            result[n - level - 1][i] = curNum;
-            curNum++;
-        }
-
-        // left
-        for (i = n - level - 1; i > level; i--) {
-            result[i][level] = curNum;
-            curNum++;
-        }
-    }
-
-    if (curNum === n * n) {
-        result[total][total] = curNum;
-    }
+    helper(nums, 0, len - 1, [], result);
 
     return result;
 };
 
+function helper(nums, start, end, curArr, result) {
+    result.push(curArr);
+
+    var i;
+
+    for (i = start; i <= end; i++) {
+        curArr.push(nums[i]);
+        helper(nums, i + 1, end, curArr.concat(), result);
+        curArr.pop();
+    }
+}
