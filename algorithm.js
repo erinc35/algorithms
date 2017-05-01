@@ -1612,45 +1612,69 @@ function main() {
 
 main();
 ///
-var uniquePathsWithObstacles = function(obstacle) {
-    var rLen = obstacle.length,
-        matrix = [],
-        cLen,
+var generateMatrix = function(n) {
+    var curNum = 1,
+        total = parseInt(n / 2),
+        result = [],
+        temp,
+        level,
         i,
         j;
 
-    if (rLen === 0) {
-        return 0;
+    if (n === 0) {
+        return result;
     }
 
-    cLen = obstacle[0].length;
+    if (n === 1) {
+        temp = [1];
+        result.push(temp);
+        return result;
+    }
+    // initialization
+    for (i = 0; i < n; i++) {
+        temp = [];
+        for (j = 0; j < n; j++) {
+            temp.push(0);
+        }
 
-    if (obstacle[0][0] === 1) {
-        return 0;
+        result.push(temp);
     }
 
-    for (i = 0; i < rLen; i++) {
-        matrix.push(new Array(cLen));
-    }
 
-    matrix[0][0] = 1;
-    for (i = 1; i < cLen; i++) {
-        matrix[0][i] = (obstacle[0][i] || !matrix[0][i - 1])? 0 : 1;
-    }
+    for (level = 0; level < total; level++) {
+        // top
+        for (i = level; i < n - level - 1; i++) {
+            result[level][i] = curNum;
 
-    for (i = 1; i < rLen; i++) {
-        matrix[i][0] = (obstacle[i][0] || !matrix[i - 1][0])? 0 : 1;
-    }
-
-    for (i = 1; i < rLen; i++) {
-        for (j = 1; j < cLen; j++) {
-            if (obstacle[i][j]) {
-                matrix[i][j] = 0;
-            } else {
-                matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1];
+            if (curNum === n * n) {
+                return result;
             }
+
+            curNum++;
+        }
+
+        // right
+        for (i = level; i < n - level - 1; i++) {
+            result[i][n - level - 1] = curNum;
+            curNum++;
+        }
+
+        // bottom
+        for (i = n - level - 1; i > level; i--) {
+            result[n - level - 1][i] = curNum;
+            curNum++;
+        }
+
+        // left
+        for (i = n - level - 1; i > level; i--) {
+            result[i][level] = curNum;
+            curNum++;
         }
     }
 
-    return matrix[rLen - 1][cLen - 1];
+    if (curNum === n * n) {
+        result[total][total] = curNum;
+    }
+
+    return result;
 };
