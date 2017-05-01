@@ -1612,65 +1612,32 @@ function main() {
 
 main();
 ///
-var reorderList = function(head) {
-    var fast = head,
-        slow = head,
-        next1,
-        next2,
-        midHead;
+var isAnagram = function(s, t) {
+    var len = s.length,
+        arr = {},
+        i;
 
-    if (!head || !head.next) {
-        return;
+    if (t.length !== len) {
+        return false;
     }
 
-    while (fast && fast.next) {
-        fast = fast.next.next;
-        slow = slow.next;
+    if (len === 0) {
+        return true;
     }
 
-    if (fast) {
-        midHead = reverse(slow.next);
-    } else {
-        midHead = reverse(slow);
+    for (i = 0; i < len; i++) {
+        if (!arr[s.charAt(i)]) {
+            arr[s.charAt(i)] = 1;
+        } else {
+            arr[s.charAt(i)]++;
+        }
     }
 
-    fast = head;
-    slow = midHead;
-
-    while(fast && slow) {
-        next1 = fast.next;
-        next2 = slow.next;
-
-        slow.next = fast.next;
-        fast.next = slow;
-
-        fast = next1;
-        slow = next2;
+    for (i = 0; i < len; i++) {
+        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
+            return false;
+        }
     }
 
-    if (fast) {
-        fast.next = null;
-    }
+    return true;
 };
-
-function reverse(head) {
-    var dummyNode = new ListNode(0),
-        prev = dummyNode,
-        node,
-        next;
-
-    dummyNode.next = head;
-
-    node = head.next;
-    head.next = null;
-
-    while (node) {
-        next = node.next;
-        node.next = prev.next;
-        prev.next = node;
-
-        node = next;
-    }
-
-    return dummyNode.next;
-}
