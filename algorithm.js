@@ -1612,26 +1612,45 @@ function main() {
 
 main();
 ///
-var isPalindrome = function(s) {
-    var len = s.length,
-        str,
-        i;
+var uniquePathsWithObstacles = function(obstacle) {
+    var rLen = obstacle.length,
+        matrix = [],
+        cLen,
+        i,
+        j;
 
-    if (len === 0) {
-        return true;
+    if (rLen === 0) {
+        return 0;
     }
 
-    str = s.replace(/\W/g, '').toLowerCase();
-    len = str.length;
+    cLen = obstacle[0].length;
 
-    if (len === 0) {
-        return true;
+    if (obstacle[0][0] === 1) {
+        return 0;
     }
 
-    for (i = 0; i < len/2; i++) {
-         if (str.charAt(i) !== str.charAt(len - 1 - i)) {
-             return false;
-         }
+    for (i = 0; i < rLen; i++) {
+        matrix.push(new Array(cLen));
     }
-    return true;
+
+    matrix[0][0] = 1;
+    for (i = 1; i < cLen; i++) {
+        matrix[0][i] = (obstacle[0][i] || !matrix[0][i - 1])? 0 : 1;
+    }
+
+    for (i = 1; i < rLen; i++) {
+        matrix[i][0] = (obstacle[i][0] || !matrix[i - 1][0])? 0 : 1;
+    }
+
+    for (i = 1; i < rLen; i++) {
+        for (j = 1; j < cLen; j++) {
+            if (obstacle[i][j]) {
+                matrix[i][j] = 0;
+            } else {
+                matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1];
+            }
+        }
+    }
+
+    return matrix[rLen - 1][cLen - 1];
 };
