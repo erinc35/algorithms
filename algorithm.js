@@ -1612,32 +1612,26 @@ function main() {
 
 main();
 ///
-var isAnagram = function(s, t) {
+var isPalindrome = function(s) {
     var len = s.length,
-        arr = {},
+        str,
         i;
-
-    if (t.length !== len) {
-        return false;
-    }
 
     if (len === 0) {
         return true;
     }
 
-    for (i = 0; i < len; i++) {
-        if (!arr[s.charAt(i)]) {
-            arr[s.charAt(i)] = 1;
-        } else {
-            arr[s.charAt(i)]++;
-        }
+    str = s.replace(/\W/g, '').toLowerCase();
+    len = str.length;
+
+    if (len === 0) {
+        return true;
     }
 
-    for (i = 0; i < len; i++) {
-        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
-            return false;
-        }
+    for (i = 0; i < len/2; i++) {
+         if (str.charAt(i) !== str.charAt(len - 1 - i)) {
+             return false;
+         }
     }
-
     return true;
 };
