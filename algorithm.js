@@ -1612,69 +1612,26 @@ function main() {
 
 main();
 ///
-var generateMatrix = function(n) {
-    var curNum = 1,
-        total = parseInt(n / 2),
-        result = [],
-        temp,
-        level,
-        i,
-        j;
-
-    if (n === 0) {
-        return result;
+var oddEvenList = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    if (n === 1) {
-        temp = [1];
-        result.push(temp);
-        return result;
-    }
-    // initialization
-    for (i = 0; i < n; i++) {
-        temp = [];
-        for (j = 0; j < n; j++) {
-            temp.push(0);
-        }
+    var oddHead = head,
+        evenHead = head.next,
+        oddTail = oddHead,
+        evenTail = evenHead,
+        node = head.next;
 
-        result.push(temp);
-    }
-
-
-    for (level = 0; level < total; level++) {
-        // top
-        for (i = level; i < n - level - 1; i++) {
-            result[level][i] = curNum;
-
-            if (curNum === n * n) {
-                return result;
-            }
-
-            curNum++;
-        }
-
-        // right
-        for (i = level; i < n - level - 1; i++) {
-            result[i][n - level - 1] = curNum;
-            curNum++;
-        }
-
-        // bottom
-        for (i = n - level - 1; i > level; i--) {
-            result[n - level - 1][i] = curNum;
-            curNum++;
-        }
-
-        // left
-        for (i = n - level - 1; i > level; i--) {
-            result[i][level] = curNum;
-            curNum++;
-        }
+    while (node && node.next) {
+        oddTail.next = node.next;
+        evenTail.next = node.next.next;
+        oddTail = oddTail.next;
+        evenTail = evenTail.next;
+        node = oddTail.next;
     }
 
-    if (curNum === n * n) {
-        result[total][total] = curNum;
-    }
+    oddTail.next = evenHead;
 
-    return result;
+    return oddHead;
 };
