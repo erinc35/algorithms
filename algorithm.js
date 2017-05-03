@@ -1612,26 +1612,35 @@ function main() {
 
 main();
 ///
-var oddEvenList = function(head) {
-    if (head === null) {
-        return null;
+var minSubArrayLen = function(s, nums) {
+    var len = nums.length,
+        left = 0,
+        right = 0,
+        sum = 0,
+        result = Number.MAX_VALUE;
+
+    if (len === 0) {
+        return 0;
     }
 
-    var oddHead = head,
-        evenHead = head.next,
-        oddTail = oddHead,
-        evenTail = evenHead,
-        node = head.next;
+    sum += nums[left];
 
-    while (node && node.next) {
-        oddTail.next = node.next;
-        evenTail.next = node.next.next;
-        oddTail = oddTail.next;
-        evenTail = evenTail.next;
-        node = oddTail.next;
+    while (right < len) {
+        while (sum < s && right < len) {
+            right++;
+            sum += nums[right];
+        }
+
+        while (sum >= s) {
+            result = Math.min(result, right - left + 1);
+            sum -= nums[left];
+            left++;
+        }
     }
 
-    oddTail.next = evenHead;
+    if (result === Number.MAX_VALUE) {
+        return 0;
+    }
 
-    return oddHead;
+    return result;
 };
