@@ -1612,69 +1612,40 @@ function main() {
 
 main();
 ///
-var generateMatrix = function(n) {
-    var curNum = 1,
-        total = parseInt(n / 2),
+var generate = function(numRows) {
+    var init = [],
         result = [],
-        temp,
-        level,
-        i,
-        j;
+        i;
 
-    if (n === 0) {
+    if (numRows === 0) {
         return result;
     }
 
-    if (n === 1) {
-        temp = [1];
-        result.push(temp);
-        return result;
-    }
-    // initialization
-    for (i = 0; i < n; i++) {
-        temp = [];
-        for (j = 0; j < n; j++) {
-            temp.push(0);
-        }
+    init.push(1);
+    result.push(init);
+    i = 1;
 
-        result.push(temp);
-    }
-
-
-    for (level = 0; level < total; level++) {
-        // top
-        for (i = level; i < n - level - 1; i++) {
-            result[level][i] = curNum;
-
-            if (curNum === n * n) {
-                return result;
-            }
-
-            curNum++;
-        }
-
-        // right
-        for (i = level; i < n - level - 1; i++) {
-            result[i][n - level - 1] = curNum;
-            curNum++;
-        }
-
-        // bottom
-        for (i = n - level - 1; i > level; i--) {
-            result[n - level - 1][i] = curNum;
-            curNum++;
-        }
-
-        // left
-        for (i = n - level - 1; i > level; i--) {
-            result[i][level] = curNum;
-            curNum++;
-        }
-    }
-
-    if (curNum === n * n) {
-        result[total][total] = curNum;
+    while (i < numRows) {
+        result = helper(result, ++i);
     }
 
     return result;
 };
+
+function helper(arr, k) {
+    var len = arr.length,
+        cur = arr[len - 1],
+        result = [],
+        i;
+
+    result.push(1);
+
+    for (i = 0; i < len - 1; i++) {
+        result[i + 1] = cur[i] + cur[i + 1];
+    }
+
+    result.push(1);
+    arr.push(result);
+
+    return arr;
+}
