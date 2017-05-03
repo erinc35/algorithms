@@ -1612,23 +1612,26 @@ function main() {
 
 main();
 ///
-var plusOne = function(digits) {
-    var len = digits.length,
-        overflow = 1,
-        i;
-
-    for (i = len - 1; i >= 0; i--) {
-        digits[i] = digits[i] + overflow;
-        if (digits[i] === 10) {
-            overflow = 1;
-            digits[i] = 0;
-        } else {
-            return digits;
-        }
+var oddEvenList = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    if (overflow === 1) {
-        digits.unshift(1);
-        return digits;
+    var oddHead = head,
+        evenHead = head.next,
+        oddTail = oddHead,
+        evenTail = evenHead,
+        node = head.next;
+
+    while (node && node.next) {
+        oddTail.next = node.next;
+        evenTail.next = node.next.next;
+        oddTail = oddTail.next;
+        evenTail = evenTail.next;
+        node = oddTail.next;
     }
+
+    oddTail.next = evenHead;
+
+    return oddHead;
 };
