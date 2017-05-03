@@ -1612,40 +1612,23 @@ function main() {
 
 main();
 ///
-var generate = function(numRows) {
-    var init = [],
-        result = [],
+var plusOne = function(digits) {
+    var len = digits.length,
+        overflow = 1,
         i;
 
-    if (numRows === 0) {
-        return result;
+    for (i = len - 1; i >= 0; i--) {
+        digits[i] = digits[i] + overflow;
+        if (digits[i] === 10) {
+            overflow = 1;
+            digits[i] = 0;
+        } else {
+            return digits;
+        }
     }
 
-    init.push(1);
-    result.push(init);
-    i = 1;
-
-    while (i < numRows) {
-        result = helper(result, ++i);
+    if (overflow === 1) {
+        digits.unshift(1);
+        return digits;
     }
-
-    return result;
 };
-
-function helper(arr, k) {
-    var len = arr.length,
-        cur = arr[len - 1],
-        result = [],
-        i;
-
-    result.push(1);
-
-    for (i = 0; i < len - 1; i++) {
-        result[i + 1] = cur[i] + cur[i + 1];
-    }
-
-    result.push(1);
-    arr.push(result);
-
-    return arr;
-}
