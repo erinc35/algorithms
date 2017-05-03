@@ -1612,46 +1612,18 @@ function main() {
 
 main();
 ///
-var isMatch = function(s, p) {
-    var lenS = s.length,
-        lenP = p.length,
-        f = [],
-        i,
-        j;
-
-    if (p.length === 0) {
-        return s.length === 0;
-    }
-
-    if (p.charAt(0) === '*') {
-        return false;
-    }
-
-    for (i = 0; i <= lenS; i++) {
-        f.push(new Array(lenP + 1));
-        for (j = 0; j <= lenP; j++) {
-            f[i][j] = false;
-        }
-    }
-
-    f[0][0] = true;
-
-    for (i = 1; i < lenP; i++) {
-        if (p.charAt(i) === '*') {
-            f[0][i + 1] = f[0][i - 1];
-        }
-    }
-
-    for (i = 1; i <= lenS; i++) {
-        for (j = 1; j <= lenP; j++) {
-            if (p.charAt(j - 1) === '*') {
-                f[i][j] = f[i][j - 2] || (f[i - 1][j] && (s.charAt(i - 1) === p.charAt(j - 2) || p.charAt(j - 2) === '.'));
+var isOneEditDistance = function(s, t) {
+    for (let i = 0; i < Math.min(s.length, t.length); i++) {
+        if (s.charAt(i) !== t.charAt(i)) {
+            if (s.length === t.length) {
+                return s.substring(i + 1) === t.substring(i + 1);
+            } else if (s.length < t.length) {
+                return s.substring(i) === t.substring(i + 1);
             } else {
-                f[i][j] = f[i - 1][j - 1] && (s.charAt(i - 1) === p.charAt(j - 1) || p.charAt(j - 1) === '.');
+                return s.substring(i + 1) === t.substring(i);
             }
         }
     }
 
-    return f[lenS][lenP];
+    return Math.abs(s.length - t.length) === 1;
 };
-
