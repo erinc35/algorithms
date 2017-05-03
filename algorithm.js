@@ -1612,27 +1612,46 @@ function main() {
 
 main();
 ///
-var reverseVowels = function(s) {
-    var len = s.length,
-        result = s.split(''),
-        vowelSet = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']),
-        indice = [],
-        arr = [],
-        ch,
-        i;
+var isMatch = function(s, p) {
+    var lenS = s.length,
+        lenP = p.length,
+        f = [],
+        i,
+        j;
 
-    for (i = 0; i < len; i++) {
-        ch = result[i];
+    if (p.length === 0) {
+        return s.length === 0;
+    }
 
-        if (vowelSet.has(ch)) {
-            arr.push(ch);
-            indice.push(i);
+    if (p.charAt(0) === '*') {
+        return false;
+    }
+
+    for (i = 0; i <= lenS; i++) {
+        f.push(new Array(lenP + 1));
+        for (j = 0; j <= lenP; j++) {
+            f[i][j] = false;
         }
     }
 
-    for (i = 0; i < indice.length; i++) {
-        result[indice[i]] = arr.pop();
+    f[0][0] = true;
+
+    for (i = 1; i < lenP; i++) {
+        if (p.charAt(i) === '*') {
+            f[0][i + 1] = f[0][i - 1];
+        }
     }
 
-    return result.join('');
+    for (i = 1; i <= lenS; i++) {
+        for (j = 1; j <= lenP; j++) {
+            if (p.charAt(j - 1) === '*') {
+                f[i][j] = f[i][j - 2] || (f[i - 1][j] && (s.charAt(i - 1) === p.charAt(j - 2) || p.charAt(j - 2) === '.'));
+            } else {
+                f[i][j] = f[i - 1][j - 1] && (s.charAt(i - 1) === p.charAt(j - 1) || p.charAt(j - 1) === '.');
+            }
+        }
+    }
+
+    return f[lenS][lenP];
 };
+
