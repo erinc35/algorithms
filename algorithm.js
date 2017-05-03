@@ -1612,35 +1612,27 @@ function main() {
 
 main();
 ///
-var minSubArrayLen = function(s, nums) {
-    var len = nums.length,
-        left = 0,
-        right = 0,
-        sum = 0,
-        result = Number.MAX_VALUE;
+var reverseVowels = function(s) {
+    var len = s.length,
+        result = s.split(''),
+        vowelSet = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']),
+        indice = [],
+        arr = [],
+        ch,
+        i;
 
-    if (len === 0) {
-        return 0;
-    }
+    for (i = 0; i < len; i++) {
+        ch = result[i];
 
-    sum += nums[left];
-
-    while (right < len) {
-        while (sum < s && right < len) {
-            right++;
-            sum += nums[right];
-        }
-
-        while (sum >= s) {
-            result = Math.min(result, right - left + 1);
-            sum -= nums[left];
-            left++;
+        if (vowelSet.has(ch)) {
+            arr.push(ch);
+            indice.push(i);
         }
     }
 
-    if (result === Number.MAX_VALUE) {
-        return 0;
+    for (i = 0; i < indice.length; i++) {
+        result[indice[i]] = arr.pop();
     }
 
-    return result;
+    return result.join('');
 };
