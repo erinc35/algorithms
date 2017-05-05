@@ -1612,23 +1612,39 @@ function main() {
 
 main();
 ///
-var grayCode = function(n) {
-    var result = [],
-        cur,
-        i,
-        j;
+var calculate = function(s) {
+    var stack = [],
+        len = s.length,
+        sum = 0,
+        num,
+        ch,
+        j,
+        i;
 
-    result [0] = 0;
+    stack.push(1);
+    stack.push(1);
 
-    if (n === 0) {
-        return result;
-    }
+    for (i = 0; i < len; i++) {
+        ch = s.charAt(i);
 
-    for (i = 1; i <= n; i++) {
-        for (j = Math.pow(2, i - 1); j > 0; j--) {
-            result.push(result[j - 1] + (1 << (i - 1)));
+        if (!isNaN(parseInt(ch))) {
+            num = parseInt(ch);
+
+            for (j = i + 1; j < len && !isNaN(parseInt(s.charAt(j))); j++) {
+                num = num * 10 + parseInt(s.charAt(j));
+            }
+
+            sum += stack.pop() * num;
+
+            i = j - 1;
+        } else if (ch === '+' || ch === '(') {
+            stack.push(stack[stack.length - 1]);
+        } else if (ch === '-') {
+            stack.push(stack[stack.length - 1] * (-1));
+        } else if (ch === ')') {
+            stack.pop();
         }
     }
 
-    return result;
+    return sum;
 };
