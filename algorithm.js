@@ -1612,28 +1612,18 @@ function main() {
 
 main();
 ///
-var insert = function(intervals, newInterval) {
-    var len = intervals.length,
-        result = [],
-        insertIndex = 0,
-        curInterval,
-        i;
-
-    for (i = 0; i < len; i++) {
-        curInterval = intervals[i];
-
-        if (curInterval.end < newInterval.start) {
-            result.push(curInterval);
-            insertIndex++;
-        } else if (curInterval.start > newInterval.end) {
-            result.push(curInterval);
-        } else {
-            newInterval.start = Math.min(newInterval.start, curInterval.start);
-            newInterval.end = Math.max(newInterval.end, curInterval.end);
-        }
+function dfsRob(root) {
+    if (!root) {
+        return [0, 0];
     }
 
-    result.splice(insertIndex, 0, newInterval);
+    var left = dfsRob(root.left),
+        right = dfsRob(root.right),
+        includeRootVal,
+        noRootVal;
 
-    return result;
-};
+    includeRootVal = left[1] + right[1] + root.val;
+    noRootVal = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+    return [includeRootVal, noRootVal];
+}
