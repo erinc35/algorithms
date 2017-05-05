@@ -1612,23 +1612,28 @@ function main() {
 
 main();
 ///
-var integerBreak = function(n) {
-    var dp = [],
+var insert = function(intervals, newInterval) {
+    var len = intervals.length,
+        result = [],
+        insertIndex = 0,
+        curInterval,
         i;
 
-    if (n <= 3) {
-        return n - 1;
+    for (i = 0; i < len; i++) {
+        curInterval = intervals[i];
+
+        if (curInterval.end < newInterval.start) {
+            result.push(curInterval);
+            insertIndex++;
+        } else if (curInterval.start > newInterval.end) {
+            result.push(curInterval);
+        } else {
+            newInterval.start = Math.min(newInterval.start, curInterval.start);
+            newInterval.end = Math.max(newInterval.end, curInterval.end);
+        }
     }
 
-    dp[0] = 0;
-    dp[1] = 1;
-    dp[2] = 2;
-    dp[3] = 3;
+    result.splice(insertIndex, 0, newInterval);
 
-    for (i = 4; i <= n; i++) {
-        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
-    }
-
-    return dp[n];
+    return result;
 };
-
