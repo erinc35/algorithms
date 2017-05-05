@@ -1612,15 +1612,30 @@ function main() {
 
 main();
 ///
-var NumArray = function(nums) {
-    var len = nums.length,
+var isIsomorphic = function(s, t) {
+    var len = s.length,
+        mapS = {},
+        mapT = {},
+        curS,
+        curT,
         i;
 
-    this.sums = [];
-    this.sums[0] = 0;
-
     for (i = 0; i < len; i++) {
-        this.sums[i + 1] = this.sums[i] + nums[i];
+        curS = s.charAt(i);
+        curT = t.charAt(i);
+
+        if (!mapS.hasOwnProperty(curS)) {
+            mapS[curS] = curT;
+        } else if (mapS[curS] !== curT) {
+            return false;
+        }
+
+        if (!mapT.hasOwnProperty(curT)) {
+            mapT[curT] = curS;
+        } else if (mapT[curT] !== curS) {
+            return false;
+        }
     }
 
+    return true;
 };
