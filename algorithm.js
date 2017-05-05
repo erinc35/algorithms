@@ -1612,39 +1612,15 @@ function main() {
 
 main();
 ///
-var calculate = function(s) {
-    var stack = [],
-        len = s.length,
-        sum = 0,
-        num,
-        ch,
-        j,
+var NumArray = function(nums) {
+    var len = nums.length,
         i;
 
-    stack.push(1);
-    stack.push(1);
+    this.sums = [];
+    this.sums[0] = 0;
 
     for (i = 0; i < len; i++) {
-        ch = s.charAt(i);
-
-        if (!isNaN(parseInt(ch))) {
-            num = parseInt(ch);
-
-            for (j = i + 1; j < len && !isNaN(parseInt(s.charAt(j))); j++) {
-                num = num * 10 + parseInt(s.charAt(j));
-            }
-
-            sum += stack.pop() * num;
-
-            i = j - 1;
-        } else if (ch === '+' || ch === '(') {
-            stack.push(stack[stack.length - 1]);
-        } else if (ch === '-') {
-            stack.push(stack[stack.length - 1] * (-1));
-        } else if (ch === ')') {
-            stack.pop();
-        }
+        this.sums[i + 1] = this.sums[i] + nums[i];
     }
 
-    return sum;
 };
