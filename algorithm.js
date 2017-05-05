@@ -1612,30 +1612,23 @@ function main() {
 
 main();
 ///
-var isIsomorphic = function(s, t) {
-    var len = s.length,
-        mapS = {},
-        mapT = {},
-        curS,
-        curT,
+var integerBreak = function(n) {
+    var dp = [],
         i;
 
-    for (i = 0; i < len; i++) {
-        curS = s.charAt(i);
-        curT = t.charAt(i);
-
-        if (!mapS.hasOwnProperty(curS)) {
-            mapS[curS] = curT;
-        } else if (mapS[curS] !== curT) {
-            return false;
-        }
-
-        if (!mapT.hasOwnProperty(curT)) {
-            mapT[curT] = curS;
-        } else if (mapT[curT] !== curS) {
-            return false;
-        }
+    if (n <= 3) {
+        return n - 1;
     }
 
-    return true;
+    dp[0] = 0;
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 3;
+
+    for (i = 4; i <= n; i++) {
+        dp[i] = Math.max(dp[i - 2] * 2, dp[i - 3] * 3);
+    }
+
+    return dp[n];
 };
+
