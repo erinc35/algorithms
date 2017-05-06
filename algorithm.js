@@ -1612,18 +1612,30 @@ function main() {
 
 main();
 ///
-function dfsRob(root) {
-    if (!root) {
-        return [0, 0];
+var longestCommonPrefix = function(strs) {
+    var len = strs.length,
+        len1,
+        curChar,
+        i,
+        j;
+
+    if (len === 0) {
+        return '';
     }
 
-    var left = dfsRob(root.left),
-        right = dfsRob(root.right),
-        includeRootVal,
-        noRootVal;
+    len1 = strs[0].length;
+    for (i = 0; i < len1; i++) {
+        curChar = strs[0].charAt(i);
+        for (j = 1; j < len; j++) {
+            if (strs[j].charAt(i) !== curChar) {
+                return i === 0? '' : strs[0].substr(0, i);
+            }
 
-    includeRootVal = left[1] + right[1] + root.val;
-    noRootVal = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+            if (strs[j].length === i) {
+                return strs[j];
+            }
+        }
+    }
 
-    return [includeRootVal, noRootVal];
-}
+    return strs[0];
+};
