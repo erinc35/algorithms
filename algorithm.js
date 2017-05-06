@@ -1612,30 +1612,24 @@ function main() {
 
 main();
 ///
-var longestCommonPrefix = function(strs) {
-    var len = strs.length,
-        len1,
-        curChar,
-        i,
-        j;
+var insertionSortList = function(head) {
+    var dummy = new ListNode(0),
+        pre = dummy,
+        cur = head,
+        next;
 
-    if (len === 0) {
-        return '';
-    }
+    while(cur !== null) {
+        next = cur.next;
+        pre = dummy;
 
-    len1 = strs[0].length;
-    for (i = 0; i < len1; i++) {
-        curChar = strs[0].charAt(i);
-        for (j = 1; j < len; j++) {
-            if (strs[j].charAt(i) !== curChar) {
-                return i === 0? '' : strs[0].substr(0, i);
-            }
-
-            if (strs[j].length === i) {
-                return strs[j];
-            }
+        while (pre.next && pre.next.val <= cur.val) {
+            pre = pre.next;
         }
+
+        cur.next = pre.next;
+        pre.next = cur;
+        cur = next;
     }
 
-    return strs[0];
+    return dummy.next;
 };
