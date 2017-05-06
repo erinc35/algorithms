@@ -1612,47 +1612,23 @@ function main() {
 
 main();
 ///
-Queue.prototype.push = function(x) {
-    var len = this.stack2.length,
+var hIndex = function(citations) {
+    var len = citations.length,
         i;
 
+    citations.sort(function (a, b) {
+        if (a < b) {
+            return 1;
+        }
+        return -1;
+    });
+
     for (i = 0; i < len; i++) {
-        this.stack1.push(this.stack2.pop());
+        if (citations[i] <= i) {
+            return i;
+        }
     }
 
-    this.stack1.push(x);
-
-    for (i = 0; i < len + 1; i++) {
-        this.stack2.push(this.stack1.pop());
-    }
+    return len;
 };
 
-/**
- * @returns {void}
- */
-Queue.prototype.pop = function() {
-    this.stack2.pop();
-};
-
-/**
- * @returns {number}
- */
-Queue.prototype.peek = function() {
-    var x = this.stack2.pop();
-
-    this.stack2.push(x);
-    return x;
-};
-
-/**
- * @returns {boolean}
- */
-Queue.prototype.empty = function() {
-    var len = this.stack2.length;
-
-    if (len === 0) {
-        return true;
-    }
-
-    return false;
-};
