@@ -1612,24 +1612,47 @@ function main() {
 
 main();
 ///
-var insertionSortList = function(head) {
-    var dummy = new ListNode(0),
-        pre = dummy,
-        cur = head,
-        next;
+Queue.prototype.push = function(x) {
+    var len = this.stack2.length,
+        i;
 
-    while(cur !== null) {
-        next = cur.next;
-        pre = dummy;
-
-        while (pre.next && pre.next.val <= cur.val) {
-            pre = pre.next;
-        }
-
-        cur.next = pre.next;
-        pre.next = cur;
-        cur = next;
+    for (i = 0; i < len; i++) {
+        this.stack1.push(this.stack2.pop());
     }
 
-    return dummy.next;
+    this.stack1.push(x);
+
+    for (i = 0; i < len + 1; i++) {
+        this.stack2.push(this.stack1.pop());
+    }
+};
+
+/**
+ * @returns {void}
+ */
+Queue.prototype.pop = function() {
+    this.stack2.pop();
+};
+
+/**
+ * @returns {number}
+ */
+Queue.prototype.peek = function() {
+    var x = this.stack2.pop();
+
+    this.stack2.push(x);
+    return x;
+};
+
+/**
+ * @returns {boolean}
+ */
+Queue.prototype.empty = function() {
+    var len = this.stack2.length;
+
+    if (len === 0) {
+        return true;
+    }
+
+    return false;
 };
