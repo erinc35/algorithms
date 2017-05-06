@@ -1612,18 +1612,23 @@ function main() {
 
 main();
 ///
-function dfsRob(root) {
-    if (!root) {
-        return [0, 0];
+var hIndex = function(citations) {
+    var len = citations.length,
+        i;
+
+    citations.sort(function (a, b) {
+        if (a < b) {
+            return 1;
+        }
+        return -1;
+    });
+
+    for (i = 0; i < len; i++) {
+        if (citations[i] <= i) {
+            return i;
+        }
     }
 
-    var left = dfsRob(root.left),
-        right = dfsRob(root.right),
-        includeRootVal,
-        noRootVal;
+    return len;
+};
 
-    includeRootVal = left[1] + right[1] + root.val;
-    noRootVal = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
-
-    return [includeRootVal, noRootVal];
-}
