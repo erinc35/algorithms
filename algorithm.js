@@ -1612,15 +1612,29 @@ function main() {
 
 main();
 ///
-var inorderSuccessor = function(root, p) {
-    if (!root) {
-        return null;
-    }
+var TrieNode = function() {
+    var isEnd,
+        links = {};
 
-    if (root.val <= p.val) {
-        return inorderSuccessor(root.right, p);
-    }
+    return {
+        containsKey: function(n) {
+            return links[n] !== undefined;
+        },
+        get: function(ch) {
+            return links[ch];
+        },
+        put: function(ch, node) {
+            links[ch] = node;
+        },
+        setEnd: function() {
+            isEnd = true;
+        },
+        isEnd: function() {
+            return isEnd;
+        }
+    };
+};
 
-    let leftMostChild = inorderSuccessor(root.left, p);
-    return leftMostChild ? leftMostChild : root;
+var Trie = function() {
+    this.root = TrieNode();
 };
