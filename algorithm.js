@@ -1612,16 +1612,15 @@ function main() {
 
 main();
 ///
-var hasCycle = function(head) {
-    var slow = head,
-        fast = head;
-
-    while(fast !== null && fast.next !== null) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow === fast || (fast && fast.next === slow)) {
-            return true;
-        }
+var inorderSuccessor = function(root, p) {
+    if (!root) {
+        return null;
     }
-    return false;
+
+    if (root.val <= p.val) {
+        return inorderSuccessor(root.right, p);
+    }
+
+    let leftMostChild = inorderSuccessor(root.left, p);
+    return leftMostChild ? leftMostChild : root;
 };
