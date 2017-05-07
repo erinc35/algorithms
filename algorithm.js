@@ -1612,23 +1612,16 @@ function main() {
 
 main();
 ///
-var hIndex = function(citations) {
-    var len = citations.length,
-        i;
+var hasCycle = function(head) {
+    var slow = head,
+        fast = head;
 
-    citations.sort(function (a, b) {
-        if (a < b) {
-            return 1;
-        }
-        return -1;
-    });
-
-    for (i = 0; i < len; i++) {
-        if (citations[i] <= i) {
-            return i;
+    while(fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast || (fast && fast.next === slow)) {
+            return true;
         }
     }
-
-    return len;
+    return false;
 };
-
