@@ -1612,29 +1612,26 @@ function main() {
 
 main();
 ///
-var TrieNode = function() {
-    var isEnd,
-        links = {};
+var jump = function(nums) {
+    var len = nums.length,
+        step = 0,
+        last = 0,
+        cover = nums[0],
+        i;
 
-    return {
-        containsKey: function(n) {
-            return links[n] !== undefined;
-        },
-        get: function(ch) {
-            return links[ch];
-        },
-        put: function(ch, node) {
-            links[ch] = node;
-        },
-        setEnd: function() {
-            isEnd = true;
-        },
-        isEnd: function() {
-            return isEnd;
+    for (i = 1; i < len; i++) {
+        if (i > last) {
+            last = cover;
+            step++;
         }
-    };
+
+        if (last >= len - 1) {
+            break;
+        }
+
+        cover = Math.max(cover, nums[i] + i);
+    }
+
+    return step;
 };
 
-var Trie = function() {
-    this.root = TrieNode();
-};
