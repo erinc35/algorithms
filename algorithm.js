@@ -1612,26 +1612,40 @@ function main() {
 
 main();
 ///
-var jump = function(nums) {
-    var len = nums.length,
-        step = 0,
-        last = 0,
-        cover = nums[0],
-        i;
+var addOperators = function(num, target) {
+    var result = [];
 
-    for (i = 1; i < len; i++) {
-        if (i > last) {
-            last = cover;
-            step++;
+    helper(result, '', 0, num, target, 0, 0);
+
+    return result;
+};
+
+function helper(result, cur, index, num, target, prev, multi) {
+    if (index === num.length) {
+        if (prev === target) {
+            result.push(cur);
         }
 
-        if (last >= len - 1) {
+        return;
+    }
+
+    var len = num.length,
+        temp,
+        i;
+
+    for (i = index; i < len; i++) {
+        if (num.charAt(index) === '0' && i > index) {
             break;
         }
 
-        cover = Math.max(cover, nums[i] + i);
+        temp = parseInt(num.substring(index, i + 1));
+
+        if (cur.length === 0) {
+            helper(result, cur + temp, i + 1, num, target, temp, temp);
+        } else {
+            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
+            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
+            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
+        }
     }
-
-    return step;
-};
-
+}
