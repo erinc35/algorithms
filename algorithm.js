@@ -1612,23 +1612,26 @@ function main() {
 
 main();
 ///
-var hIndex = function(citations) {
-    var len = citations.length,
+var jump = function(nums) {
+    var len = nums.length,
+        step = 0,
+        last = 0,
+        cover = nums[0],
         i;
 
-    citations.sort(function (a, b) {
-        if (a < b) {
-            return 1;
+    for (i = 1; i < len; i++) {
+        if (i > last) {
+            last = cover;
+            step++;
         }
-        return -1;
-    });
 
-    for (i = 0; i < len; i++) {
-        if (citations[i] <= i) {
-            return i;
+        if (last >= len - 1) {
+            break;
         }
+
+        cover = Math.max(cover, nums[i] + i);
     }
 
-    return len;
+    return step;
 };
 
