@@ -1612,40 +1612,18 @@ function main() {
 
 main();
 ///
-var addOperators = function(num, target) {
-    var result = [];
-
-    helper(result, '', 0, num, target, 0, 0);
-
-    return result;
-};
-
-function helper(result, cur, index, num, target, prev, multi) {
-    if (index === num.length) {
-        if (prev === target) {
-            result.push(cur);
-        }
-
-        return;
+function dfsRob(root) {
+    if (!root) {
+        return [0, 0];
     }
 
-    var len = num.length,
-        temp,
-        i;
+    var left = dfsRob(root.left),
+        right = dfsRob(root.right),
+        includeRootVal,
+        noRootVal;
 
-    for (i = index; i < len; i++) {
-        if (num.charAt(index) === '0' && i > index) {
-            break;
-        }
+    includeRootVal = left[1] + right[1] + root.val;
+    noRootVal = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
 
-        temp = parseInt(num.substring(index, i + 1));
-
-        if (cur.length === 0) {
-            helper(result, cur + temp, i + 1, num, target, temp, temp);
-        } else {
-            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
-            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
-            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
-        }
-    }
+    return [includeRootVal, noRootVal];
 }
