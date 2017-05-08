@@ -1612,28 +1612,40 @@ function main() {
 
 main();
 ///
-var findPeakElement = function(nums) {
-    var len = nums.length,
-        left,
-        right,
-        mid;
+var addOperators = function(num, target) {
+    var result = [];
 
-    if (len === 1) {
-        return 0;
+    helper(result, '', 0, num, target, 0, 0);
+
+    return result;
+};
+
+function helper(result, cur, index, num, target, prev, multi) {
+    if (index === num.length) {
+        if (prev === target) {
+            result.push(cur);
+        }
+
+        return;
     }
 
-    left = 0;
-    right = len - 1;
-    while(left < right) {
-        mid = parseInt((left + right)/2);
+    var len = num.length,
+        temp,
+        i;
 
-        if (nums[mid] <= nums[mid + 1]) {
-            left = mid + 1;
-        } else if (nums[mid] <= nums[mid - 1]) {
-            right = mid - 1;
+    for (i = index; i < len; i++) {
+        if (num.charAt(index) === '0' && i > index) {
+            break;
+        }
+
+        temp = parseInt(num.substring(index, i + 1));
+
+        if (cur.length === 0) {
+            helper(result, cur + temp, i + 1, num, target, temp, temp);
         } else {
-            return mid;
+            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
+            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
+            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
         }
     }
-    return left;
-};
+}
