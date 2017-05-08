@@ -1612,18 +1612,29 @@ function main() {
 
 main();
 ///
-function dfsRob(root) {
-    if (!root) {
-        return [0, 0];
+var canCompleteCircuit = function(gas, cost) {
+    var len = gas.length,
+        diff = [],
+        curSum = 0,
+        sum = 0,
+        i,
+        startNode = 0;
+
+    for(i = 0; i < len; i++) {
+        diff[i] = gas[i] - cost[i];
+        sum += diff[i];
+        curSum += diff[i];
+
+        if (curSum < 0) {
+            startNode = i + 1;
+            curSum = 0;
+        }
     }
 
-    var left = dfsRob(root.left),
-        right = dfsRob(root.right),
-        includeRootVal,
-        noRootVal;
+    if (sum < 0) {
+        return -1;
+    } else {
+        return startNode;
+    }
 
-    includeRootVal = left[1] + right[1] + root.val;
-    noRootVal = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
-
-    return [includeRootVal, noRootVal];
-}
+};
