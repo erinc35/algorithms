@@ -1612,29 +1612,41 @@ function main() {
 
 main();
 ///
-var canCompleteCircuit = function(gas, cost) {
-    var len = gas.length,
-        diff = [],
-        curSum = 0,
-        sum = 0,
+var gameOfLife = function(board) {
+    var len = board.length,
+        lives,
+        cLen,
         i,
-        startNode = 0;
+        j,
+        x,
+        y;
 
-    for(i = 0; i < len; i++) {
-        diff[i] = gas[i] - cost[i];
-        sum += diff[i];
-        curSum += diff[i];
+    if (len === 0) {
+        return;
+    }
 
-        if (curSum < 0) {
-            startNode = i + 1;
-            curSum = 0;
+    cLen = board[0].length;
+
+    for (i = 0; i < len; i++) {
+        for (j = 0; j < cLen; j++) {
+            lives = 0;
+
+            for (x = Math.max(i - 1, 0); x <= Math.min(i + 1, len - 1); x++) {
+                for (y = Math.max(j - 1, 0); y <= Math.min(j + 1, cLen - 1); y++) {
+                    lives += (board[x][y] & 1);
+                }
+            }
+
+            // only care the ones that'll be live
+            if (lives === 3 || lives - board[i][j] === 3) {
+                board[i][j] |= 2;
+            }
         }
     }
 
-    if (sum < 0) {
-        return -1;
-    } else {
-        return startNode;
+    for (i = 0; i < len; i++) {
+        for (j = 0; j < cLen; j++) {
+            board[i][j] >>= 1;
+        }
     }
-
 };
