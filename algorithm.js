@@ -1612,41 +1612,49 @@ function main() {
 
 main();
 ///
-var gameOfLife = function(board) {
-    var len = board.length,
-        lives,
-        cLen,
-        i,
-        j,
-        x,
-        y;
+var fractionToDecimal = function(numerator, denominator) {
+    var rem,
+        quotient,
+        map = [],
+        collection = '',
+        index,
+        len
+        result = '';
 
-    if (len === 0) {
-        return;
+    if (numerator === 0) {
+        return '0';
+    }
+    if (denominator === 0) {
+        return '';
     }
 
-    cLen = board[0].length;
+    if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) {
+        result += '-';
+    }
+    numerator = Math.abs(Number(numerator));
+    denominator = Math.abs(Number(denominator));
 
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < cLen; j++) {
-            lives = 0;
+    quotient = Math.floor(numerator / denominator);
+    result += quotient;
 
-            for (x = Math.max(i - 1, 0); x <= Math.min(i + 1, len - 1); x++) {
-                for (y = Math.max(j - 1, 0); y <= Math.min(j + 1, cLen - 1); y++) {
-                    lives += (board[x][y] & 1);
-                }
-            }
+    rem = (numerator % denominator) * 10;
+    if (rem === 0) {
+        return result;
+    }
 
-            // only care the ones that'll be live
-            if (lives === 3 || lives - board[i][j] === 3) {
-                board[i][j] |= 2;
-            }
+    result += '.';
+    while (rem !== 0) {
+        quotient = Math.floor(rem/denominator);
+        index = map.indexOf(rem);
+        if (index === -1) {
+            map.push(rem);
+            collection += quotient;
+        } else {
+            collection = collection.substr(0, index) + '(' + collection.substr(index) + ')';
+            break;
         }
+        rem = (rem % denominator) * 10;
     }
-
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < cLen; j++) {
-            board[i][j] >>= 1;
-        }
-    }
+    result += collection;
+    return result;
 };
