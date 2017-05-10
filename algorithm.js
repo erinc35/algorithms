@@ -1612,47 +1612,21 @@ function main() {
 
 main();
 ///
-var divide = function(dividend, divisor) {
-    if (divisor === 0) {
-        return Number.MAX_VALUE;
-    }
+var countBits = function(num) {
+    var result = [],
+        pow = 1,
+        i;
 
-    if (dividend === 0) {
-        return 0;
-    }
+    result[0] = 0;
 
-    var result = 0,
-        isNeg = false,
-        temp,
-        i = 0;
-
-    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
-        isNeg = true;
-    }
-
-    dividend = Math.abs(dividend);
-    divisor = Math.abs(divisor);
-
-    if (divisor === 1 || divisor === -1) {
-        return isNeg? -dividend : dividend;
-    }
-
-    temp = divisor;
-
-    while (divisor << (i + 1) <= dividend) {
-        i++;
-    }
-
-    while (dividend >= divisor) {
-        temp = divisor << i;
-
-        if (dividend >= temp) {
-            result += (1 << i);
-            dividend -= temp;
+    for (i = 1; i < num; i++) {
+        if (i === pow) {
+            result[i] = 1;
+            pow *= 2;
+        } else {
+            result[i] = result[pow] + result[i - pow];
         }
-
-        i--;
     }
 
-    return isNeg? -result : result;
+    return result;
 };
