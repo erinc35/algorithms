@@ -1612,49 +1612,40 @@ function main() {
 
 main();
 ///
-var fractionToDecimal = function(numerator, denominator) {
-    var rem,
-        quotient,
-        map = [],
-        collection = '',
-        index,
-        len
-        result = '';
+var addOperators = function(num, target) {
+    var result = [];
 
-    if (numerator === 0) {
-        return '0';
-    }
-    if (denominator === 0) {
-        return '';
-    }
+    helper(result, '', 0, num, target, 0, 0);
 
-    if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) {
-        result += '-';
-    }
-    numerator = Math.abs(Number(numerator));
-    denominator = Math.abs(Number(denominator));
-
-    quotient = Math.floor(numerator / denominator);
-    result += quotient;
-
-    rem = (numerator % denominator) * 10;
-    if (rem === 0) {
-        return result;
-    }
-
-    result += '.';
-    while (rem !== 0) {
-        quotient = Math.floor(rem/denominator);
-        index = map.indexOf(rem);
-        if (index === -1) {
-            map.push(rem);
-            collection += quotient;
-        } else {
-            collection = collection.substr(0, index) + '(' + collection.substr(index) + ')';
-            break;
-        }
-        rem = (rem % denominator) * 10;
-    }
-    result += collection;
     return result;
 };
+
+function helper(result, cur, index, num, target, prev, multi) {
+    if (index === num.length) {
+        if (prev === target) {
+            result.push(cur);
+        }
+
+        return;
+    }
+
+    var len = num.length,
+        temp,
+        i;
+
+    for (i = index; i < len; i++) {
+        if (num.charAt(index) === '0' && i > index) {
+            break;
+        }
+
+        temp = parseInt(num.substring(index, i + 1));
+
+        if (cur.length === 0) {
+            helper(result, cur + temp, i + 1, num, target, temp, temp);
+        } else {
+            helper(result, cur + '+' + temp, i + 1, num, target, prev + temp, temp);
+            helper(result, cur + '-' + temp, i + 1, num, target, prev - temp, -temp);
+            helper(result, cur + '*' + temp, i + 1, num, target, prev - multi + multi * temp, temp * multi);
+        }
+    }
+}
