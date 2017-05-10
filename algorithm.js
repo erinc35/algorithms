@@ -1612,21 +1612,23 @@ function main() {
 
 main();
 ///
-var countBits = function(num) {
-    var result = [],
-        pow = 1,
+var containsNearbyDuplicate = function(nums, k) {
+    var map = {},
+        len = nums.length,
         i;
 
-    result[0] = 0;
+    for (i = 0; i < len; i++) {
+        if (map.hasOwnProperty(nums[i])) {
+            if (i - map[nums[i]] <= k) {
+                return true;
+            }
 
-    for (i = 1; i < num; i++) {
-        if (i === pow) {
-            result[i] = 1;
-            pow *= 2;
+            map[nums[i]] = i;
         } else {
-            result[i] = result[pow] + result[i - pow];
+            map[nums[i]] = i;
         }
     }
 
-    return result;
+    return false;
 };
+
