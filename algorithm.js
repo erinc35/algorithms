@@ -1612,47 +1612,23 @@ function main() {
 
 main();
 ///
-var divide = function(dividend, divisor) {
-    if (divisor === 0) {
-        return Number.MAX_VALUE;
-    }
+var containsNearbyDuplicate = function(nums, k) {
+    var map = {},
+        len = nums.length,
+        i;
 
-    if (dividend === 0) {
-        return 0;
-    }
+    for (i = 0; i < len; i++) {
+        if (map.hasOwnProperty(nums[i])) {
+            if (i - map[nums[i]] <= k) {
+                return true;
+            }
 
-    var result = 0,
-        isNeg = false,
-        temp,
-        i = 0;
-
-    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
-        isNeg = true;
-    }
-
-    dividend = Math.abs(dividend);
-    divisor = Math.abs(divisor);
-
-    if (divisor === 1 || divisor === -1) {
-        return isNeg? -dividend : dividend;
-    }
-
-    temp = divisor;
-
-    while (divisor << (i + 1) <= dividend) {
-        i++;
-    }
-
-    while (dividend >= divisor) {
-        temp = divisor << i;
-
-        if (dividend >= temp) {
-            result += (1 << i);
-            dividend -= temp;
+            map[nums[i]] = i;
+        } else {
+            map[nums[i]] = i;
         }
-
-        i--;
     }
 
-    return isNeg? -result : result;
+    return false;
 };
+
