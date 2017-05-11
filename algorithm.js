@@ -1612,34 +1612,69 @@ function main() {
 
 main();
 ///
-var removeDuplicateLetters = function(s) {
-    var count = {},
-        len = s.length,
-        startPos = 0,
-        curChar,
+var findItinerary = function(tickets) {
+    tickets.sort(function(a, b) {
+       if (a[0] < b[0]) {
+           return -1;
+       } else if (a[0] > b[0]) {
+           return 1;
+       } else {
+           if (a[1] < b[1]) {
+               return -1;
+           }
+
+           return 1;
+       }
+    });
+
+    var map = {},
+        len = tickets.length,
+        result = [],
         i;
 
-    if (len === 0) {
-        return '';
-    }
-
     for (i = 0; i < len; i++) {
-        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
-    }
-
-    for (i = 0; i < len; i++) {
-        if (s.charAt(i) < s.charAt(startPos)) {
-            startPos = i;
-        }
-
-        // find the first non duplicate letter
-        if (--count[s.charAt(i)] === 0) {
-            break;
+        if (map[tickets[i][0]] === undefined) {
+            map[tickets[i][0]] = {};
+            map[tickets[i][0]][tickets[i][1]] = 1;
+        } else {
+            if (map[tickets[i][0]][tickets[i][1]] === undefined) {
+                map[tickets[i][0]][tickets[i][1]] = 1;
+            } else {
+                map[tickets[i][0]][tickets[i][1]]++;
+            }
         }
     }
 
-    curChar = s.charAt(startPos);
+    result.push('JFK');
 
-    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
+    dfs(result, 0, len, map);
+
+    return result;
 };
 
+function dfs(result, index, len, map) {
+    if (index === len) {
+        return true;
+    }
+
+    var cur = result[index],
+        dests = map[cur],
+        count,
+        i;
+
+    for (var dest in dests) {
+        count = dests[dest];
+
+        if (count > 0) {
+            dests[dest]--;
+            result.push(dest);
+            if (dfs(result, index + 1, len, map)) {
+                return true;
+            }
+            dests[dest]++;
+            result.pop();
+        }
+    }
+
+    return false;
+}
