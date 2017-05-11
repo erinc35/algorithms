@@ -1612,36 +1612,69 @@ function main() {
 
 main();
 ///
-var permuteUnique = function(nums) {
-    var len = nums.length,
-        result = [];
+var findItinerary = function(tickets) {
+    tickets.sort(function(a, b) {
+       if (a[0] < b[0]) {
+           return -1;
+       } else if (a[0] > b[0]) {
+           return 1;
+       } else {
+           if (a[1] < b[1]) {
+               return -1;
+           }
 
-    nums.sort(function(a, b) {
-        return a - b;
+           return 1;
+       }
     });
 
-    genPerm(result, 0, len, [], [], nums);
+    var map = {},
+        len = tickets.length,
+        result = [],
+        i;
+
+    for (i = 0; i < len; i++) {
+        if (map[tickets[i][0]] === undefined) {
+            map[tickets[i][0]] = {};
+            map[tickets[i][0]][tickets[i][1]] = 1;
+        } else {
+            if (map[tickets[i][0]][tickets[i][1]] === undefined) {
+                map[tickets[i][0]][tickets[i][1]] = 1;
+            } else {
+                map[tickets[i][0]][tickets[i][1]]++;
+            }
+        }
+    }
+
+    result.push('JFK');
+
+    dfs(result, 0, len, map);
 
     return result;
 };
 
-function genPerm(result, index, len, curArr, used, nums) {
-    if (curArr.length === len) {
-        result.push(curArr);
-        return;
+function dfs(result, index, len, map) {
+    if (index === len) {
+        return true;
     }
 
-    var i;
+    var cur = result[index],
+        dests = map[cur],
+        count,
+        i;
 
-    for (i = 0; i < len; i++) {
-        if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
-            continue;
+    for (var dest in dests) {
+        count = dests[dest];
+
+        if (count > 0) {
+            dests[dest]--;
+            result.push(dest);
+            if (dfs(result, index + 1, len, map)) {
+                return true;
+            }
+            dests[dest]++;
+            result.pop();
         }
-
-        curArr.push(nums[i]);
-        used[i] = true;
-        genPerm(result, i + 1, len, curArr.concat(), used.concat(), nums);
-        used[i] = false;
-        curArr.pop();
     }
+
+    return false;
 }
