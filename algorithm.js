@@ -1612,36 +1612,34 @@ function main() {
 
 main();
 ///
-var permuteUnique = function(nums) {
-    var len = nums.length,
-        result = [];
+var removeDuplicateLetters = function(s) {
+    var count = {},
+        len = s.length,
+        startPos = 0,
+        curChar,
+        i;
 
-    nums.sort(function(a, b) {
-        return a - b;
-    });
-
-    genPerm(result, 0, len, [], [], nums);
-
-    return result;
-};
-
-function genPerm(result, index, len, curArr, used, nums) {
-    if (curArr.length === len) {
-        result.push(curArr);
-        return;
+    if (len === 0) {
+        return '';
     }
-
-    var i;
 
     for (i = 0; i < len; i++) {
-        if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
-            continue;
+        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
+    }
+
+    for (i = 0; i < len; i++) {
+        if (s.charAt(i) < s.charAt(startPos)) {
+            startPos = i;
         }
 
-        curArr.push(nums[i]);
-        used[i] = true;
-        genPerm(result, i + 1, len, curArr.concat(), used.concat(), nums);
-        used[i] = false;
-        curArr.pop();
+        // find the first non duplicate letter
+        if (--count[s.charAt(i)] === 0) {
+            break;
+        }
     }
-}
+
+    curChar = s.charAt(startPos);
+
+    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
+};
+
