@@ -1612,23 +1612,14 @@ function main() {
 
 main();
 ///
-var containsNearbyDuplicate = function(nums, k) {
-    var map = {},
-        len = nums.length,
+var missingNumber = function(nums) {
+    var len = nums.length,
+        sum = 0,
         i;
 
     for (i = 0; i < len; i++) {
-        if (map.hasOwnProperty(nums[i])) {
-            if (i - map[nums[i]] <= k) {
-                return true;
-            }
-
-            map[nums[i]] = i;
-        } else {
-            map[nums[i]] = i;
-        }
+        sum += nums[i];
     }
 
-    return false;
+    return len*(len + 1)/2 - sum;
 };
-
