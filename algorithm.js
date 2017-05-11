@@ -1612,14 +1612,32 @@ function main() {
 
 main();
 ///
-var missingNumber = function(nums) {
-    var len = nums.length,
-        sum = 0,
+ */
+var getRow = function(rowIndex) {
+    var result = [],
+        parent = [],
+        curRow,
         i;
 
-    for (i = 0; i < len; i++) {
-        sum += nums[i];
+    if (rowIndex < 0) {
+        return result;
     }
 
-    return len*(len + 1)/2 - sum;
+    curRow = 0;
+    parent.push(1);
+    result.push(1);
+
+    while (curRow < rowIndex) {
+        curRow++;
+        result = [];
+        result.push(1);
+        for (i = 1; i < curRow; i++) {
+            result[i] = parent[i] + parent[i - 1];
+        }
+
+        result.push(1);
+        parent = result.concat();
+    }
+
+    return result;
 };
