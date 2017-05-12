@@ -1694,6 +1694,15 @@ function uniq(arr){
   return dupless;
 }
 ///
-var detectCapitalUse = function(word) {
-    return /^[A-Z]?([a-z]*|[A-Z]*)$/.test(word);
+var findDuplicates = function(nums) {
+    var ret = [];
+    for (var i = 0; i < nums.length; i++) {
+        var index = Math.abs(nums[i]) - 1;
+        if (nums[index] < 0) {
+            ret.push(Math.abs(nums[i]));
+        }
+        nums[index] = -Math.abs(nums[index]);
+    }
+
+    return ret;
 };
