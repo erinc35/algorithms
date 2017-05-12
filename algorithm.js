@@ -1694,26 +1694,15 @@ function uniq(arr){
   return dupless;
 }
 ///
-var countPrimes = function(n) {
-  var isPrime = [];
-  for (var i = 2; i < n; i++) {
-    isPrime[i] = true;
-  }
-
-  for (var i = 2; i * i < n; i++) {
-    if (isPrime[i]) {
-      for (var j = i * i; j < n; j += i) {
-        isPrime[j] = false;
-      }
+var findDuplicates = function(nums) {
+    var ret = [];
+    for (var i = 0; i < nums.length; i++) {
+        var index = Math.abs(nums[i]) - 1;
+        if (nums[index] < 0) {
+            ret.push(Math.abs(nums[i]));
+        }
+        nums[index] = -Math.abs(nums[index]);
     }
-  }
 
-  var count = 0;
-  for (var i = 2; i < n; i++) {
-    if (isPrime[i]) {
-      count++;
-    }
-  }
-
-  return count;
+    return ret;
 };
