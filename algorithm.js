@@ -1678,3 +1678,18 @@ function dfs(result, index, len, map) {
 
     return false;
 }
+
+//remove dups from unsorted array
+function uniq(arr){
+  var seen = {};
+  var dupless = [];
+  var j = 0;
+
+  for(var i=0; i< arr.length; i++){
+    if(seen[arr[i]] !== 1){
+      seen[item] = 1;
+      dupless[j++] = 1;
+    }
+  }
+  return dupless;
+}
