@@ -1693,3 +1693,20 @@ function uniq(arr){
   }
   return dupless;
 }
+///
+var bulbSwitch = function(n) {
+    var bulbs = new Array(n).fill(0);
+    for(i = 1; i <= n; i++) {
+        for(var j = i; j <= n; j = j + i) {
+            bulbs[j-1] = 1 - bulbs[j-1];
+        }
+    }
+    var sum = 0;
+
+    for(var i = 0; i < bulbs.length; i++) {
+        if(bulbs[i] == 1) {
+            sum++;
+        }
+    }
+    return sum;
+};
