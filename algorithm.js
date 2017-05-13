@@ -1694,22 +1694,21 @@ function uniq(arr){
   return dupless;
 }
 ///
-var numSquares = function(n) {
-    var arr = [],
-        i,
-        j;
+var minPatches = function(nums, n) {
+    var knownSum = 1,
+        len = nums.length,
+        count = 0,
+        i = 0;
 
-    arr[0] = 0;
-
-    for (i = 1; i <= n; i++) {
-        arr[i] = Number.MAX_VALUE;
-    }
-
-    for (i = 0; i <= n; i++) {
-        for (j = 1; i + j * j <= n; j++) {
-            arr[i + j * j] = Math.min(arr[i + j * j], arr[i] + 1);
+    while (knownSum <= n) {
+        if (i < len && knownSum >= nums[i]) {
+            knownSum += nums[i];
+            i++;
+        } else {
+            knownSum <<= 1;
+            count++;
         }
     }
 
-    return arr[n];
+    return count;
 };
