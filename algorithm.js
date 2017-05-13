@@ -1694,54 +1694,15 @@ function uniq(arr){
   return dupless;
 }
 ///
-var findMissingRanges = function(nums, lower, upper) {
-    let start, prev, end;
-    let result = [];
-    const len = nums.length;
-
-    if (len === 0) {
-        if (lower === upper) {
-            result.push(lower + '');
-        } else {
-            result.push(lower + '->' + upper);
-        }
-
-        return result;
-    }
-
-    start = nums[0];
-    prev = nums[0];
-
-    if (start > lower) {
-        start--;
-
-        if (lower === start) {
-            result.push(lower + '');
-        } else {
-            result.push(lower + '->' + start);
+var moveZeroes = function(nums) {
+    y = 0;
+    var temp;
+    for (var i= 0; i < nums.length; i++) {
+        if (nums[i]) {
+            temp = nums[i];
+            nums[i] = nums[y];
+            nums[y] = temp;
+            y += 1;
         }
     }
-
-    for (let i = 1; i < len; i++) {
-        if (nums[i] > prev + 1) {
-            start = prev + 1;
-            end = nums[i] - 1;
-
-            if (start === end) {
-                result.push(start + '');
-            } else {
-                result.push(start + '->' + end);
-            }
-        }
-
-        prev = nums[i];
-    }
-
-    if (prev + 1 === upper) {
-        result.push(upper + '');
-    } else if (prev + 1 < upper) {
-        result.push(prev + 1 + '->' + upper);
-    }
-
-    return result;
 };
