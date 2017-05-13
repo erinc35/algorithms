@@ -1694,15 +1694,22 @@ function uniq(arr){
   return dupless;
 }
 ///
-var findDuplicates = function(nums) {
-    var ret = [];
-    for (var i = 0; i < nums.length; i++) {
-        var index = Math.abs(nums[i]) - 1;
-        if (nums[index] < 0) {
-            ret.push(Math.abs(nums[i]));
-        }
-        nums[index] = -Math.abs(nums[index]);
+var numSquares = function(n) {
+    var arr = [],
+        i,
+        j;
+
+    arr[0] = 0;
+
+    for (i = 1; i <= n; i++) {
+        arr[i] = Number.MAX_VALUE;
     }
 
-    return ret;
+    for (i = 0; i <= n; i++) {
+        for (j = 1; i + j * j <= n; j++) {
+            arr[i + j * j] = Math.min(arr[i + j * j], arr[i] + 1);
+        }
+    }
+
+    return arr[n];
 };
