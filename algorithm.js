@@ -1694,28 +1694,34 @@ function uniq(arr){
   return dupless;
 }
 ///
-var hasCycle = function(head) {
-    if(head === null || head.next === null){
-        return false;
+var connect = function(root) {
+    if(!root) {
+        return;
     }
 
-    var faster = head.next;
-    var slower = head;
+    // leftEnd is used to track the current left most node
+    var leftEnd = root;
 
-    while(faster && slower){
-        if(faster.val === slower.val){
-            return true;
+    while(leftEnd !== null) {
+        var cur = leftEnd;
+        // dummy is used to point to the next level's leftEnd
+        var dummy = new TreeLinkNode(0);
+        var pre = dummy;
+        // for each level we use leftEnd and leftEnd next to achieve level traversal
+        while(cur !== null) {
+            if(cur.left !== null) {
+                pre.next = cur.left;
+                pre = cur.left;
+            }
+
+            if(cur.right !== null) {
+                pre.next = cur.right;
+                pre = cur.right;
+            }
+
+            cur = cur.next;
         }
-        faster = faster.next;
 
-        if(faster === null){
-            return false;
-        } else {
-            faster = faster.next;
-        }
-
-        slower = slower.next;
+        leftEnd = dummy.next;
     }
-
-    return false;
 };
