@@ -1694,66 +1694,69 @@ function uniq(arr){
   return dupless;
 }
 ///
-var fractionToDecimal = function(numerator, denominator) {
-    if(numerator === null || denominator === null){
-        return "";
+var isOneEditDistance = function(s, t) {
+  if(s.length > t.length) {
+    var tmp = s;
+    s = t;
+    t = tmp;
+  }
+
+  if((t.length - s.length) > 1) {
+    return false;
+  }
+
+  var found = false;
+
+  for(var i = 0, j = 0; i < s.length; i++, j++) {
+    if(s[i] !== t[j]) {
+
+      if(found) {
+        return false;
+      }
+
+      found = true;
+
+      if(s.length < t.length) {
+        i--;
+      }
     }
+  }
 
-    if(numerator === 0){
-        return "0";
-    }
-
-    if(denominator === 0){
-        return "";
-    }
-
-    var answer = "";
-    var isNegative = false;
-    if((numerator < 0) ^ (denominator < 0)){
-        isNegative = true;
-    }
-
-    var num = Math.abs(numerator);
-    var den = Math.abs(denominator);
-
-    var res = ~~(num / den);
-
-    answer += res;
-
-    var rem = (num % den) * 10;
-
-    if(rem === 0){
-        return fixAnswer(isNegative,answer);
-    }
-
-    var map = {}
-    answer += ".";
-
-    while(rem !== 0){
-        if(map[rem]){
-            var beg = answer.substring(0,map[rem]);
-            var end = answer.substring(map[rem]);
-
-            answer = beg + '(' + end +')';
-
-            return fixAnswer(isNegative,answer);
-        }
-
-        map[rem] = answer.length;
-        res = ~~(rem / den);
-
-        answer += res;
-        rem = rem%den*10;
-    }
-
-    return fixAnswer(isNegative,answer);
+  return found || s.length < t.length;
 };
 
-var fixAnswer = function(isNegative, answer){
-    answer = answer.replace(/-/g,'');
-    if(isNegative){
-        answer = '-' + answer;
+
+var isOneEditDistance = function(s, t) {
+    if(s.length > t.length) {
+        var tmp = s;
+        s = t;
+        t = tmp;
     }
 
-    return answer;
-}
+    if(t.length - s.length > 1) {
+        return false;
+    }
+
+
+    var i = 0;
+    var j = 0;
+    var diff = 0;
+
+    while(i < s.length && j < t.length) {
+        if(s[i] !== t[j]) {
+            if(diff !== 0) {
+                return false;
+            }
+            diff++;
+
+            if(t.length !== s.length) {
+                i--;
+            }
+        }
+
+        i++;
+        j++;
+    }
+
+    return diff === 1 || (t.length !== s.length && (t.length - j) === 1);
+};
