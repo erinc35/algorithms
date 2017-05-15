@@ -1694,36 +1694,21 @@ function uniq(arr){
   return dupless;
 }
 ///
-var permuteUnique = function(nums) {
-    var len = nums.length,
-        result = [];
+var minPatches = function(nums, n) {
+    var knownSum = 1,
+        len = nums.length,
+        count = 0,
+        i = 0;
 
-    nums.sort(function(a, b) {
-        return a - b;
-    });
-
-    genPerm(result, 0, len, [], [], nums);
-
-    return result;
-};
-
-function genPerm(result, index, len, curArr, used, nums) {
-    if (curArr.length === len) {
-        result.push(curArr);
-        return;
-    }
-
-    var i;
-
-    for (i = 0; i < len; i++) {
-        if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
-            continue;
+    while (knownSum <= n) {
+        if (i < len && knownSum >= nums[i]) {
+            knownSum += nums[i];
+            i++;
+        } else {
+            knownSum <<= 1;
+            count++;
         }
-
-        curArr.push(nums[i]);
-        used[i] = true;
-        genPerm(result, i + 1, len, curArr.concat(), used.concat(), nums);
-        used[i] = false;
-        curArr.pop();
     }
-}
+
+    return count;
+};
