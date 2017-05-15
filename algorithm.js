@@ -1694,34 +1694,36 @@ function uniq(arr){
   return dupless;
 }
 ///
-var connect = function(root) {
-    if(!root) {
+var permuteUnique = function(nums) {
+    var len = nums.length,
+        result = [];
+
+    nums.sort(function(a, b) {
+        return a - b;
+    });
+
+    genPerm(result, 0, len, [], [], nums);
+
+    return result;
+};
+
+function genPerm(result, index, len, curArr, used, nums) {
+    if (curArr.length === len) {
+        result.push(curArr);
         return;
     }
 
-    // leftEnd is used to track the current left most node
-    var leftEnd = root;
+    var i;
 
-    while(leftEnd !== null) {
-        var cur = leftEnd;
-        // dummy is used to point to the next level's leftEnd
-        var dummy = new TreeLinkNode(0);
-        var pre = dummy;
-        // for each level we use leftEnd and leftEnd next to achieve level traversal
-        while(cur !== null) {
-            if(cur.left !== null) {
-                pre.next = cur.left;
-                pre = cur.left;
-            }
-
-            if(cur.right !== null) {
-                pre.next = cur.right;
-                pre = cur.right;
-            }
-
-            cur = cur.next;
+    for (i = 0; i < len; i++) {
+        if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
+            continue;
         }
 
-        leftEnd = dummy.next;
+        curArr.push(nums[i]);
+        used[i] = true;
+        genPerm(result, i + 1, len, curArr.concat(), used.concat(), nums);
+        used[i] = false;
+        curArr.pop();
     }
-};
+}
