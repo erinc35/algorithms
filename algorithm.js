@@ -1694,21 +1694,23 @@ function uniq(arr){
   return dupless;
 }
 ///
-var minPatches = function(nums, n) {
-    var knownSum = 1,
-        len = nums.length,
-        count = 0,
-        i = 0;
+var plusOne = function(digits) {
+    var len = digits.length,
+        overflow = 1,
+        i;
 
-    while (knownSum <= n) {
-        if (i < len && knownSum >= nums[i]) {
-            knownSum += nums[i];
-            i++;
+    for (i = len - 1; i >= 0; i--) {
+        digits[i] = digits[i] + overflow;
+        if (digits[i] === 10) {
+            overflow = 1;
+            digits[i] = 0;
         } else {
-            knownSum <<= 1;
-            count++;
+            return digits;
         }
     }
 
-    return count;
+    if (overflow === 1) {
+        digits.unshift(1);
+        return digits;
+    }
 };
