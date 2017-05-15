@@ -1694,23 +1694,24 @@ function uniq(arr){
   return dupless;
 }
 ///
-var plusOne = function(digits) {
-    var len = digits.length,
-        overflow = 1,
-        i;
+var coinChange = function(coins, amount) {
+    var i = 0,
+        arr = [],
+        len = coins.length,
+        j;
 
-    for (i = len - 1; i >= 0; i--) {
-        digits[i] = digits[i] + overflow;
-        if (digits[i] === 10) {
-            overflow = 1;
-            digits[i] = 0;
-        } else {
-            return digits;
+    while (i <= amount) {
+        arr.push(Number.MAX_VALUE);
+        i++;
+    }
+
+    arr[0] = 0;
+
+    for (i = 0; i < len; i++) {
+        for (j = coins[i]; j <= amount; j++) {
+            arr[j] = Math.min(arr[j], arr[j - coins[i]] + 1);
         }
     }
 
-    if (overflow === 1) {
-        digits.unshift(1);
-        return digits;
-    }
+    return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
 };
