@@ -1687,31 +1687,37 @@ function uniq(arr){
 
   for(var i=0; i< arr.length; i++){
     if(seen[arr[i]] !== 1){
-      seen[item] = 1;
+      seen[arr[i]] = 1;
       dupless[j++] = 1;
     }
   }
   return dupless;
 }
 ///
-var coinChange = function(coins, amount) {
-    var i = 0,
-        arr = [],
-        len = coins.length,
-        j;
+var longestValidParentheses = function(s) {
+    var len = s.length,
+        last = -1,
+        left = [],
+        max = 0,
+        i;
 
-    while (i <= amount) {
-        arr.push(Number.MAX_VALUE);
-        i++;
-    }
-
-    arr[0] = 0;
-
+    // the important thing here is track the last ')'
     for (i = 0; i < len; i++) {
-        for (j = coins[i]; j <= amount; j++) {
-            arr[j] = Math.min(arr[j], arr[j - coins[i]] + 1);
+        if (s.charAt(i) === '(') {
+            left.push(i);
+        } else {
+            if (left.length === 0) {
+                last = i;
+            } else {
+                left.pop();
+                if (left.length === 0) {
+                    max = Math.max(max, i - last);
+                } else {
+                    max = Math.max(max, i - left[left.length - 1]);
+                }
+            }
         }
     }
 
-    return arr[amount] === Number.MAX_VALUE? -1 : arr[amount];
+    return max;
 };
