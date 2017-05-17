@@ -1694,26 +1694,44 @@ function uniq(arr){
   return dupless;
 }
 ///
-var solution = function(isBadVersion) {
-                /**
-                 * @param {integer} n Total versions
-                 * @return {integer} The first bad version
-                 */
-                return function(n) {
-                    var start = 1,
-                        end = n,
-                        mid = parseInt(n/2);
+var maxCoins = function(nums) {
+    var len = nums.length,
+        dp = [],
+        i,
+        k,
+        l,
+        m,
+        r;
 
-                    while (start < end) {
-                        if (isBadVersion(mid)) {
-                            end = mid;
-                        } else {
-                            start = mid + 1;
-                        }
+    for (i = 0; i <= len + 1; i++) {
+        dp.push(new Array(len + 1));
+    }
 
-                        mid = parseInt((start + end)/2);
-                    }
+    for (i = 0; i <= len + 1; i++) {
+        for (k = 0; k <= len + 1; k++) {
+            dp[i][k] = 0;
+        }
+    }
 
-                    return start;
-                };
-            };
+    nums[len + 1] = 1;
+
+    for (i = len; i > 0; i--) {
+        nums[i] = nums[i - 1];
+    }
+
+    nums[0] = 1;
+
+    len += 2;
+
+    for (k = 2; k < len; k++) {
+        for (l = 0; l < len - k; l++) {
+            r = l + k;
+
+            for (m = l + 1; m < r; m++) {
+                dp[l][r] = Math.max(dp[l][r], dp[l][m] + dp[m][r] + nums[l]*nums[m]*nums[r]);
+            }
+        }
+    }
+
+    return dp[0][len - 1];
+};
