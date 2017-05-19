@@ -1694,44 +1694,61 @@ function uniq(arr){
   return dupless;
 }
 ///
-var maxCoins = function(nums) {
-    var len = nums.length,
-        dp = [],
-        i,
-        k,
-        l,
-        m,
-        r;
+var maximumGap = function(nums) {
+    var length = nums.length,
+        bucket = [],
+        max = Number.MIN_VALUE,
+        min = Number.MAX_VALUE,
+        gap = 0,
+        bLen,
+        bIndex,
+        prev,
+        i;
 
-    for (i = 0; i <= len + 1; i++) {
-        dp.push(new Array(len + 1));
+    if (length < 2) {
+        return 0;
     }
 
-    for (i = 0; i <= len + 1; i++) {
-        for (k = 0; k <= len + 1; k++) {
-            dp[i][k] = 0;
+    for (i = 0; i < length; i++) {
+        if (nums[i] > max) {
+            max = nums[i];
+        }
+
+        if (nums[i] < min) {
+            min = nums[i];
         }
     }
 
-    nums[len + 1] = 1;
+    // length of each bucket
+    bLen = Math.floor((max - min) / length) + 1;
 
-    for (i = len; i > 0; i--) {
-        nums[i] = nums[i - 1];
-    }
+    for (i = 0; i < length; i++) {
+        bIndex = Math.floor((nums[i] - min) / bLen);
 
-    nums[0] = 1;
-
-    len += 2;
-
-    for (k = 2; k < len; k++) {
-        for (l = 0; l < len - k; l++) {
-            r = l + k;
-
-            for (m = l + 1; m < r; m++) {
-                dp[l][r] = Math.max(dp[l][r], dp[l][m] + dp[m][r] + nums[l]*nums[m]*nums[r]);
+        if (!bucket[bIndex]) {
+            bucket[bIndex] = [];
+            bucket[bIndex].push(nums[i]);
+            bucket[bIndex].push(nums[i]);
+        } else {
+            if (nums[i] < bucket[bIndex][0]) {
+                bucket[bIndex][0] = nums[i];
+            } else if (nums[i] > bucket[bIndex][1]) {
+                bucket[bIndex][1] = nums[i];
             }
         }
     }
 
-    return dp[0][len - 1];
+    length = bucket.length;
+    prev = 0;
+
+    for (i = 1; i < length; i++) {
+        if (!bucket[i]) {
+            continue;
+        }
+
+        gap = Math.max(gap, bucket[i][0] - bucket[prev][1]);
+        prev = i;
+    }
+
+    return gap;
 };
