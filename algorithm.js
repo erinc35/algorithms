@@ -1694,54 +1694,22 @@ function uniq(arr){
   return dupless;
 }
 ///
-var MinStack = function() {
-    this.min = [];
-    this.arr = [];
-};
+var majorityElement = function(num) {
+    var candidate,
+        length = num.length,
+        count = 1,
+        i;
 
-/**
- * @param {number} x
- * @returns {void}
- */
-MinStack.prototype.push = function(x) {
-    var len = this.min.length;
-    if (this.arr.length === 0) {
-        this.min.push(x);
-    } else if (this.min[len - 1] >= x) {
-        this.min.push(x);
-    }
-    this.arr.push(x);
-};
+    candidate = num[0];
 
-/**
- * @returns {void}
- */
-MinStack.prototype.pop = function() {
-    var elem,
-        len = this.min.length;
-    if (this.arr.length > 0) {
-        elem = this.arr.pop();
-    }
-    if (elem === this.min[len - 1]) {
-        this.min.pop();
-    }
-};
-
-/**
- * @returns {number}
- */
-MinStack.prototype.top = function() {
-    var len = this.arr.length;
-    if (len > 0) {
-        return this.arr[len - 1];
+    for (i = 1; i < length; i++) {
+        if (count === 0 || num[i] === candidate) {
+            count++;
+            candidate = num[i];
+        } else {
+            count--;
+        }
     }
 
-};
-
-/**
- * @returns {number}
- */
-MinStack.prototype.getMin = function() {
-    var len = this.min.length;
-    return this.min[len - 1];
+    return candidate;
 };
