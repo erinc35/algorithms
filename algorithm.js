@@ -1694,22 +1694,31 @@ function uniq(arr){
   return dupless;
 }
 ///
-var majorityElement = function(num) {
-    var candidate,
-        length = num.length,
-        count = 1,
-        i;
+var subsetsWithDup = function(nums) {
+    var result = [],
+        len = nums.length;
 
-    candidate = num[0];
+    nums.sort(function(a, b) {
+        return a - b;
+    });
 
-    for (i = 1; i < length; i++) {
-        if (count === 0 || num[i] === candidate) {
-            count++;
-            candidate = num[i];
-        } else {
-            count--;
-        }
-    }
+    helper(nums, 0, len - 1, [], result);
 
-    return candidate;
+    return result;
 };
+
+function helper(nums, start, end, curArr, result) {
+    result.push(curArr);
+
+    var i;
+
+    for (i = start; i <= end; i++) {
+        // skip duplicates
+        if (i > start && nums[i] === nums[i - 1]) {
+            continue;
+        }
+        curArr.push(nums[i]);
+        helper(nums, i + 1, end, curArr.concat(), result);
+        curArr.pop();
+    }
+}
