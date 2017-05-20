@@ -1694,41 +1694,26 @@ function uniq(arr){
   return dupless;
 }
 ///
-var rotateRight = function(head, k) {
-    var pointerA = head,
-        pointerB = head,
-        len = 0,
-        newHead,
+var productExceptSelf = function(nums) {
+    var result = [],
+        len = nums.length,
+        back = 1,
         i;
 
-    if (head === null) {
-        return null;
+    if (len === 0) {
+        return result;
     }
 
-    while (pointerA) {
-        pointerA = pointerA.next;
-        len++;
+    result[0] = 1;
+
+    for (i = 1; i < len; i++) {
+        result[i] = result[i - 1] * nums[i - 1];
     }
 
-    k = k % len;
-
-    if (k === 0 || len === 1) {
-        return head;
+    for (i = len - 2; i >= 0; i--) {
+        back *= nums[i + 1];
+        result[i] *= back;
     }
 
-    pointerA = head;
-    for (i = 0; i < k; i++) {
-        pointerA = pointerA.next;
-    }
-
-    while (pointerA && pointerA.next) {
-        pointerA = pointerA.next;
-        pointerB = pointerB.next;
-    }
-
-    newHead = pointerB.next;
-    pointerB.next = null;
-    pointerA.next = head;
-
-    return newHead;
+    return result;
 };
