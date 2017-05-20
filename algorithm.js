@@ -1694,22 +1694,41 @@ function uniq(arr){
   return dupless;
 }
 ///
-var rotate = function(matrix) {
-    var len = matrix.length,
-        i,
-        level,
-        tmp;
+var rotateRight = function(head, k) {
+    var pointerA = head,
+        pointerB = head,
+        len = 0,
+        newHead,
+        i;
 
-    level = 0;
-
-    while (level < len/2) {
-        for (i = level; i < len - level - 1; i++) {
-           tmp = matrix[level][i];
-           matrix[level][i] = matrix[len - i - 1][level];
-           matrix[len - i - 1][level] = matrix[len - 1 - level][len - 1 - i];
-           matrix[len - 1 - level][len - 1 - i] = matrix[i][len - 1 - level];
-           matrix[i][len - 1 - level] = tmp;
-        }
-        level++;
+    if (head === null) {
+        return null;
     }
+
+    while (pointerA) {
+        pointerA = pointerA.next;
+        len++;
+    }
+
+    k = k % len;
+
+    if (k === 0 || len === 1) {
+        return head;
+    }
+
+    pointerA = head;
+    for (i = 0; i < k; i++) {
+        pointerA = pointerA.next;
+    }
+
+    while (pointerA && pointerA.next) {
+        pointerA = pointerA.next;
+        pointerB = pointerB.next;
+    }
+
+    newHead = pointerB.next;
+    pointerB.next = null;
+    pointerA.next = head;
+
+    return newHead;
 };
