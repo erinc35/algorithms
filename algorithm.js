@@ -1694,22 +1694,22 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar wordBreak = function(s, wordDict) {
-    var hasFound = [],
-        len = s.length,
-        i,
-        j;
-
-    hasFound[0] = true;
-
-    for (i = 1; i <= len; i++) {
-        for (j = 0; j < i; j++) {
-            if (hasFound[j] && wordDict.has(s.substring(j, i))) {
-                hasFound[i] = true;
-                break;
-            }
-        }
+vvar isUgly = function(num) {
+    if (num <= 0) {
+        return false;
     }
 
-    return hasFound[len] === true;
+    while (num % 2 === 0) {
+        num = num / 2;
+    }
+
+    while (num % 3 === 0) {
+        num = num / 3;
+    }
+
+    while (num % 5 === 0) {
+        num = num / 5;
+    }
+
+    return num === 1;
 };
