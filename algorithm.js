@@ -1694,39 +1694,39 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar threeSumClosest = function(nums, target) {
-    var len = nums.length,
-        minDiff = Number.MAX_VALUE,
-        diff,
-        left,
-        right,
-        i,
-        j;
+vvar calculate = function(s) {
+    var stack = [],
+        len = s.length,
+        sum = 0,
+        num,
+        ch,
+        j,
+        i;
 
-    nums.sort(function(a, b) {
-        return a - b;
-    });
+    stack.push(1);
+    stack.push(1);
 
     for (i = 0; i < len; i++) {
-        left = i + 1;
-        right = len - 1;
+        ch = s.charAt(i);
 
-        while (left < right) {
-            diff = target - nums[i] - nums[left] - nums[right];
+        if (!isNaN(parseInt(ch))) {
+            num = parseInt(ch);
 
-            if (diff === 0) {
-                return target;
-            } else if (diff > 0) {
-                left++;
-            } else {
-                right--;
+            for (j = i + 1; j < len && !isNaN(parseInt(s.charAt(j))); j++) {
+                num = num * 10 + parseInt(s.charAt(j));
             }
 
-            if (Math.abs(diff) < Math.abs(minDiff)) {
-                minDiff = diff;
-            }
+            sum += stack.pop() * num;
+
+            i = j - 1;
+        } else if (ch === '+' || ch === '(') {
+            stack.push(stack[stack.length - 1]);
+        } else if (ch === '-') {
+            stack.push(stack[stack.length - 1] * (-1));
+        } else if (ch === ')') {
+            stack.pop();
         }
     }
 
-    return target - minDiff;
+    return sum;
 };
