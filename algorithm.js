@@ -1694,32 +1694,22 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar convert = function(s, numRows) {
-    var size = 2 * numRows - 2,
+vvar wordBreak = function(s, wordDict) {
+    var hasFound = [],
         len = s.length,
-        result = '',
-        mid,
         i,
         j;
 
-    if (numRows === 1) {
-        return s;
-    }
+    hasFound[0] = true;
 
-    for (i = 0; i < numRows; i++) {
-        for (j = i; j < len; j += size) {
-            result += s.charAt(j);
-
-            // for the middle ones, excluding first row and last row
-            if (i !== 0 && i !== numRows - 1) {
-                mid = j + size - 2 * i;
-
-                if (mid < len) {
-                    result += s.charAt(mid);
-                }
+    for (i = 1; i <= len; i++) {
+        for (j = 0; j < i; j++) {
+            if (hasFound[j] && wordDict.has(s.substring(j, i))) {
+                hasFound[i] = true;
+                break;
             }
         }
     }
 
-    return result;
+    return hasFound[len] === true;
 };
