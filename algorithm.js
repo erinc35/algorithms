@@ -1694,63 +1694,32 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar searchRange = function(nums, target) {
-    var result = [],
-        leftIndex = findLeftMost(target, nums),
-        rightIndex = findRightMost(target, nums);
+vvar convert = function(s, numRows) {
+    var size = 2 * numRows - 2,
+        len = s.length,
+        result = '',
+        mid,
+        i,
+        j;
 
-    result.push(leftIndex);
-    result.push(rightIndex);
+    if (numRows === 1) {
+        return s;
+    }
+
+    for (i = 0; i < numRows; i++) {
+        for (j = i; j < len; j += size) {
+            result += s.charAt(j);
+
+            // for the middle ones, excluding first row and last row
+            if (i !== 0 && i !== numRows - 1) {
+                mid = j + size - 2 * i;
+
+                if (mid < len) {
+                    result += s.charAt(mid);
+                }
+            }
+        }
+    }
 
     return result;
 };
-
-function findLeftMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            end = mid - 1;
-        }
-    }
-
-    if (start >= 0 && start < len && nums[start] === target) {
-        return start;
-    }
-
-    return -1;
-}
-
-function findRightMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            start = mid + 1;
-        }
-    }
-
-    if (end >= 0 && end < len && nums[end] === target) {
-        return end;
-    }
-
-    return -1;
-}
