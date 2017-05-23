@@ -1694,22 +1694,37 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar isUgly = function(num) {
-    if (num <= 0) {
-        return false;
-    }
+vvar permute = function(nums) {
+    function getPerm(arr, numss, n) {
+        var len = arr.length,
+            result = [],
+            len1,
+            x,
+            copy,
+            i,
+            j;
 
-    while (num % 2 === 0) {
-        num = num / 2;
-    }
+        if (n === numss.length) {
+            return arr;
+        }
 
-    while (num % 3 === 0) {
-        num = num / 3;
-    }
+        x = numss[n];
+        len1 = arr[0].length;
 
-    while (num % 5 === 0) {
-        num = num / 5;
-    }
+        for (i = 0; i < len; i++) {
+            for (j = 0; j <= len1; j++) {
+                copy = arr[i].slice(0);
+                copy.splice(j, 0, x);
+                result.push(copy);
+            }
+        }
 
-    return num === 1;
+        return getPerm(result, numss, n + 1);
+    }
+    var initArr = [],
+        initElement = [];
+
+    initArr.push(initElement);
+    return getPerm(initArr, nums, 0);
+
 };
