@@ -1694,26 +1694,39 @@ function uniq(arr){
   return dupless;
 }
 ///
-var productExceptSelf = function(nums) {
-    var result = [],
-        len = nums.length,
-        back = 1,
-        i;
+vvar threeSumClosest = function(nums, target) {
+    var len = nums.length,
+        minDiff = Number.MAX_VALUE,
+        diff,
+        left,
+        right,
+        i,
+        j;
 
-    if (len === 0) {
-        return result;
+    nums.sort(function(a, b) {
+        return a - b;
+    });
+
+    for (i = 0; i < len; i++) {
+        left = i + 1;
+        right = len - 1;
+
+        while (left < right) {
+            diff = target - nums[i] - nums[left] - nums[right];
+
+            if (diff === 0) {
+                return target;
+            } else if (diff > 0) {
+                left++;
+            } else {
+                right--;
+            }
+
+            if (Math.abs(diff) < Math.abs(minDiff)) {
+                minDiff = diff;
+            }
+        }
     }
 
-    result[0] = 1;
-
-    for (i = 1; i < len; i++) {
-        result[i] = result[i - 1] * nums[i - 1];
-    }
-
-    for (i = len - 2; i >= 0; i--) {
-        back *= nums[i + 1];
-        result[i] *= back;
-    }
-
-    return result;
+    return target - minDiff;
 };
