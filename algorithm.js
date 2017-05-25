@@ -1717,33 +1717,48 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var isMatch = function(s, p) {
-    let sIndex = 0;
-    let pIndex = 0;
-    let startIndex = -1; // startIndex of * in p
-    let match = 0; // the position in s that matches with p
+var wallsAndGates = function(rooms) {
+    let queue = [];
+    let rowLen = rooms.length;
+    const MAX_VALUE = 2147483647;
+    if (rowLen === 0) {
+        return;
+    }
 
-    while (sIndex < s.length) {
-        // matches, both advance
-        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
-            pIndex++;
-            sIndex++;
-        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
-            startIndex = pIndex;
-            match = sIndex;
-            pIndex++;
-        } else if (startIndex !== -1) {
-            pIndex = startIndex + 1;
-            match++;
-            sIndex = match;
-        } else {
-            return false;
+    let colLen = rooms[0].length;
+
+    for (let i = 0; i < rowLen; i++) {
+        for (let j = 0; j < colLen; j++) {
+            if (rooms[i][j] === 0) {
+                queue.push([i, j]);
+            }
         }
     }
 
-    while (pIndex < p.length && p.charAt(pIndex) === '*') {
-        pIndex++;
-    }
+    while (queue.length > 0) {
+        const cur = queue.shift();
+        const row = cur[0];
+        const col = cur[1];
+        const val = rooms[row][col];
 
-    return pIndex === p.length;
+        if (row + 1 < rowLen && rooms[row + 1][col] === MAX_VALUE) {
+            rooms[row + 1][col] = val + 1;
+            queue.push([row + 1, col])
+        }
+
+        if (row - 1 >= 0 && rooms[row - 1][col] === MAX_VALUE) {
+            rooms[row - 1][col] = val + 1;
+            queue.push([row - 1, col]);
+        }
+
+        if (col + 1 < colLen && rooms[row][col + 1] === MAX_VALUE) {
+            rooms[row][col + 1] = val + 1;
+            queue.push([row, col + 1]);
+        }
+
+        if (col - 1 >= 0 && rooms[row][col - 1] === MAX_VALUE) {
+            rooms[row][col - 1] = val + 1;
+            queue.push([row, col - 1]);
+        }
+    }
 };
