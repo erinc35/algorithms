@@ -1717,34 +1717,33 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var trap = function(height) {
-    var len = height.length,
-        leftMax = 0,
-        rightMax = 0,
-        left = 0,
-        right = len - 1,
-        sum = 0;
+var isMatch = function(s, p) {
+    let sIndex = 0;
+    let pIndex = 0;
+    let startIndex = -1; // startIndex of * in p
+    let match = 0; // the position in s that matches with p
 
-    while (left <= right) {
-        if (height[left] <= height[right]) {
-            if (height[left] > leftMax) {
-                leftMax = height[left];
-            } else {
-                sum += leftMax - height[left];
-            }
-
-            left++;
+    while (sIndex < s.length) {
+        // matches, both advance
+        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
+            pIndex++;
+            sIndex++;
+        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
+            startIndex = pIndex;
+            match = sIndex;
+            pIndex++;
+        } else if (startIndex !== -1) {
+            pIndex = startIndex + 1;
+            match++;
+            sIndex = match;
         } else {
-            if (height[right] > rightMax) {
-                rightMax = height[right];
-            } else {
-                sum += rightMax - height[right];
-            }
-
-            right--;
+            return false;
         }
     }
 
-    return sum;
-};
+    while (pIndex < p.length && p.charAt(pIndex) === '*') {
+        pIndex++;
+    }
 
+    return pIndex === p.length;
+};
