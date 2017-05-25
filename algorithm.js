@@ -16,7 +16,7 @@ function ones(arr){
   var end = arr.length-1;
   var mid;
 
-  while (start <=end){
+  while (start <= end){
     mid = Math.floor((start+end) / 2)
     if(arr[mid] === 1 ){
       end = mid -1
@@ -1694,37 +1694,52 @@ function uniq(arr){
   return dupless;
 }
 ///
-vvar permute = function(nums) {
-    function getPerm(arr, numss, n) {
-        var len = arr.length,
-            result = [],
-            len1,
-            x,
-            copy,
-            i,
-            j;
+// Total Accepted: 169622
+// Total Submissions: 430038
+// Difficulty: Easy
+// Contributor: LeetCode
+// You are climbing a stair case. It takes n steps to reach to the top.
 
-        if (n === numss.length) {
-            return arr;
-        }
+// Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top.
 
-        x = numss[n];
-        len1 = arr[0].length;
+var climbStairs = function(n) {
+   if(n <= 2) return n;
 
-        for (i = 0; i < len; i++) {
-            for (j = 0; j <= len1; j++) {
-                copy = arr[i].slice(0);
-                copy.splice(j, 0, x);
-                result.push(copy);
-            }
-        }
+   var stepOne =1;
+   var stepTwo = 2;
+   var result;
 
-        return getPerm(result, numss, n + 1);
+   for(var i=2; i<n; i++){
+       result = stepOne+stepTwo;
+       stepOne = stepTwo;
+       stepTwo = result
+   }
+   return result
+};
+////
+var sortColors = function(nums) {
+    var len = nums.length,
+        redEnds = 0,
+        blueStarts = len - 1,
+        i;
+
+    function swap(m, n, arr) {
+        var temp = arr[m];
+
+        arr[m] = arr[n];
+        arr[n] = temp;
     }
-    var initArr = [],
-        initElement = [];
 
-    initArr.push(initElement);
-    return getPerm(initArr, nums, 0);
-
+    for (i = 0; i <= blueStarts;) {
+        if (nums[i] === 0) {
+            swap(i, redEnds, nums);
+            i++;
+            redEnds++;
+        } else if (nums[i] === 2) {
+            swap(i, blueStarts, nums);
+            blueStarts--;
+        } else {
+            i++;
+        }
+    }
 };
