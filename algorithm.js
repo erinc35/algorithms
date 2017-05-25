@@ -1717,29 +1717,34 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var sortColors = function(nums) {
-    var len = nums.length,
-        redEnds = 0,
-        blueStarts = len - 1,
-        i;
+var trap = function(height) {
+    var len = height.length,
+        leftMax = 0,
+        rightMax = 0,
+        left = 0,
+        right = len - 1,
+        sum = 0;
 
-    function swap(m, n, arr) {
-        var temp = arr[m];
+    while (left <= right) {
+        if (height[left] <= height[right]) {
+            if (height[left] > leftMax) {
+                leftMax = height[left];
+            } else {
+                sum += leftMax - height[left];
+            }
 
-        arr[m] = arr[n];
-        arr[n] = temp;
-    }
-
-    for (i = 0; i <= blueStarts;) {
-        if (nums[i] === 0) {
-            swap(i, redEnds, nums);
-            i++;
-            redEnds++;
-        } else if (nums[i] === 2) {
-            swap(i, blueStarts, nums);
-            blueStarts--;
+            left++;
         } else {
-            i++;
+            if (height[right] > rightMax) {
+                rightMax = height[right];
+            } else {
+                sum += rightMax - height[right];
+            }
+
+            right--;
         }
     }
+
+    return sum;
 };
+
