@@ -1717,26 +1717,20 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var isStrobogrammatic = function(num) {
-    let map = new Map();
+var minimumTotal = function(triangle) {
+    var arr = [],
+        len = triangle.length - 1,
+        i,
+        j;
 
-    map.set('1', '1');
-    map.set('6', '9');
-    map.set('9', '6');
-    map.set('8', '8');
-    map.set('0', '0');
-
-    let start = 0;
-    let end = num.length - 1;
-
-    while (start <= end) {
-        if (!map.has(num.charAt(start)) || map.get(num.charAt(start)) !== num.charAt(end)) {
-            return false;
-        }
-
-        start++;
-        end--;
+    for (i = 0; i <= len; i++) {
+        arr[i] = triangle[len][i];
     }
 
-    return true;
+    for(i = len - 1; i >= 0; i--) {
+        for(j = 0; j <= i; j++) {
+            arr[j] = triangle[i][j] + Math.min(arr[j], arr[j + 1]);
+        }
+    }
+    return arr[0];
 };
