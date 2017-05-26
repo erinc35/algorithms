@@ -1717,88 +1717,24 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var fullJustify = function(words, maxWidth) {
-    var len = words.length,
-        lastIndex = -1,
-        result = [],
-        curLen = 0,
-        wordsCount,
-        spaceCount,
-        extraSpace,
-        totalSpace,
-        word = '',
-        i,
-        j;
-
-    if (maxWidth === 0) {
-        return [""];
+var isSymmetric = function(root) {
+    if (root === null) {
+        return true;
     }
 
-    for (i = 0; i < len; i++) {
-        curLen += words[i].length + 1;
-
-        if (curLen - 1 > maxWidth || i === len - 1) {
-            if (curLen - 1 > maxWidth && (i - lastIndex > 1)) {
-                curLen -= words[i].length + 1;
-                i--;
-            }
-
-            wordsCount = i - lastIndex;
-            curLen -= wordsCount; // by now, curlen is length without any space
-
-            if (wordsCount === 1) {
-                word += words[i];
-                word = appendSpace(word, maxWidth - curLen);
-            } else if (i === len - 1) {
-                totalSpace = maxWidth - curLen;
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (totalSpace > 0) {
-                        totalSpace--;
-                        word += ' ';
-                    }
-                }
-
-                if (totalSpace > 0) {
-                    word = appendSpace(word, totalSpace);
-                }
-            } else {
-                // if n words, then n - 1 spaces
-                spaceCount = parseInt((maxWidth - curLen) / (wordsCount - 1));
-                extraSpace = (maxWidth - curLen) % (wordsCount - 1);
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (j !== i) {
-                        word = appendSpace(word, spaceCount);
-
-                        if (extraSpace > 0) {
-                            word += ' ';
-                            extraSpace--;
-                        }
-                    }
-                }
-            }
-
-            result.push(word);
-            word = '';
-            lastIndex = i;
-            curLen = 0;
-        }
-    }
-
-    return result;
+    return isSymmetricHelper(root.left, root.right);
 };
 
-// append k spaces at end of word
-function appendSpace(word, k) {
-    while (k > 0) {
-        word += ' ';
-        k--;
+function isSymmetricHelper(left, right) {
+    if ((left === null && right !== null) || (left !== null && right === null)) {
+        return false;
     }
 
-    return word;
+    if (left === null && right === null) {
+        return true;
+    } else if (left.val !== right.val) {
+        return false;
+    }
+
+    return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
 }
