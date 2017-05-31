@@ -1717,63 +1717,32 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var searchRange = function(nums, target) {
-    var result = [],
-        leftIndex = findLeftMost(target, nums),
-        rightIndex = findRightMost(target, nums);
+var sumNumbers = function(root) {
+    var arr = [0];
 
-    result.push(leftIndex);
-    result.push(rightIndex);
+    helper(root, 0, arr);
 
-    return result;
+    return arr[0];
 };
 
-function findLeftMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            end = mid - 1;
-        }
+function helper(node, sum, arr) {
+    if (!node) {
+        return;
     }
 
-    if (start >= 0 && start < len && nums[start] === target) {
-        return start;
+    sum = sum*10 + node.val;
+
+    if (!node.left && !node.right) {
+        arr[0] += sum;
+        return;
     }
 
-    return -1;
-}
-
-function findRightMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            start = mid + 1;
-        }
+    if (node.left) {
+        helper(node.left, sum, arr);
     }
 
-    if (end >= 0 && end < len && nums[end] === target) {
-        return end;
+    if (node.right) {
+        helper(node.right, sum, arr);
     }
 
-    return -1;
 }
