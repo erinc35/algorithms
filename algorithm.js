@@ -1717,10 +1717,63 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var computeArea = function(A, B, C, D, E, F, G, H) {
-    // S(M ∪ N) = S(M) + S(N) - S(M ∩ N)
-    var M = (D - B) * (C - A),
-        N = (H - F) * (G - E);
+var searchRange = function(nums, target) {
+    var result = [],
+        leftIndex = findLeftMost(target, nums),
+        rightIndex = findRightMost(target, nums);
 
-    return M + N - Math.max(Math.min(D, H) - Math.max(B, F), 0) * Math.max(Math.min(C, G) - Math.max(A, E), 0);
+    result.push(leftIndex);
+    result.push(rightIndex);
+
+    return result;
 };
+
+function findLeftMost(target, nums) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
+
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+
+        if (nums[mid] > target) {
+            end = mid - 1;
+        } else if (nums[mid] < target) {
+            start = mid + 1;
+        } else {
+            end = mid - 1;
+        }
+    }
+
+    if (start >= 0 && start < len && nums[start] === target) {
+        return start;
+    }
+
+    return -1;
+}
+
+function findRightMost(target, nums) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
+
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+
+        if (nums[mid] > target) {
+            end = mid - 1;
+        } else if (nums[mid] < target) {
+            start = mid + 1;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    if (end >= 0 && end < len && nums[end] === target) {
+        return end;
+    }
+
+    return -1;
+}
