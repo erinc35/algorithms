@@ -1717,33 +1717,10 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var connect = function(root) {
-    var i,
-        length,
-        curRow = [],
-        nextRow = [];
+var computeArea = function(A, B, C, D, E, F, G, H) {
+    // S(M ∪ N) = S(M) + S(N) - S(M ∩ N)
+    var M = (D - B) * (C - A),
+        N = (H - F) * (G - E);
 
-    if (root === null) {
-        return;
-    }
-    cur = root;
-    curRow.push(cur);
-    length = 1;
-    while(length > 0) {
-        for (i = 0; i < length; i++) {
-            cur = curRow[i];
-            cur.next = i < length - 1? curRow[i + 1] : null;
-
-            if (cur.left) {
-                nextRow.push(cur.left);
-            }
-            if (cur.right) {
-                nextRow.push(cur.right);
-            }
-        }
-        curRow = nextRow;
-        nextRow = [];
-        length = curRow.length;
-    }
-
+    return M + N - Math.max(Math.min(D, H) - Math.max(B, F), 0) * Math.max(Math.min(C, G) - Math.max(A, E), 0);
 };
