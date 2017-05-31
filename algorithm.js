@@ -1717,24 +1717,33 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var isSymmetric = function(root) {
+var connect = function(root) {
+    var i,
+        length,
+        curRow = [],
+        nextRow = [];
+
     if (root === null) {
-        return true;
+        return;
+    }
+    cur = root;
+    curRow.push(cur);
+    length = 1;
+    while(length > 0) {
+        for (i = 0; i < length; i++) {
+            cur = curRow[i];
+            cur.next = i < length - 1? curRow[i + 1] : null;
+
+            if (cur.left) {
+                nextRow.push(cur.left);
+            }
+            if (cur.right) {
+                nextRow.push(cur.right);
+            }
+        }
+        curRow = nextRow;
+        nextRow = [];
+        length = curRow.length;
     }
 
-    return isSymmetricHelper(root.left, root.right);
 };
-
-function isSymmetricHelper(left, right) {
-    if ((left === null && right !== null) || (left !== null && right === null)) {
-        return false;
-    }
-
-    if (left === null && right === null) {
-        return true;
-    } else if (left.val !== right.val) {
-        return false;
-    }
-
-    return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
-}
