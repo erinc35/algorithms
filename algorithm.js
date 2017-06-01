@@ -1717,32 +1717,45 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var sumNumbers = function(root) {
-    var arr = [0];
+var partition = function(head, x) {
+    var cur = head,
+        next,
+        preHead,
+        preTail,
+        afterHead,
+        afterTail;
 
-    helper(root, 0, arr);
+    if (head === null) {
+        return null;
+    }
 
-    return arr[0];
+    while(cur) {
+        next = cur.next;
+        cur.next = null;
+        if (cur.val < x) {
+            if (!preHead) {
+                preHead = cur;
+                preTail = cur;
+            } else {
+                preTail.next = cur;
+                preTail = cur;
+            }
+        } else {
+            if (!afterHead) {
+                afterHead = cur;
+                afterTail = cur;
+            } else {
+                afterTail.next = cur;
+                afterTail = cur;
+            }
+        }
+        cur = next;
+    }
+
+    if (preTail) {
+        preTail.next = afterHead;
+        return preHead;
+    } else {
+        return afterHead;
+    }
 };
-
-function helper(node, sum, arr) {
-    if (!node) {
-        return;
-    }
-
-    sum = sum*10 + node.val;
-
-    if (!node.left && !node.right) {
-        arr[0] += sum;
-        return;
-    }
-
-    if (node.left) {
-        helper(node.left, sum, arr);
-    }
-
-    if (node.right) {
-        helper(node.right, sum, arr);
-    }
-
-}
