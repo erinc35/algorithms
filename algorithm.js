@@ -1717,47 +1717,38 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var numIslands = function(grid) {
-    var len = grid.length,
-        result = 0,
-        len1,
+var minPathSum = function(grid) {
+    var result = [],
+        rowL = grid.length,
+        columnL,
         i,
         j;
 
-    if (len === 0) {
-        return 0;
+    if (rowL === 0) {
+        return result;
     }
 
-    len1 = grid[0].length;
+    columnL = grid[0].length;
 
-    if (len1 === 0) {
-        return 0;
+    for (i = 0; i < rowL; i++) {
+        result.push(new Array(columnL));
     }
 
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < len1; j++) {
-            if (grid[i][j] !== '1') {
-                continue;
-            }
+    result[0][0] = grid[0][0];
 
-            result++;
-            dfs(grid, i, j, len, len1);
+    for (i = 1; i < columnL; i++) {
+        result[0][i] = grid[0][i] + result[0][i - 1];
+    }
+
+    for (i = 1; i < rowL; i++) {
+        result[i][0] = grid[i][0] + result[i - 1][0];
+    }
+
+    for (i = 1; i < rowL; i++) {
+        for (j = 1; j < columnL; j++) {
+            result[i][j] = Math.min(result[i - 1][j], result[i][j - 1]) + grid[i][j];
         }
     }
 
-    return result;
+    return result[rowL - 1][columnL - 1];
 };
-
-function dfs(grid, i, j, len, len1) {
-    if (i >= len || j >= len1 || i < 0 || j < 0) {
-        return;
-    }
-
-    if (grid[i][j] === '1') {
-        grid[i][j] = '0';
-        dfs(grid, i - 1, j, len, len1);
-        dfs(grid, i, j - 1, len, len1);
-        dfs(grid, i + 1, j, len, len1);
-        dfs(grid, i, j + 1, len, len1);
-    }
-}
