@@ -353,6 +353,7 @@ var selectionSort = function(array){
   return array;
 };
 var array = [3,2,10,1]
+////
 
 function palindrome(str){
   var len = Math.floor(str.length/2);
@@ -360,8 +361,8 @@ function palindrome(str){
     if(str[i] !== str[str.length - i - 1]){
       return false
     }
-    return true
   }
+  return true
 }
 
 var longestPalindrome = function(s) {
@@ -1717,38 +1718,33 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var minPathSum = function(grid) {
-    var result = [],
-        rowL = grid.length,
-        columnL,
-        i,
-        j;
-
-    if (rowL === 0) {
-        return result;
+ar swapPairs = function(head) {
+    if (head === null) {
+        return null;
     }
 
-    columnL = grid[0].length;
+    var next = head.next,
+        result = next? next : head,
+        prevTail,
+        curHead,
+        nextHead;
 
-    for (i = 0; i < rowL; i++) {
-        result.push(new Array(columnL));
-    }
+    curHead = head;
 
-    result[0][0] = grid[0][0];
+    while(next) {
+        nextHead = next.next;
 
-    for (i = 1; i < columnL; i++) {
-        result[0][i] = grid[0][i] + result[0][i - 1];
-    }
-
-    for (i = 1; i < rowL; i++) {
-        result[i][0] = grid[i][0] + result[i - 1][0];
-    }
-
-    for (i = 1; i < rowL; i++) {
-        for (j = 1; j < columnL; j++) {
-            result[i][j] = Math.min(result[i - 1][j], result[i][j - 1]) + grid[i][j];
+        if (prevTail) {
+            prevTail.next = next;
         }
+
+        next.next = curHead;
+        curHead.next = nextHead;
+        prevTail = curHead;
+
+        curHead = nextHead;
+        next = curHead && curHead.next;
     }
 
-    return result[rowL - 1][columnL - 1];
+    return result;
 };
