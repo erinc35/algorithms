@@ -1718,35 +1718,38 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var trap = function(height) {
-    var len = height.length,
-        leftMax = 0,
-        rightMax = 0,
-        left = 0,
-        right = len - 1,
-        sum = 0;
+var nthUglyNumber = function(n) {
+    var result = [],
+        primeIndex2 = 0,
+        primeIndex3 = 0,
+        primeIndex5 = 0,
+        cur2,
+        cur3,
+        cur5,
+        i;
 
-    while (left <= right) {
-        if (height[left] <= height[right]) {
-            if (height[left] > leftMax) {
-                leftMax = height[left];
-            } else {
-                sum += leftMax - height[left];
-            }
+    result.push(1);
 
-            left++;
+    for (i = 1; i < n;) {
+        cur2 = result[primeIndex2] * 2;
+        cur3 = result[primeIndex3] * 3;
+        cur5 = result[primeIndex5] * 5;
+
+        cur = Math.min(cur2, cur3, cur5);
+
+        if (cur === cur2) {
+            primeIndex2++;
+        } else if (cur === cur3) {
+            primeIndex3++;
         } else {
-            if (height[right] > rightMax) {
-                rightMax = height[right];
-            } else {
-                sum += rightMax - height[right];
-            }
+            primeIndex5++;
+        }
 
-            right--;
+        if (cur !== result[i - 1]) {
+            result.push(cur);
+            i++;
         }
     }
 
-    return sum;
+    return result.pop();
 };
-
-
