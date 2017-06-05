@@ -1718,32 +1718,40 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var levelOrderBottom = function(root) {
-    var result = [],
-        parent = [],
-        parentData,
-        cur;
+var generate = function(numRows) {
+    var init = [],
+        result = [],
+        i;
 
-    if (root === null) {
+    if (numRows === 0) {
         return result;
     }
 
-    parent.push(root);
+    init.push(1);
+    result.push(init);
+    i = 1;
 
-    while (parent.length > 0) {
-        cur = [];
-        parentData = [];
-
-        for (var i in parent) {
-            parent[i].left ? cur.push(parent[i].left) : null;
-            parent[i].right? cur.push(parent[i].right) : null;
-            parentData.push(parent[i].val);
-        }
-
-        result.unshift(parentData);
-
-        parent = cur;
+    while (i < numRows) {
+        result = helper(result, ++i);
     }
 
     return result;
 };
+
+function helper(arr, k) {
+    var len = arr.length,
+        cur = arr[len - 1],
+        result = [],
+        i;
+
+    result.push(1);
+
+    for (i = 0; i < len - 1; i++) {
+        result[i + 1] = cur[i] + cur[i + 1];
+    }
+
+    result.push(1);
+    arr.push(result);
+
+    return arr;
+}
