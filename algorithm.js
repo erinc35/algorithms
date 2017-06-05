@@ -1718,22 +1718,31 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var grayCode = function(n) {
+var levelOrderBottom = function(root) {
     var result = [],
-        cur,
-        i,
-        j;
+        parent = [],
+        parentData,
+        cur;
 
-    result [0] = 0;
-
-    if (n === 0) {
+    if (root === null) {
         return result;
     }
 
-    for (i = 1; i <= n; i++) {
-        for (j = Math.pow(2, i - 1); j > 0; j--) {
-            result.push(result[j - 1] + (1 << (i - 1)));
+    parent.push(root);
+
+    while (parent.length > 0) {
+        cur = [];
+        parentData = [];
+
+        for (var i in parent) {
+            parent[i].left ? cur.push(parent[i].left) : null;
+            parent[i].right? cur.push(parent[i].right) : null;
+            parentData.push(parent[i].val);
         }
+
+        result.unshift(parentData);
+
+        parent = cur;
     }
 
     return result;
