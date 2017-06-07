@@ -1718,40 +1718,6 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var generate = function(numRows) {
-    var init = [],
-        result = [],
-        i;
-
-    if (numRows === 0) {
-        return result;
-    }
-
-    init.push(1);
-    result.push(init);
-    i = 1;
-
-    while (i < numRows) {
-        result = helper(result, ++i);
-    }
-
-    return result;
+var addDigits = function(num) {
+    return (num - 1) % 9 + 1;
 };
-
-function helper(arr, k) {
-    var len = arr.length,
-        cur = arr[len - 1],
-        result = [],
-        i;
-
-    result.push(1);
-
-    for (i = 0; i < len - 1; i++) {
-        result[i + 1] = cur[i] + cur[i + 1];
-    }
-
-    result.push(1);
-    arr.push(result);
-
-    return arr;
-}
