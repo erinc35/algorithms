@@ -1735,38 +1735,32 @@ var convertToBase7 = function(num) {
     return prefix + res.reverse().join('')
 };//
 
-var rightSideView = function(root) {
-    var queue = [],
-        result = [],
-        i,
-        len;
+var validTree = function(n, edges) {
+    let nodes = [];
 
-    if (!root) {
-        return result;
+    for (let i = 0; i < n; i++) {
+        nodes[i] = i;
     }
 
-    queue.push(root);
+    for (let i = 0; i < edges.length; i++) {
+        let start = edges[i][0];
+        let end = edges[i][1];
 
-    while (queue.length > 0) {
-        len = queue.length;
-
-        for (i = 0; i < len; i++) {
-            node = queue.shift();
-
-            // first one is the right most
-            if (i === 0) {
-                result.push(node.val);
-            }
-
-            if (node.right) {
-                queue.push(node.right);
-            }
-
-            if (node.left) {
-                queue.push(node.left);
-            }
+        while (nodes[start] !== start) {
+            start = nodes[start];
         }
-    }
 
-    return result;
+        while (nodes[end] !== end) {
+            end = nodes[end];
+        }
+
+        // cycle detected
+        if (start === end) {
+            return false;
+        }
+
+        nodes[start] = end;
+    }
+    // edges are enough to connect each node
+    return edges.length >= n - 1;
 };
