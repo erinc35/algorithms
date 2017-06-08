@@ -1733,5 +1733,40 @@ var convertToBase7 = function(num) {
     }
 
     return prefix + res.reverse().join('')
+};//
+
+var rightSideView = function(root) {
+    var queue = [],
+        result = [],
+        i,
+        len;
+
+    if (!root) {
+        return result;
+    }
+
+    queue.push(root);
+
+    while (queue.length > 0) {
+        len = queue.length;
+
+        for (i = 0; i < len; i++) {
+            node = queue.shift();
+
+            // first one is the right most
+            if (i === 0) {
+                result.push(node.val);
+            }
+
+            if (node.right) {
+                queue.push(node.right);
+            }
+
+            if (node.left) {
+                queue.push(node.left);
+            }
+        }
+    }
+
+    return result;
 };
-///
