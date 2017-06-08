@@ -1718,36 +1718,20 @@ var climbStairs = function(n) {
    return result
 };
 ////
-var candy = function(ratings) {
-    let len = ratings.length;
-    let candies = [];
-    let sum = 1;
+var convertToBase7 = function(num) {
+    if(num === 0) return '0';
 
-    candies[0] = 1;
+    let prefix = num < 0 ? "-" : "",
+        res = [],
+        base = 7;
 
-    for (let i = 1; i < len; i++) {
-        if (ratings[i] <= ratings[i - 1]) {
-            if (candies[i - 1] > 1) {
-                candies[i] = 1;
-                sum++;
-            } else {
-                candies[i] = 1;
-                sum++;
-                let k = i;
+    num = Math.abs(num);
 
-                while (k > 0 && (ratings[k] < ratings[k - 1]) && (candies[k - 1] <= candies[k])) {
-                    candies[k - 1]++;
-                    sum++;
-                    k--;
-                }
-
-
-            }
-        } else {
-            candies[i] = candies[i - 1] + 1;
-            sum += candies[i];
-        }
+    while(num){
+        res.push(num % base);
+        num = ~~(num/base)
     }
 
-    return sum;
+    return prefix + res.reverse().join('')
 };
+///
