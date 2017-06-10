@@ -1735,67 +1735,47 @@ var convertToBase7 = function(num) {
     return prefix + res.reverse().join('')
 };//
 
-
-    var lenA = a.length,
-        lenB = b.length,
-        overFlow = 0,
-        charA,
-        charB,
-        result = '',
-        curVal,
-        i,
-        j;
-
-    for (i = lenA - 1, j = lenB - 1; i >= 0 && j >= 0; i--, j --) {
-        charA = parseInt(a.charAt(i));
-        charB = parseInt(b.charAt(j));
-
-        curVal = charA + charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
-        }
-
-        result = curVal + result;
+var divide = function(dividend, divisor) {
+    if (divisor === 0) {
+        return Number.MAX_VALUE;
     }
 
-    while (i >= 0) {
-        charA = parseInt(a.charAt(i));
-        curVal = charA + overFlow;
+    if (dividend === 0) {
+        return 0;
+    }
 
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
+    var result = 0,
+        isNeg = false,
+        temp,
+        i = 0;
+
+    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
+        isNeg = true;
+    }
+
+    dividend = Math.abs(dividend);
+    divisor = Math.abs(divisor);
+
+    if (divisor === 1 || divisor === -1) {
+        return isNeg? -dividend : dividend;
+    }
+
+    temp = divisor;
+
+    while (divisor << (i + 1) <= dividend) {
+        i++;
+    }
+
+    while (dividend >= divisor) {
+        temp = divisor << i;
+
+        if (dividend >= temp) {
+            result += (1 << i);
+            dividend -= temp;
         }
-        result = curVal + result;
 
         i--;
     }
 
-    while (j >= 0) {
-        charB = parseInt(b.charAt(j));
-        curVal = charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
-        }
-
-        result = curVal + result;
-
-        j--;
-    }
-
-    if (overFlow === 1) {
-        result = '1' + result;
-    }
-
-    return result;
+    return isNeg? -result : result;
 };
