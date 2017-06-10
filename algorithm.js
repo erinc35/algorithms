@@ -1735,32 +1735,67 @@ var convertToBase7 = function(num) {
     return prefix + res.reverse().join('')
 };//
 
-var validTree = function(n, edges) {
-    let nodes = [];
 
-    for (let i = 0; i < n; i++) {
-        nodes[i] = i;
+    var lenA = a.length,
+        lenB = b.length,
+        overFlow = 0,
+        charA,
+        charB,
+        result = '',
+        curVal,
+        i,
+        j;
+
+    for (i = lenA - 1, j = lenB - 1; i >= 0 && j >= 0; i--, j --) {
+        charA = parseInt(a.charAt(i));
+        charB = parseInt(b.charAt(j));
+
+        curVal = charA + charB + overFlow;
+
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
+        } else {
+            overFlow = 0;
+        }
+
+        result = curVal + result;
     }
 
-    for (let i = 0; i < edges.length; i++) {
-        let start = edges[i][0];
-        let end = edges[i][1];
+    while (i >= 0) {
+        charA = parseInt(a.charAt(i));
+        curVal = charA + overFlow;
 
-        while (nodes[start] !== start) {
-            start = nodes[start];
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
+        } else {
+            overFlow = 0;
         }
+        result = curVal + result;
 
-        while (nodes[end] !== end) {
-            end = nodes[end];
-        }
-
-        // cycle detected
-        if (start === end) {
-            return false;
-        }
-
-        nodes[start] = end;
+        i--;
     }
-    // edges are enough to connect each node
-    return edges.length >= n - 1;
+
+    while (j >= 0) {
+        charB = parseInt(b.charAt(j));
+        curVal = charB + overFlow;
+
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
+        } else {
+            overFlow = 0;
+        }
+
+        result = curVal + result;
+
+        j--;
+    }
+
+    if (overFlow === 1) {
+        result = '1' + result;
+    }
+
+    return result;
 };
