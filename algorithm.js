@@ -1735,47 +1735,68 @@ var convertToBase7 = function(num) {
     return prefix + res.reverse().join('')
 };//
 
-var divide = function(dividend, divisor) {
-    if (divisor === 0) {
-        return Number.MAX_VALUE;
+//Longest harmanious sub
+//We define a harmonious array is an array where the difference between its maximum value and its minimum value is exactly 1.
+
+// Now, given an integer array, you need to find the length of its longest harmonious subsequence among all its possible subsequences.
+
+var findLHS = function(nums) {
+  nums = nums.sort((a,b) => a-b);
+  let start = 0;
+  let res = 0;
+  let next = 0;
+  console.log(nums);
+  for(let i = 1; i < nums.length; ++i) {
+    if (nums[i] - nums[start] > 1) {
+      start = ++next;
+    } else if (nums[i] - nums[start] === 1) {
+      res = Math.max(i - start +1, res);
+    } else {
+      next++;
+    }
+  }
+  return res;
+}
+
+//
+
+//summary ranges//
+var summaryRanges = function(nums) {
+    var len = nums.length,
+        result = [],
+        curStr = '',
+        curLen,
+        curNum,
+        i;
+
+    if (len === 0) {
+        return result;
     }
 
-    if (dividend === 0) {
-        return 0;
-    }
+    curNum = nums[0];
+    curStr += curNum;
+    curLen = 1;
 
-    var result = 0,
-        isNeg = false,
-        temp,
-        i = 0;
+    for (i = 1; i < len; i++) {
+        if (curNum + 1 === nums[i]) {
+            curNum++;
+            curLen++;
+        } else {
+            if (curLen > 1) {
+                curStr += '->' + curNum;
+            }
 
-    if (dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) {
-        isNeg = true;
-    }
-
-    dividend = Math.abs(dividend);
-    divisor = Math.abs(divisor);
-
-    if (divisor === 1 || divisor === -1) {
-        return isNeg? -dividend : dividend;
-    }
-
-    temp = divisor;
-
-    while (divisor << (i + 1) <= dividend) {
-        i++;
-    }
-
-    while (dividend >= divisor) {
-        temp = divisor << i;
-
-        if (dividend >= temp) {
-            result += (1 << i);
-            dividend -= temp;
+            result.push(curStr);
+            curNum = nums[i];
+            curLen = 1;
+            curStr = '' + curNum;
         }
-
-        i--;
     }
 
-    return isNeg? -result : result;
+    if (curLen > 1) {
+        curStr += '->' + curNum;
+    }
+
+    result.push(curStr);
+    return result;
 };
