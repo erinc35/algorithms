@@ -1760,79 +1760,30 @@ var findLHS = function(nums) {
 
 //
 
-var fullJustify = function(words, maxWidth) {
-    var len = words.length,
-        lastIndex = -1,
-        result = [],
-        curLen = 0,
-        wordsCount,
-        spaceCount,
-        extraSpace,
-        totalSpace,
-        word = '',
+var uniquePaths = function(m, n) {
+    var map = [],
+        temp,
         i,
         j;
 
-    if (maxWidth === 0) {
-        return [""];
+    for (i = 0; i < m; i++) {
+        temp = [];
+        map.push(temp);
     }
 
-    for (i = 0; i < len; i++) {
-        curLen += words[i].length + 1;
+    for (i = 0; i < n; i++) {
+        map[0][i] = 1;
+    }
 
-        if (curLen - 1 > maxWidth || i === len - 1) {
-            if (curLen - 1 > maxWidth && (i - lastIndex > 1)) {
-                curLen -= words[i].length + 1;
-                i--;
-            }
+    for (i = 0; i < m; i++) {
+        map[i][0] = 1;
+    }
 
-            wordsCount = i - lastIndex;
-            curLen -= wordsCount; // by now, curlen is length without any space
-
-            if (wordsCount === 1) {
-                word += words[i];
-                word = appendSpace(word, maxWidth - curLen);
-            } else if (i === len - 1) {
-                totalSpace = maxWidth - curLen;
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (totalSpace > 0) {
-                        totalSpace--;
-                        word += ' ';
-                    }
-                }
-
-                if (totalSpace > 0) {
-                    word = appendSpace(word, totalSpace);
-                }
-            } else {
-                // if n words, then n - 1 spaces
-                spaceCount = parseInt((maxWidth - curLen) / (wordsCount - 1));
-                extraSpace = (maxWidth - curLen) % (wordsCount - 1);
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (j !== i) {
-                        word = appendSpace(word, spaceCount);
-
-                        if (extraSpace > 0) {
-                            word += ' ';
-                            extraSpace--;
-                        }
-                    }
-                }
-            }
-
-            result.push(word);
-            word = '';
-            lastIndex = i;
-            curLen = 0;
+    for (i = 1; i < m; i++) {
+        for (j = 1; j < n; j++) {
+            map[i][j] = map[i - 1][j] + map[i][j - 1];
         }
     }
 
-    return result;
+    return map[m - 1][n - 1];
 };
-
