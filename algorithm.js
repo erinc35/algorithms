@@ -1760,43 +1760,50 @@ var findLHS = function(nums) {
 
 //
 
-//summary ranges//
-var summaryRanges = function(nums) {
-    var len = nums.length,
-        result = [],
-        curStr = '',
-        curLen,
-        curNum,
-        i;
+var topKFrequent = function(nums, k) {
+    let len = nums.length;
+    const bucket = {};
+    const freqs = [];
+    let result = [];
 
-    if (len === 0) {
-        return result;
-    }
-
-    curNum = nums[0];
-    curStr += curNum;
-    curLen = 1;
-
-    for (i = 1; i < len; i++) {
-        if (curNum + 1 === nums[i]) {
-            curNum++;
-            curLen++;
+    nums.forEach((num) => {
+        if (bucket[num] === undefined) {
+            bucket[num] = 1;
         } else {
-            if (curLen > 1) {
-                curStr += '->' + curNum;
+            bucket[num]++;
+        }
+    });
+
+    Object.keys(bucket).forEach((num) => {
+        const freq = bucket[num];
+        num = parseInt(num);
+
+        if (freqs[freq] === undefined) {
+            freqs[freq] = [num];
+        } else {
+            freqs[freq].push(num);
+        }
+    });
+
+    let j = 0;
+    for (let i = freqs.length; i >= 0; i--) {
+        if (freqs[i] !== undefined) {
+            len = freqs[i].length;
+
+            for (let m = 0; m < len; m++) {
+                if (j === k) {
+                    break;
+                }
+
+                result.push(freqs[i][m]);
+                j++;
             }
 
-            result.push(curStr);
-            curNum = nums[i];
-            curLen = 1;
-            curStr = '' + curNum;
+            if (j === k) {
+                break;
+            }
         }
     }
 
-    if (curLen > 1) {
-        curStr += '->' + curNum;
-    }
-
-    result.push(curStr);
     return result;
 };
