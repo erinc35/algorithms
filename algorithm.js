@@ -1760,50 +1760,79 @@ var findLHS = function(nums) {
 
 //
 
-var topKFrequent = function(nums, k) {
-    let len = nums.length;
-    const bucket = {};
-    const freqs = [];
-    let result = [];
+var fullJustify = function(words, maxWidth) {
+    var len = words.length,
+        lastIndex = -1,
+        result = [],
+        curLen = 0,
+        wordsCount,
+        spaceCount,
+        extraSpace,
+        totalSpace,
+        word = '',
+        i,
+        j;
 
-    nums.forEach((num) => {
-        if (bucket[num] === undefined) {
-            bucket[num] = 1;
-        } else {
-            bucket[num]++;
-        }
-    });
+    if (maxWidth === 0) {
+        return [""];
+    }
 
-    Object.keys(bucket).forEach((num) => {
-        const freq = bucket[num];
-        num = parseInt(num);
+    for (i = 0; i < len; i++) {
+        curLen += words[i].length + 1;
 
-        if (freqs[freq] === undefined) {
-            freqs[freq] = [num];
-        } else {
-            freqs[freq].push(num);
-        }
-    });
+        if (curLen - 1 > maxWidth || i === len - 1) {
+            if (curLen - 1 > maxWidth && (i - lastIndex > 1)) {
+                curLen -= words[i].length + 1;
+                i--;
+            }
 
-    let j = 0;
-    for (let i = freqs.length; i >= 0; i--) {
-        if (freqs[i] !== undefined) {
-            len = freqs[i].length;
+            wordsCount = i - lastIndex;
+            curLen -= wordsCount; // by now, curlen is length without any space
 
-            for (let m = 0; m < len; m++) {
-                if (j === k) {
-                    break;
+            if (wordsCount === 1) {
+                word += words[i];
+                word = appendSpace(word, maxWidth - curLen);
+            } else if (i === len - 1) {
+                totalSpace = maxWidth - curLen;
+
+                for (j = lastIndex + 1; j <= i; j++) {
+                    word += words[j];
+
+                    if (totalSpace > 0) {
+                        totalSpace--;
+                        word += ' ';
+                    }
                 }
 
-                result.push(freqs[i][m]);
-                j++;
+                if (totalSpace > 0) {
+                    word = appendSpace(word, totalSpace);
+                }
+            } else {
+                // if n words, then n - 1 spaces
+                spaceCount = parseInt((maxWidth - curLen) / (wordsCount - 1));
+                extraSpace = (maxWidth - curLen) % (wordsCount - 1);
+
+                for (j = lastIndex + 1; j <= i; j++) {
+                    word += words[j];
+
+                    if (j !== i) {
+                        word = appendSpace(word, spaceCount);
+
+                        if (extraSpace > 0) {
+                            word += ' ';
+                            extraSpace--;
+                        }
+                    }
+                }
             }
 
-            if (j === k) {
-                break;
-            }
+            result.push(word);
+            word = '';
+            lastIndex = i;
+            curLen = 0;
         }
     }
 
     return result;
 };
+
