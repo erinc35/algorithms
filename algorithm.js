@@ -1759,24 +1759,31 @@ var findLHS = function(nums) {
 }
 
 //
-var mySqrt = function(x) {
-    var start = 1,
-        end = x,
-        mid;
+var maxSlidingWindow = function(nums, k) {
+    var result = [],
+        queue = [],
+        len = nums.length,
+        i;
 
-    if (x === 0) {
-        return 0;
+    if (k > len || k === 0) {
+        return result;
     }
 
-    while (start + 1 < end) {
-        mid = start + parseInt((end - start) / 2);
+    for (i = 0; i < len; i++) {
+        while (queue.length > 0 && nums[queue[queue.length - 1]] < nums[i]) {
+            queue.pop();
+        }
 
-        if (mid * mid <= x) {
-            start = mid;
-        } else {
-            end = mid;
+        if (queue[0] < i - k + 1) {
+            queue.shift();
+        }
+
+        queue.push(i);
+
+        if (i >= k - 1) {
+            result.push(nums[queue[0]]);
         }
     }
 
-    return start;
+    return result;
 };
