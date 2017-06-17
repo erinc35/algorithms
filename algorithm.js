@@ -1759,31 +1759,32 @@ var findLHS = function(nums) {
 }
 
 //
-var maxSlidingWindow = function(nums, k) {
-    var result = [],
-        queue = [],
-        len = nums.length,
+var isAnagram = function(s, t) {
+    var len = s.length,
+        arr = {},
         i;
 
-    if (k > len || k === 0) {
-        return result;
+    if (t.length !== len) {
+        return false;
+    }
+
+    if (len === 0) {
+        return true;
     }
 
     for (i = 0; i < len; i++) {
-        while (queue.length > 0 && nums[queue[queue.length - 1]] < nums[i]) {
-            queue.pop();
-        }
-
-        if (queue[0] < i - k + 1) {
-            queue.shift();
-        }
-
-        queue.push(i);
-
-        if (i >= k - 1) {
-            result.push(nums[queue[0]]);
+        if (!arr[s.charAt(i)]) {
+            arr[s.charAt(i)] = 1;
+        } else {
+            arr[s.charAt(i)]++;
         }
     }
 
-    return result;
+    for (i = 0; i < len; i++) {
+        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
+            return false;
+        }
+    }
+
+    return true;
 };
