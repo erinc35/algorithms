@@ -1759,32 +1759,32 @@ var findLHS = function(nums) {
 }
 
 //
-var isAnagram = function(s, t) {
-    var len = s.length,
-        arr = {},
-        i;
+var convert = function(s, numRows) {
+    var size = 2 * numRows - 2,
+        len = s.length,
+        result = '',
+        mid,
+        i,
+        j;
 
-    if (t.length !== len) {
-        return false;
+    if (numRows === 1) {
+        return s;
     }
 
-    if (len === 0) {
-        return true;
-    }
+    for (i = 0; i < numRows; i++) {
+        for (j = i; j < len; j += size) {
+            result += s.charAt(j);
 
-    for (i = 0; i < len; i++) {
-        if (!arr[s.charAt(i)]) {
-            arr[s.charAt(i)] = 1;
-        } else {
-            arr[s.charAt(i)]++;
+            // for the middle ones, excluding first row and last row
+            if (i !== 0 && i !== numRows - 1) {
+                mid = j + size - 2 * i;
+
+                if (mid < len) {
+                    result += s.charAt(mid);
+                }
+            }
         }
     }
 
-    for (i = 0; i < len; i++) {
-        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
-            return false;
-        }
-    }
-
-    return true;
+    return result;
 };
