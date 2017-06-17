@@ -1759,31 +1759,24 @@ var findLHS = function(nums) {
 }
 
 //
+var mySqrt = function(x) {
+    var start = 1,
+        end = x,
+        mid;
 
-var uniquePaths = function(m, n) {
-    var map = [],
-        temp,
-        i,
-        j;
-
-    for (i = 0; i < m; i++) {
-        temp = [];
-        map.push(temp);
+    if (x === 0) {
+        return 0;
     }
 
-    for (i = 0; i < n; i++) {
-        map[0][i] = 1;
-    }
+    while (start + 1 < end) {
+        mid = start + parseInt((end - start) / 2);
 
-    for (i = 0; i < m; i++) {
-        map[i][0] = 1;
-    }
-
-    for (i = 1; i < m; i++) {
-        for (j = 1; j < n; j++) {
-            map[i][j] = map[i - 1][j] + map[i][j - 1];
+        if (mid * mid <= x) {
+            start = mid;
+        } else {
+            end = mid;
         }
     }
 
-    return map[m - 1][n - 1];
+    return start;
 };
