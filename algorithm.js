@@ -1759,15 +1759,22 @@ var findLHS = function(nums) {
 }
 
 //
-var moveZeroes = function(nums) {
-    y = 0;
-    var temp;
-    for (var i= 0; i < nums.length; i++) {
-        if (nums[i]) {
-            temp = nums[i];
-            nums[i] = nums[y];
-            nums[y] = temp;
-            y += 1;
+var numSquares = function(n) {
+    var arr = [],
+        i,
+        j;
+
+    arr[0] = 0;
+
+    for (i = 1; i <= n; i++) {
+        arr[i] = Number.MAX_VALUE;
+    }
+
+    for (i = 0; i <= n; i++) {
+        for (j = 1; i + j * j <= n; j++) {
+            arr[i + j * j] = Math.min(arr[i + j * j], arr[i] + 1);
         }
     }
+
+    return arr[n];
 };
