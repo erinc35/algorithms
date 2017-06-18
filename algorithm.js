@@ -1759,33 +1759,41 @@ var findLHS = function(nums) {
 }
 
 //
-var search = function(nums, target) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
+var rotateRight = function(head, k) {
+    var pointerA = head,
+        pointerB = head,
+        len = 0,
+        newHead,
+        i;
 
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] === target) {
-            return mid;
-        } else if (nums[start] <= nums[mid]) {// left side sorted
-            if (nums[mid] > target && nums[start] <= target) {
-                // nums[mid] !== target, can safely do end = mid - 1
-                end = mid - 1;
-            } else {
-                start = mid + 1;
-            }
-        } else { // right side sorted
-            if (nums[mid] < target && nums[end] >= target) {
-                // nums[mid] !== target, can safely do start = mid + 1
-                start = mid + 1;
-            } else {
-                end = mid - 1;
-            }
-        }
+    if (head === null) {
+        return null;
     }
 
-    return -1;
+    while (pointerA) {
+        pointerA = pointerA.next;
+        len++;
+    }
+
+    k = k % len;
+
+    if (k === 0 || len === 1) {
+        return head;
+    }
+
+    pointerA = head;
+    for (i = 0; i < k; i++) {
+        pointerA = pointerA.next;
+    }
+
+    while (pointerA && pointerA.next) {
+        pointerA = pointerA.next;
+        pointerB = pointerB.next;
+    }
+
+    newHead = pointerB.next;
+    pointerB.next = null;
+    pointerA.next = head;
+
+    return newHead;
 };
