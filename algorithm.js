@@ -1759,22 +1759,33 @@ var findLHS = function(nums) {
 }
 
 //
-var numSquares = function(n) {
-    var arr = [],
-        i,
-        j;
+var search = function(nums, target) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
 
-    arr[0] = 0;
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
 
-    for (i = 1; i <= n; i++) {
-        arr[i] = Number.MAX_VALUE;
-    }
-
-    for (i = 0; i <= n; i++) {
-        for (j = 1; i + j * j <= n; j++) {
-            arr[i + j * j] = Math.min(arr[i + j * j], arr[i] + 1);
+        if (nums[mid] === target) {
+            return mid;
+        } else if (nums[start] <= nums[mid]) {// left side sorted
+            if (nums[mid] > target && nums[start] <= target) {
+                // nums[mid] !== target, can safely do end = mid - 1
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } else { // right side sorted
+            if (nums[mid] < target && nums[end] >= target) {
+                // nums[mid] !== target, can safely do start = mid + 1
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
         }
     }
 
-    return arr[n];
+    return -1;
 };
