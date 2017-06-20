@@ -1758,42 +1758,21 @@ var findLHS = function(nums) {
   return res;
 }
 
-//
-var rotateRight = function(head, k) {
-    var pointerA = head,
-        pointerB = head,
-        len = 0,
-        newHead,
-        i;
+//HOUSE ROBBER//
+// You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
 
-    if (head === null) {
-        return null;
+// Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
+
+var rob = function(nums) {
+    var a = 0;
+    var b = 0;
+
+    for(var i=0; i<nums.length; i++){
+        if(i%2===0){
+            a = Math.max(a+nums[i], b)
+        }else{
+            b = Math.max(a, b+nums[i])
+        }
     }
-
-    while (pointerA) {
-        pointerA = pointerA.next;
-        len++;
-    }
-
-    k = k % len;
-
-    if (k === 0 || len === 1) {
-        return head;
-    }
-
-    pointerA = head;
-    for (i = 0; i < k; i++) {
-        pointerA = pointerA.next;
-    }
-
-    while (pointerA && pointerA.next) {
-        pointerA = pointerA.next;
-        pointerB = pointerB.next;
-    }
-
-    newHead = pointerB.next;
-    pointerB.next = null;
-    pointerA.next = head;
-
-    return newHead;
+    return Math.max(a,b)
 };
