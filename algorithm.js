@@ -1795,9 +1795,29 @@ var rob = function(nums) {
     result[1] = Math.max(nums[1], nums[0]);
     for(i = 2; i < len; i++) {
         result[i] = Math.max(result[i - 2] + nums[i], result[i - 1]);
-        console.log(result)
     }
 
     return result[len - 1];
 };
+
+//var hIndex = function(citations) {
+    var len = citations.length,
+        i;
+
+    citations.sort(function (a, b) {
+        if (a < b) {
+            return 1;
+        }
+        return -1;
+    });
+
+    for (i = 0; i < len; i++) {
+        if (citations[i] <= i) {
+            return i;
+        }
+    }
+
+    return len;
+};
+
 
