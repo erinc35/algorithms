@@ -1800,24 +1800,30 @@ var rob = function(nums) {
     return result[len - 1];
 };
 
-//var hIndex = function(citations) {
-    var len = citations.length,
-        i;
+//var canCompleteCircuit = function(gas, cost) {
+    var len = gas.length,
+        diff = [],
+        curSum = 0,
+        sum = 0,
+        i,
+        startNode = 0;
 
-    citations.sort(function (a, b) {
-        if (a < b) {
-            return 1;
-        }
-        return -1;
-    });
+    for(i = 0; i < len; i++) {
+        diff[i] = gas[i] - cost[i];
+        sum += diff[i];
+        curSum += diff[i];
 
-    for (i = 0; i < len; i++) {
-        if (citations[i] <= i) {
-            return i;
+        if (curSum < 0) {
+            startNode = i + 1;
+            curSum = 0;
         }
     }
 
-    return len;
-};
+    if (sum < 0) {
+        return -1;
+    } else {
+        return startNode;
+    }
 
+};
 
