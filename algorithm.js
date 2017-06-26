@@ -1800,30 +1800,19 @@ var rob = function(nums) {
     return result[len - 1];
 };
 
-//var canCompleteCircuit = function(gas, cost) {
-    var len = gas.length,
-        diff = [],
-        curSum = 0,
-        sum = 0,
-        i,
-        startNode = 0;
+//var rangeBitwiseAnd = function(m, n) {
+    var offset = 0;
 
-    for(i = 0; i < len; i++) {
-        diff[i] = gas[i] - cost[i];
-        sum += diff[i];
-        curSum += diff[i];
-
-        if (curSum < 0) {
-            startNode = i + 1;
-            curSum = 0;
+    while (m && n) {
+        if (m === n) {
+            return m << offset;
         }
+
+        m >>= 1;
+        n >>= 1;
+        offset++;
     }
 
-    if (sum < 0) {
-        return -1;
-    } else {
-        return startNode;
-    }
-
+    return 0;
 };
 
