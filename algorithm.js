@@ -1800,19 +1800,32 @@ var rob = function(nums) {
     return result[len - 1];
 };
 
-//var rangeBitwiseAnd = function(m, n) {
-    var offset = 0;
+//var isBalanced = function(root) {
+    return findDepth(root) === -1 ? false : true;
+};
 
-    while (m && n) {
-        if (m === n) {
-            return m << offset;
-        }
-
-        m >>= 1;
-        n >>= 1;
-        offset++;
+function findDepth(root) {
+    if (root === null) {
+        return 0;
     }
 
-    return 0;
-};
+    var leftDepth = findDepth(root.left),
+        rightDepth;
+
+    if (leftDepth === -1) {
+        return -1;
+    }
+
+    rightDepth = findDepth(root.right);
+
+    if (rightDepth === -1) {
+        return -1;
+    }
+
+    if (Math.abs(leftDepth - rightDepth) > 1) {
+        return -1;
+    }
+
+    return Math.max(leftDepth, rightDepth) + 1;
+}
 
