@@ -1798,29 +1798,26 @@ var rob = function(nums) {
     }
 
     return result[len - 1];
+};//
+
+var findMin = function(nums) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
+
+    while (start < end) {
+        mid = parseInt((start + end) / 2);
+
+        if (nums[mid] < nums[start]) {
+            end = mid;
+        } else if (nums[end] < nums[mid]) {
+            start = mid + 1;
+        } else {
+            return nums[start];
+        }
+    }
+
+    return nums[start];
 };
-
-//var solution = function(isBadVersion) {
-                /**
-                 * @param {integer} n Total versions
-                 * @return {integer} The first bad version
-                 */
-                return function(n) {
-                    var start = 1,
-                        end = n,
-                        mid = parseInt(n/2);
-
-                    while (start < end) {
-                        if (isBadVersion(mid)) {
-                            end = mid;
-                        } else {
-                            start = mid + 1;
-                        }
-
-                        mid = parseInt((start + end)/2);
-                    }
-
-                    return start;
-                };
-            };
 
