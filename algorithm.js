@@ -1800,32 +1800,27 @@ var rob = function(nums) {
     return result[len - 1];
 };
 
-//var isBalanced = function(root) {
-    return findDepth(root) === -1 ? false : true;
-};
+//var solution = function(isBadVersion) {
+                /**
+                 * @param {integer} n Total versions
+                 * @return {integer} The first bad version
+                 */
+                return function(n) {
+                    var start = 1,
+                        end = n,
+                        mid = parseInt(n/2);
 
-function findDepth(root) {
-    if (root === null) {
-        return 0;
-    }
+                    while (start < end) {
+                        if (isBadVersion(mid)) {
+                            end = mid;
+                        } else {
+                            start = mid + 1;
+                        }
 
-    var leftDepth = findDepth(root.left),
-        rightDepth;
+                        mid = parseInt((start + end)/2);
+                    }
 
-    if (leftDepth === -1) {
-        return -1;
-    }
-
-    rightDepth = findDepth(root.right);
-
-    if (rightDepth === -1) {
-        return -1;
-    }
-
-    if (Math.abs(leftDepth - rightDepth) > 1) {
-        return -1;
-    }
-
-    return Math.max(leftDepth, rightDepth) + 1;
-}
+                    return start;
+                };
+            };
 
