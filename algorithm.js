@@ -1800,24 +1800,31 @@ var rob = function(nums) {
     return result[len - 1];
 };//
 
-var findMin = function(nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
+var isIsomorphic = function(s, t) {
+    var len = s.length,
+        mapS = {},
+        mapT = {},
+        curS,
+        curT,
+        i;
 
-    while (start < end) {
-        mid = parseInt((start + end) / 2);
+    for (i = 0; i < len; i++) {
+        curS = s.charAt(i);
+        curT = t.charAt(i);
 
-        if (nums[mid] < nums[start]) {
-            end = mid;
-        } else if (nums[end] < nums[mid]) {
-            start = mid + 1;
-        } else {
-            return nums[start];
+        if (!mapS.hasOwnProperty(curS)) {
+            mapS[curS] = curT;
+        } else if (mapS[curS] !== curT) {
+            return false;
+        }
+
+        if (!mapT.hasOwnProperty(curT)) {
+            mapT[curT] = curS;
+        } else if (mapT[curT] !== curS) {
+            return false;
         }
     }
 
-    return nums[start];
+    return true;
 };
 
