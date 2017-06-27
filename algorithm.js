@@ -1800,31 +1800,29 @@ var rob = function(nums) {
     return result[len - 1];
 };//
 
-var isIsomorphic = function(s, t) {
-    var len = s.length,
-        mapS = {},
-        mapT = {},
-        curS,
-        curT,
+var insert = function(intervals, newInterval) {
+    var len = intervals.length,
+        result = [],
+        insertIndex = 0,
+        curInterval,
         i;
 
     for (i = 0; i < len; i++) {
-        curS = s.charAt(i);
-        curT = t.charAt(i);
+        curInterval = intervals[i];
 
-        if (!mapS.hasOwnProperty(curS)) {
-            mapS[curS] = curT;
-        } else if (mapS[curS] !== curT) {
-            return false;
-        }
-
-        if (!mapT.hasOwnProperty(curT)) {
-            mapT[curT] = curS;
-        } else if (mapT[curT] !== curS) {
-            return false;
+        if (curInterval.end < newInterval.start) {
+            result.push(curInterval);
+            insertIndex++;
+        } else if (curInterval.start > newInterval.end) {
+            result.push(curInterval);
+        } else {
+            newInterval.start = Math.min(newInterval.start, curInterval.start);
+            newInterval.end = Math.max(newInterval.end, curInterval.end);
         }
     }
 
-    return true;
+    result.splice(insertIndex, 0, newInterval);
+
+    return result;
 };
 
