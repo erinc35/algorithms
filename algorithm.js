@@ -1800,29 +1800,30 @@ var rob = function(nums) {
     return result[len - 1];
 };//
 
-var insert = function(intervals, newInterval) {
-    var len = intervals.length,
-        result = [],
-        insertIndex = 0,
-        curInterval,
+var sortColors = function(nums) {
+    var len = nums.length,
+        redEnds = 0,
+        blueStarts = len - 1,
         i;
 
-    for (i = 0; i < len; i++) {
-        curInterval = intervals[i];
+    function swap(m, n, arr) {
+        var temp = arr[m];
 
-        if (curInterval.end < newInterval.start) {
-            result.push(curInterval);
-            insertIndex++;
-        } else if (curInterval.start > newInterval.end) {
-            result.push(curInterval);
-        } else {
-            newInterval.start = Math.min(newInterval.start, curInterval.start);
-            newInterval.end = Math.max(newInterval.end, curInterval.end);
-        }
+        arr[m] = arr[n];
+        arr[n] = temp;
     }
 
-    result.splice(insertIndex, 0, newInterval);
-
-    return result;
+    for (i = 0; i <= blueStarts;) {
+        if (nums[i] === 0) {
+            swap(i, redEnds, nums);
+            i++;
+            redEnds++;
+        } else if (nums[i] === 2) {
+            swap(i, blueStarts, nums);
+            blueStarts--;
+        } else {
+            i++;
+        }
+    }
 };
 
