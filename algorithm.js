@@ -1800,30 +1800,33 @@ var rob = function(nums) {
     return result[len - 1];
 };//
 
-var sortColors = function(nums) {
-    var len = nums.length,
-        redEnds = 0,
-        blueStarts = len - 1,
+var isAnagram = function(s, t) {
+    var len = s.length,
+        arr = {},
         i;
 
-    function swap(m, n, arr) {
-        var temp = arr[m];
-
-        arr[m] = arr[n];
-        arr[n] = temp;
+    if (t.length !== len) {
+        return false;
     }
 
-    for (i = 0; i <= blueStarts;) {
-        if (nums[i] === 0) {
-            swap(i, redEnds, nums);
-            i++;
-            redEnds++;
-        } else if (nums[i] === 2) {
-            swap(i, blueStarts, nums);
-            blueStarts--;
+    if (len === 0) {
+        return true;
+    }
+
+    for (i = 0; i < len; i++) {
+        if (!arr[s.charAt(i)]) {
+            arr[s.charAt(i)] = 1;
         } else {
-            i++;
+            arr[s.charAt(i)]++;
         }
     }
+
+    for (i = 0; i < len; i++) {
+        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
+            return false;
+        }
+    }
+
+    return true;
 };
 
