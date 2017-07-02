@@ -1799,34 +1799,37 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-
-var isAnagram = function(s, t) {
-    var len = s.length,
-        arr = {},
-        i;
-
-    if (t.length !== len) {
-        return false;
-    }
-
-    if (len === 0) {
-        return true;
-    }
+var simplifyPath = function(path) {
+    var paths = [],
+        arr = path.split('/'),
+        len = arr.length,
+        cur,
+        i,
+        result = '';
 
     for (i = 0; i < len; i++) {
-        if (!arr[s.charAt(i)]) {
-            arr[s.charAt(i)] = 1;
+        cur = arr[i];
+
+        if (cur === '.' || cur.length === 0) {
+            continue;
+        }
+
+        if (cur === '..') {
+            if (paths.length > 0) {
+                paths.pop();
+            }
         } else {
-            arr[s.charAt(i)]++;
+            paths.push(cur);
         }
     }
 
-    for (i = 0; i < len; i++) {
-        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
-            return false;
-        }
+    for (i = 0; i < paths.length; i++) {
+        result += '/' + paths[i];
     }
 
-    return true;
+    if (result === '') {
+        result = '/';
+    }
+
+    return result;
 };
-
