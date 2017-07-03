@@ -1799,37 +1799,36 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var simplifyPath = function(path) {
-    var paths = [],
-        arr = path.split('/'),
-        len = arr.length,
-        cur,
-        i,
-        result = '';
+var candy = function(ratings) {
+    let len = ratings.length;
+    let candies = [];
+    let sum = 1;
 
-    for (i = 0; i < len; i++) {
-        cur = arr[i];
+    candies[0] = 1;
 
-        if (cur === '.' || cur.length === 0) {
-            continue;
-        }
+    for (let i = 1; i < len; i++) {
+        if (ratings[i] <= ratings[i - 1]) {
+            if (candies[i - 1] > 1) {
+                candies[i] = 1;
+                sum++;
+            } else {
+                candies[i] = 1;
+                sum++;
+                let k = i;
 
-        if (cur === '..') {
-            if (paths.length > 0) {
-                paths.pop();
+                while (k > 0 && (ratings[k] < ratings[k - 1]) && (candies[k - 1] <= candies[k])) {
+                    candies[k - 1]++;
+                    sum++;
+                    k--;
+                }
+
+
             }
         } else {
-            paths.push(cur);
+            candies[i] = candies[i - 1] + 1;
+            sum += candies[i];
         }
     }
 
-    for (i = 0; i < paths.length; i++) {
-        result += '/' + paths[i];
-    }
-
-    if (result === '') {
-        result = '/';
-    }
-
-    return result;
+    return sum;
 };
