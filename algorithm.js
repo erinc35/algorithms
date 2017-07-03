@@ -1799,36 +1799,34 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var candy = function(ratings) {
-    let len = ratings.length;
-    let candies = [];
-    let sum = 1;
+var binaryTreePaths = function(root) {
+    var result = [];
 
-    candies[0] = 1;
+    getPaths(root, null, result);
 
-    for (let i = 1; i < len; i++) {
-        if (ratings[i] <= ratings[i - 1]) {
-            if (candies[i - 1] > 1) {
-                candies[i] = 1;
-                sum++;
-            } else {
-                candies[i] = 1;
-                sum++;
-                let k = i;
+    return result;
+};
 
-                while (k > 0 && (ratings[k] < ratings[k - 1]) && (candies[k - 1] <= candies[k])) {
-                    candies[k - 1]++;
-                    sum++;
-                    k--;
-                }
-
-
-            }
-        } else {
-            candies[i] = candies[i - 1] + 1;
-            sum += candies[i];
-        }
+function getPaths(node, curStr, result) {
+    if (node === null) {
+        return;
     }
 
-    return sum;
-};
+    if (!curStr) {
+        curStr = '' + node.val;
+    } else {
+        curStr += '->' + node.val;
+    }
+
+    if (node.left) {
+        getPaths(node.left, curStr, result);
+    }
+
+    if (node.right) {
+        getPaths(node.right, curStr, result);
+    }
+
+    if (!node.left && !node.right) {
+        result.push(curStr);
+    }
+}
