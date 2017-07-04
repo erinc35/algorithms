@@ -1799,34 +1799,34 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var rob = function(nums) {
-    var len = nums.length;
-
-    if (len === 0) {
-        return 0;
-    }
-
-    if (len === 1) {
-        return nums[0];
-    }
-
-    return Math.max(getMax(0, len - 1, nums), getMax(1, len, nums));
-};
-
-function getMax(start, end, nums) {
-    var arr = [],
+var getHint = function(secret, guess) {
+    var len = secret.length,
+        bullCount = 0,
+        arr = {},
+        cowCount = 0,
         i;
 
-    if (end - start <= 1) {
-        return nums[start];
+    for (i = 0; i < len; i++) {
+        if (!arr[secret.charAt(i)]) {
+            arr[secret.charAt(i)] = 1;
+        } else {
+            arr[secret.charAt(i)]++;
+        }
     }
 
-    arr[start] = nums[start];
-    arr[start + 1] = Math.max(nums[start], nums[start + 1]);
-
-    for (i = start + 2; i < end; i++) {
-        arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
+    for (i = 0; i < len; i++) {
+        if (secret.charAt(i) === guess.charAt(i)) {
+            bullCount++;
+            arr[secret.charAt(i)]--;
+        }
     }
 
-    return arr[end - 1];
-}
+    for (i = 0; i < len; i++) {
+        if (secret.charAt(i) !== guess.charAt(i) && arr.hasOwnProperty(guess.charAt(i)) && (arr[guess.charAt(i)] > 0)) {
+            cowCount++;
+            arr[guess.charAt(i)]--;
+        }
+    }
+
+    return bullCount + 'A' + cowCount + 'B';
+};
