@@ -1799,34 +1799,34 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var binaryTreePaths = function(root) {
-    var result = [];
+var rob = function(nums) {
+    var len = nums.length;
 
-    getPaths(root, null, result);
+    if (len === 0) {
+        return 0;
+    }
 
-    return result;
+    if (len === 1) {
+        return nums[0];
+    }
+
+    return Math.max(getMax(0, len - 1, nums), getMax(1, len, nums));
 };
 
-function getPaths(node, curStr, result) {
-    if (node === null) {
-        return;
+function getMax(start, end, nums) {
+    var arr = [],
+        i;
+
+    if (end - start <= 1) {
+        return nums[start];
     }
 
-    if (!curStr) {
-        curStr = '' + node.val;
-    } else {
-        curStr += '->' + node.val;
+    arr[start] = nums[start];
+    arr[start + 1] = Math.max(nums[start], nums[start + 1]);
+
+    for (i = start + 2; i < end; i++) {
+        arr[i] = Math.max(arr[i - 1], arr[i - 2] + nums[i]);
     }
 
-    if (node.left) {
-        getPaths(node.left, curStr, result);
-    }
-
-    if (node.right) {
-        getPaths(node.right, curStr, result);
-    }
-
-    if (!node.left && !node.right) {
-        result.push(curStr);
-    }
+    return arr[end - 1];
 }
