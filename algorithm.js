@@ -1799,49 +1799,35 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var fractionToDecimal = function(numerator, denominator) {
-    var rem,
-        quotient,
-        map = [],
-        collection = '',
-        index,
-        len
-        result = '';
-
-    if (numerator === 0) {
-        return '0';
-    }
-    if (denominator === 0) {
-        return '';
+ector2D.prototype.hasNext = function() {
+    if (this.vec.length === 0) {
+        return false;
     }
 
-    if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) {
-        result += '-';
-    }
-    numerator = Math.abs(Number(numerator));
-    denominator = Math.abs(Number(denominator));
-
-    quotient = Math.floor(numerator / denominator);
-    result += quotient;
-
-    rem = (numerator % denominator) * 10;
-    if (rem === 0) {
-        return result;
+    if (this.col === this.vec[this.row].length) {
+        this.col = 0;
+        this.row++;
     }
 
-    result += '.';
-    while (rem !== 0) {
-        quotient = Math.floor(rem/denominator);
-        index = map.indexOf(rem);
-        if (index === -1) {
-            map.push(rem);
-            collection += quotient;
-        } else {
-            collection = collection.substr(0, index) + '(' + collection.substr(index) + ')';
-            break;
-        }
-        rem = (rem % denominator) * 10;
+    while (this.row < this.vec.length && this.vec[this.row].length === 0) {
+        this.row++;
     }
-    result += collection;
-    return result;
+
+    if (this.row === this.vec.length) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
+ * @this Vector2D
+ * @returns {integer}
+ */
+Vector2D.prototype.next = function() {
+    const val = this.vec[this.row][this.col];
+
+    this.col++;
+
+    return val;
 };
