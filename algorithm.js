@@ -1799,34 +1799,49 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var getHint = function(secret, guess) {
-    var len = secret.length,
-        bullCount = 0,
-        arr = {},
-        cowCount = 0,
-        i;
+var fractionToDecimal = function(numerator, denominator) {
+    var rem,
+        quotient,
+        map = [],
+        collection = '',
+        index,
+        len
+        result = '';
 
-    for (i = 0; i < len; i++) {
-        if (!arr[secret.charAt(i)]) {
-            arr[secret.charAt(i)] = 1;
+    if (numerator === 0) {
+        return '0';
+    }
+    if (denominator === 0) {
+        return '';
+    }
+
+    if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) {
+        result += '-';
+    }
+    numerator = Math.abs(Number(numerator));
+    denominator = Math.abs(Number(denominator));
+
+    quotient = Math.floor(numerator / denominator);
+    result += quotient;
+
+    rem = (numerator % denominator) * 10;
+    if (rem === 0) {
+        return result;
+    }
+
+    result += '.';
+    while (rem !== 0) {
+        quotient = Math.floor(rem/denominator);
+        index = map.indexOf(rem);
+        if (index === -1) {
+            map.push(rem);
+            collection += quotient;
         } else {
-            arr[secret.charAt(i)]++;
+            collection = collection.substr(0, index) + '(' + collection.substr(index) + ')';
+            break;
         }
+        rem = (rem % denominator) * 10;
     }
-
-    for (i = 0; i < len; i++) {
-        if (secret.charAt(i) === guess.charAt(i)) {
-            bullCount++;
-            arr[secret.charAt(i)]--;
-        }
-    }
-
-    for (i = 0; i < len; i++) {
-        if (secret.charAt(i) !== guess.charAt(i) && arr.hasOwnProperty(guess.charAt(i)) && (arr[guess.charAt(i)] > 0)) {
-            cowCount++;
-            arr[guess.charAt(i)]--;
-        }
-    }
-
-    return bullCount + 'A' + cowCount + 'B';
+    result += collection;
+    return result;
 };
