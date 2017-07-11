@@ -1799,23 +1799,46 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var grayCode = function(n) {
-    var result = [],
-        cur,
-        i,
-        j;
-
-    result [0] = 0;
+var generateParenthesis = function(n) {
+    var i = 1,
+        result = [];
 
     if (n === 0) {
         return result;
     }
 
-    for (i = 1; i <= n; i++) {
-        for (j = Math.pow(2, i - 1); j > 0; j--) {
-            result.push(result[j - 1] + (1 << (i - 1)));
-        }
+    result.push('()');
+
+    while (i < n) {
+        result = helper(result);
+        i++;
     }
 
     return result;
 };
+
+function helper(arr) {
+    var len = arr.length,
+        result = [],
+        len1,
+        curStr,
+        tmp,
+        i,
+        j;
+
+    len1 = arr[0].length;
+
+    for (i = 0; i < len; i++) {
+        curStr = arr[i];
+
+        for (j = 0; j < len1; j++) {
+            tmp = curStr.substring(0, j) + '()' + curStr.substring(j);
+
+            if (result.indexOf(tmp) === -1) {
+                result.push(tmp);
+            }
+        }
+    }
+
+    return result;
+}
