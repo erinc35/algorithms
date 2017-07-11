@@ -1799,35 +1799,23 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-ector2D.prototype.hasNext = function() {
-    if (this.vec.length === 0) {
-        return false;
+var grayCode = function(n) {
+    var result = [],
+        cur,
+        i,
+        j;
+
+    result [0] = 0;
+
+    if (n === 0) {
+        return result;
     }
 
-    if (this.col === this.vec[this.row].length) {
-        this.col = 0;
-        this.row++;
+    for (i = 1; i <= n; i++) {
+        for (j = Math.pow(2, i - 1); j > 0; j--) {
+            result.push(result[j - 1] + (1 << (i - 1)));
+        }
     }
 
-    while (this.row < this.vec.length && this.vec[this.row].length === 0) {
-        this.row++;
-    }
-
-    if (this.row === this.vec.length) {
-        return false;
-    }
-
-    return true;
-};
-
-/**
- * @this Vector2D
- * @returns {integer}
- */
-Vector2D.prototype.next = function() {
-    const val = this.vec[this.row][this.col];
-
-    this.col++;
-
-    return val;
+    return result;
 };
