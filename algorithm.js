@@ -1799,50 +1799,23 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var sortList = function(head) {
-    var slow = head,
-        fast = head,
-        head1 = head,
-        head2 = head;
+var plusOne = function(digits) {
+    var len = digits.length,
+        overflow = 1,
+        i;
 
-    if (head === null || head.next === null) {
-        return head;
-    }
-
-    while (fast.next !== null && fast.next.next !== null) {
-        slow = slow.next;
-        fast = fast.next.next;
-    }
-
-    head1 = slow.next;
-    slow.next = null;
-
-    head1 = sortList(head1);
-    head2 = sortList(head);
-
-    return merge(head2, head1);
-};
-
-function merge(a, b) {
-    var dummy = new ListNode(0),
-        node = dummy;
-
-    while (a && b) {
-        if (a.val < b.val) {
-            node.next = a;
-            a = a.next;
+    for (i = len - 1; i >= 0; i--) {
+        digits[i] = digits[i] + overflow;
+        if (digits[i] === 10) {
+            overflow = 1;
+            digits[i] = 0;
         } else {
-            node.next = b;
-            b = b.next;
+            return digits;
         }
-        node = node.next;
     }
 
-    if (a) {
-        node.next = a;
-    } else {
-        node.next = b;
+    if (overflow === 1) {
+        digits.unshift(1);
+        return digits;
     }
-
-    return dummy.next;
-}
+};
