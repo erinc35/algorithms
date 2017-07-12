@@ -1799,46 +1799,50 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var generateParenthesis = function(n) {
-    var i = 1,
-        result = [];
+var sortList = function(head) {
+    var slow = head,
+        fast = head,
+        head1 = head,
+        head2 = head;
 
-    if (n === 0) {
-        return result;
+    if (head === null || head.next === null) {
+        return head;
     }
 
-    result.push('()');
-
-    while (i < n) {
-        result = helper(result);
-        i++;
+    while (fast.next !== null && fast.next.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
     }
 
-    return result;
+    head1 = slow.next;
+    slow.next = null;
+
+    head1 = sortList(head1);
+    head2 = sortList(head);
+
+    return merge(head2, head1);
 };
 
-function helper(arr) {
-    var len = arr.length,
-        result = [],
-        len1,
-        curStr,
-        tmp,
-        i,
-        j;
+function merge(a, b) {
+    var dummy = new ListNode(0),
+        node = dummy;
 
-    len1 = arr[0].length;
-
-    for (i = 0; i < len; i++) {
-        curStr = arr[i];
-
-        for (j = 0; j < len1; j++) {
-            tmp = curStr.substring(0, j) + '()' + curStr.substring(j);
-
-            if (result.indexOf(tmp) === -1) {
-                result.push(tmp);
-            }
+    while (a && b) {
+        if (a.val < b.val) {
+            node.next = a;
+            a = a.next;
+        } else {
+            node.next = b;
+            b = b.next;
         }
+        node = node.next;
     }
 
-    return result;
+    if (a) {
+        node.next = a;
+    } else {
+        node.next = b;
+    }
+
+    return dummy.next;
 }
