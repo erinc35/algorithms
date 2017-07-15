@@ -1799,23 +1799,51 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var plusOne = function(digits) {
-    var len = digits.length,
-        overflow = 1,
-        i;
+var ladderLength = function(beginWord, endWord, wordList) {
+    var visit = {},
+        len = beginWord.length,
+        queue = [],
+        charArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+        curNode,
+        curStr,
+        tempStr,
+        tempNode,
+        i,
+        j;
 
-    for (i = len - 1; i >= 0; i--) {
-        digits[i] = digits[i] + overflow;
-        if (digits[i] === 10) {
-            overflow = 1;
-            digits[i] = 0;
-        } else {
-            return digits;
+    curNode = new node(beginWord, 1);
+    visit[curNode.str] = true;
+    queue.push(curNode);
+
+
+    while (queue.length > 0) {
+        curNode = queue.shift();
+        curStr = curNode.str;
+        for (i = 0; i < len; i++) {
+            for (j = 0; j < 26; j++) {
+                if (charArr[j] === curStr.charAt(i)) {
+                    continue;
+                }
+
+                tempStr = curStr.substring(0, i) + charArr[j] + curStr.substring(i + 1, len);
+
+                if (tempStr === endWord) {
+                    return curNode.step + 1;
+                }
+
+                if (wordList.has(tempStr) && !visit.hasOwnProperty(tempStr)) {
+                    visit[tempStr] = true;
+                    tempNode = new node(tempStr, curNode.step + 1);
+                    queue.push(tempNode);
+                }
+            }
         }
     }
 
-    if (overflow === 1) {
-        digits.unshift(1);
-        return digits;
-    }
+    return 0;
 };
+
+function node(str, step) {
+    this.str = str;
+    this.step = step;
+}
