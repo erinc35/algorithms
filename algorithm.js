@@ -1799,51 +1799,33 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var ladderLength = function(beginWord, endWord, wordList) {
-    var visit = {},
-        len = beginWord.length,
-        queue = [],
-        charArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-        curNode,
-        curStr,
-        tempStr,
-        tempNode,
-        i,
-        j;
+var isMatch = function(s, p) {
+    let sIndex = 0;
+    let pIndex = 0;
+    let startIndex = -1; // startIndex of * in p
+    let match = 0; // the position in s that matches with p
 
-    curNode = new node(beginWord, 1);
-    visit[curNode.str] = true;
-    queue.push(curNode);
-
-
-    while (queue.length > 0) {
-        curNode = queue.shift();
-        curStr = curNode.str;
-        for (i = 0; i < len; i++) {
-            for (j = 0; j < 26; j++) {
-                if (charArr[j] === curStr.charAt(i)) {
-                    continue;
-                }
-
-                tempStr = curStr.substring(0, i) + charArr[j] + curStr.substring(i + 1, len);
-
-                if (tempStr === endWord) {
-                    return curNode.step + 1;
-                }
-
-                if (wordList.has(tempStr) && !visit.hasOwnProperty(tempStr)) {
-                    visit[tempStr] = true;
-                    tempNode = new node(tempStr, curNode.step + 1);
-                    queue.push(tempNode);
-                }
-            }
+    while (sIndex < s.length) {
+        // matches, both advance
+        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
+            pIndex++;
+            sIndex++;
+        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
+            startIndex = pIndex;
+            match = sIndex;
+            pIndex++;
+        } else if (startIndex !== -1) {
+            pIndex = startIndex + 1;
+            match++;
+            sIndex = match;
+        } else {
+            return false;
         }
     }
 
-    return 0;
-};
+    while (pIndex < p.length && p.charAt(pIndex) === '*') {
+        pIndex++;
+    }
 
-function node(str, step) {
-    this.str = str;
-    this.step = step;
-}
+    return pIndex === p.length;
+};
