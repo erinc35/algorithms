@@ -1799,33 +1799,69 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isMatch = function(s, p) {
-    let sIndex = 0;
-    let pIndex = 0;
-    let startIndex = -1; // startIndex of * in p
-    let match = 0; // the position in s that matches with p
+var NumMatrix = function(matrix) {
+    var sum = [],
+        rLen = matrix.length,
+        cLen,
+        i,
+        j;
 
-    while (sIndex < s.length) {
-        // matches, both advance
-        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
-            pIndex++;
-            sIndex++;
-        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
-            startIndex = pIndex;
-            match = sIndex;
-            pIndex++;
-        } else if (startIndex !== -1) {
-            pIndex = startIndex + 1;
-            match++;
-            sIndex = match;
-        } else {
-            return false;
+    if (rLen === 0) {
+        this.sum = null;
+        return;
+    }
+
+    cLen = matrix[0].length;
+
+    for (i = 0; i < rLen; i++) {
+        sum.push(new Array(cLen));
+    }
+
+    sum[0][0] = matrix[0][0];
+
+    for (i = 1; i < rLen; i++) {
+        sum[i][0] = sum[i - 1][0] + matrix[i][0];
+    }
+
+    for (j = 1; j < cLen; j++) {
+        sum[0][j] = sum[0][j - 1] + matrix[0][j];
+    }
+
+    for (i = 1; i < rLen; i++) {
+        for (j = 1; j < cLen; j++) {
+            sum[i][j] = sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1] + matrix[i][j];
         }
     }
 
-    while (pIndex < p.length && p.charAt(pIndex) === '*') {
-        pIndex++;
+    this.sum = sum;
+};
+
+/**
+ * @param {number} row1
+ * @param {number} col1
+ * @param {number} row2
+ * @param {number} col2
+ * @return {number}
+ */
+NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
+    if (!this.sum) {
+        return 0;
     }
 
-    return pIndex === p.length;
+    var result = this.sum[row2][col2];
+
+    if (row1 > 0) {
+        result -= this.sum[row1 - 1][col2];
+    }
+
+    if (col1 > 0) {
+        result -= this.sum[row2][col1 - 1];
+    }
+
+    if (row1 > 0 && col1 > 0) {
+        result += this.sum[row1 - 1][col1 - 1];
+    }
+
+    return result;
 };
+
