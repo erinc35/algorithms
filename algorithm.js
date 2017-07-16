@@ -1799,69 +1799,30 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var NumMatrix = function(matrix) {
-    var sum = [],
-        rLen = matrix.length,
-        cLen,
+var uniquePaths = function(m, n) {
+    var map = [],
+        temp,
         i,
         j;
 
-    if (rLen === 0) {
-        this.sum = null;
-        return;
+    for (i = 0; i < m; i++) {
+        temp = [];
+        map.push(temp);
     }
 
-    cLen = matrix[0].length;
-
-    for (i = 0; i < rLen; i++) {
-        sum.push(new Array(cLen));
+    for (i = 0; i < n; i++) {
+        map[0][i] = 1;
     }
 
-    sum[0][0] = matrix[0][0];
-
-    for (i = 1; i < rLen; i++) {
-        sum[i][0] = sum[i - 1][0] + matrix[i][0];
+    for (i = 0; i < m; i++) {
+        map[i][0] = 1;
     }
 
-    for (j = 1; j < cLen; j++) {
-        sum[0][j] = sum[0][j - 1] + matrix[0][j];
-    }
-
-    for (i = 1; i < rLen; i++) {
-        for (j = 1; j < cLen; j++) {
-            sum[i][j] = sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1] + matrix[i][j];
+    for (i = 1; i < m; i++) {
+        for (j = 1; j < n; j++) {
+            map[i][j] = map[i - 1][j] + map[i][j - 1];
         }
     }
 
-    this.sum = sum;
+    return map[m - 1][n - 1];
 };
-
-/**
- * @param {number} row1
- * @param {number} col1
- * @param {number} row2
- * @param {number} col2
- * @return {number}
- */
-NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
-    if (!this.sum) {
-        return 0;
-    }
-
-    var result = this.sum[row2][col2];
-
-    if (row1 > 0) {
-        result -= this.sum[row1 - 1][col2];
-    }
-
-    if (col1 > 0) {
-        result -= this.sum[row2][col1 - 1];
-    }
-
-    if (row1 > 0 && col1 > 0) {
-        result += this.sum[row1 - 1][col1 - 1];
-    }
-
-    return result;
-};
-
