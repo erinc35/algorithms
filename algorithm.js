@@ -1799,78 +1799,48 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var exist = function(board, word) {
-    var rLen = board.length,
-        cLen = board[0].length;
+var wallsAndGates = function(rooms) {
+    let queue = [];
+    let rowLen = rooms.length;
+    const MAX_VALUE = 2147483647;
+    if (rowLen === 0) {
+        return;
+    }
 
-    return helper(word, board, rLen, cLen);
-};
+    let colLen = rooms[0].length;
 
-function helper(word, board, rLen, cLen) {
-    var ch = word.charAt(0),
-        i,
-        j;
-
-    for (i = 0; i < rLen; i++) {
-        for (j = 0; j < cLen; j++) {
-            if (board[i][j] === ch) {
-                board[i][j] = '*';
-                if (bfs(1, word, i, j, board, rLen, cLen)) {
-                    return true;
-                }
-                board[i][j] = ch;
+    for (let i = 0; i < rowLen; i++) {
+        for (let j = 0; j < colLen; j++) {
+            if (rooms[i][j] === 0) {
+                queue.push([i, j]);
             }
         }
     }
 
-    return false;
-}
+    while (queue.length > 0) {
+        const cur = queue.shift();
+        const row = cur[0];
+        const col = cur[1];
+        const val = rooms[row][col];
 
-function bfs(index, word, i, j, board, rLen, cLen) {
-    if (index === word.length) {
-        return true;
-    }
-
-    var ch = word.charAt(index);
-
-    if (i - 1 >= 0 && board[i - 1][j] === ch) {
-        board[i - 1][j] = '*';
-
-        if (bfs(index + 1, word, i - 1, j, board, rLen, cLen)) {
-            return true;
+        if (row + 1 < rowLen && rooms[row + 1][col] === MAX_VALUE) {
+            rooms[row + 1][col] = val + 1;
+            queue.push([row + 1, col])
         }
 
-        board[i - 1][j] = ch;
-    }
-
-    if (j - 1 >= 0 && board[i][j - 1] === ch) {
-        board[i][j - 1] = '*';
-
-        if (bfs(index + 1, word, i, j - 1, board, rLen, cLen)) {
-            return true;
+        if (row - 1 >= 0 && rooms[row - 1][col] === MAX_VALUE) {
+            rooms[row - 1][col] = val + 1;
+            queue.push([row - 1, col]);
         }
 
-        board[i][j - 1] = ch;
-    }
-
-    if (i + 1 < rLen && board[i + 1][j] === ch) {
-        board[i + 1][j] = '*';
-
-        if (bfs(index + 1, word, i + 1, j, board, rLen, cLen)) {
-            return true;
+        if (col + 1 < colLen && rooms[row][col + 1] === MAX_VALUE) {
+            rooms[row][col + 1] = val + 1;
+            queue.push([row, col + 1]);
         }
 
-        board[i + 1][j] = ch;
-    }
-
-    if (j + 1 < cLen && board[i][j + 1] === ch) {
-        board[i][j + 1] = '*';
-
-        if (bfs(index + 1, word, i, j + 1, board, rLen, cLen)) {
-            return true;
+        if (col - 1 >= 0 && rooms[row][col - 1] === MAX_VALUE) {
+            rooms[row][col - 1] = val + 1;
+            queue.push([row, col - 1]);
         }
-
-        board[i][j + 1] = ch;
     }
-
-}
+};
