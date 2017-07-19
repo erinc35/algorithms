@@ -1799,59 +1799,52 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-ar addTwoNumbers = function(l1, l2) {
-    var val = 0,
-        newHead,
-        newTail,
-        node;
+var combinationSum = function(candidates, target) {
+    var sols = [],
+        len = candidates.length,
+        curSol = [],
+        start = 0,
+        i;
 
-    if (!l1) {
-        return l2;
+    if (len === 0) {
+        return sols;
     }
-
-    if (!l2) {
-        return l1;
-    }
-
-    while (l1 && l2) {
-        val += l1.val + l2.val;
-        node = new ListNode(val % 10);
-
-        if (newHead) {
-            newTail.next = node;
-            newTail = newTail.next;
-        } else {
-            newHead = node;
-            newTail = node;
+    // sort candidates
+    candidates.sort(function(a, b) {
+        if (a < b) {
+            return -1;
         }
 
-        val = (val >= 10)? 1 : 0;
-        l1 = l1.next;
-        l2 = l2.next;
-    }
+        return 1;
+    });
 
-    while (l1) {
-        val += l1.val;
-        node = new ListNode(val % 10);
-        newTail.next = node;
-        newTail = newTail.next;
-        val = (val >= 10)? 1 : 0;
-        l1 = l1.next;
-    }
+    fillCurSol(start, len, candidates, target, curSol, sols);
 
-    while (l2) {
-        val += l2.val;
-        node = new ListNode(val % 10);
-        newTail.next = node;
-        newTail = newTail.next;
-        val = (val >= 10)? 1 : 0;
-        l2 = l2.next;
-    }
-
-    if (val > 0) {
-        node = new ListNode(val);
-        newTail.next = node;
-    }
-
-    return newHead;
+    return sols;
 };
+
+function fillCurSol(start, len, candidates, target, curSol, sols) {
+    // skip duplicates from candidate
+    var i,
+        newCurSol; // very important, can't mess up with arrays
+
+
+    if (target === 0) {
+        sols.push(curSol.concat());
+        return;
+    }
+
+    for (i = start; i < len; i++) {
+        if (i > start && candidates[i] === candidates[i - 1]) {
+            continue;
+        }
+
+        newCurSol = curSol.concat();
+
+        if (candidates[i] <= target) {
+            newCurSol.push(candidates[i]);
+            fillCurSol(i, len, candidates, target - candidates[i], newCurSol, sols);
+            newCurSol.pop();
+        }
+    }
+}
