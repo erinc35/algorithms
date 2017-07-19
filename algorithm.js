@@ -1799,48 +1799,59 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var wallsAndGates = function(rooms) {
-    let queue = [];
-    let rowLen = rooms.length;
-    const MAX_VALUE = 2147483647;
-    if (rowLen === 0) {
-        return;
+ar addTwoNumbers = function(l1, l2) {
+    var val = 0,
+        newHead,
+        newTail,
+        node;
+
+    if (!l1) {
+        return l2;
     }
 
-    let colLen = rooms[0].length;
-
-    for (let i = 0; i < rowLen; i++) {
-        for (let j = 0; j < colLen; j++) {
-            if (rooms[i][j] === 0) {
-                queue.push([i, j]);
-            }
-        }
+    if (!l2) {
+        return l1;
     }
 
-    while (queue.length > 0) {
-        const cur = queue.shift();
-        const row = cur[0];
-        const col = cur[1];
-        const val = rooms[row][col];
+    while (l1 && l2) {
+        val += l1.val + l2.val;
+        node = new ListNode(val % 10);
 
-        if (row + 1 < rowLen && rooms[row + 1][col] === MAX_VALUE) {
-            rooms[row + 1][col] = val + 1;
-            queue.push([row + 1, col])
+        if (newHead) {
+            newTail.next = node;
+            newTail = newTail.next;
+        } else {
+            newHead = node;
+            newTail = node;
         }
 
-        if (row - 1 >= 0 && rooms[row - 1][col] === MAX_VALUE) {
-            rooms[row - 1][col] = val + 1;
-            queue.push([row - 1, col]);
-        }
-
-        if (col + 1 < colLen && rooms[row][col + 1] === MAX_VALUE) {
-            rooms[row][col + 1] = val + 1;
-            queue.push([row, col + 1]);
-        }
-
-        if (col - 1 >= 0 && rooms[row][col - 1] === MAX_VALUE) {
-            rooms[row][col - 1] = val + 1;
-            queue.push([row, col - 1]);
-        }
+        val = (val >= 10)? 1 : 0;
+        l1 = l1.next;
+        l2 = l2.next;
     }
+
+    while (l1) {
+        val += l1.val;
+        node = new ListNode(val % 10);
+        newTail.next = node;
+        newTail = newTail.next;
+        val = (val >= 10)? 1 : 0;
+        l1 = l1.next;
+    }
+
+    while (l2) {
+        val += l2.val;
+        node = new ListNode(val % 10);
+        newTail.next = node;
+        newTail = newTail.next;
+        val = (val >= 10)? 1 : 0;
+        l2 = l2.next;
+    }
+
+    if (val > 0) {
+        node = new ListNode(val);
+        newTail.next = node;
+    }
+
+    return newHead;
 };
