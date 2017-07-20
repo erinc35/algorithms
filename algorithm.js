@@ -1799,52 +1799,25 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var combinationSum = function(candidates, target) {
-    var sols = [],
-        len = candidates.length,
-        curSol = [],
-        start = 0,
-        i;
-
-    if (len === 0) {
-        return sols;
+var numSquares = function(n) {
+    while(n % 4 === 0) {
+        n /= 4;
     }
-    // sort candidates
-    candidates.sort(function(a, b) {
-        if (a < b) {
-            return -1;
-        }
 
-        return 1;
-    });
+    if (n % 8 === 7) {
+        return 4;
+    }
 
-    fillCurSol(start, len, candidates, target, curSol, sols);
-
-    return sols;
-};
-
-function fillCurSol(start, len, candidates, target, curSol, sols) {
-    // skip duplicates from candidate
     var i,
-        newCurSol; // very important, can't mess up with arrays
+        j;
 
-
-    if (target === 0) {
-        sols.push(curSol.concat());
-        return;
-    }
-
-    for (i = start; i < len; i++) {
-        if (i > start && candidates[i] === candidates[i - 1]) {
-            continue;
-        }
-
-        newCurSol = curSol.concat();
-
-        if (candidates[i] <= target) {
-            newCurSol.push(candidates[i]);
-            fillCurSol(i, len, candidates, target - candidates[i], newCurSol, sols);
-            newCurSol.pop();
+    // check if it's 1 or 2
+    for (i = 0; i * i <= n; i++) {
+        j = parseInt(Math.sqrt(n - i * i));
+        if (i * i + j * j === n) {
+            return (i === 0 || j === 0)? 1 : 2;
         }
     }
-}
+
+    return 3;
+};
