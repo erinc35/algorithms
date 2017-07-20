@@ -1799,25 +1799,30 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var numSquares = function(n) {
-    while(n % 4 === 0) {
-        n /= 4;
-    }
-
-    if (n % 8 === 7) {
-        return 4;
-    }
-
-    var i,
+var longestCommonPrefix = function(strs) {
+    var len = strs.length,
+        len1,
+        curChar,
+        i,
         j;
 
-    // check if it's 1 or 2
-    for (i = 0; i * i <= n; i++) {
-        j = parseInt(Math.sqrt(n - i * i));
-        if (i * i + j * j === n) {
-            return (i === 0 || j === 0)? 1 : 2;
+    if (len === 0) {
+        return '';
+    }
+
+    len1 = strs[0].length;
+    for (i = 0; i < len1; i++) {
+        curChar = strs[0].charAt(i);
+        for (j = 1; j < len; j++) {
+            if (strs[j].charAt(i) !== curChar) {
+                return i === 0? '' : strs[0].substr(0, i);
+            }
+
+            if (strs[j].length === i) {
+                return strs[j];
+            }
         }
     }
 
-    return 3;
-};
+    return strs[0];
+
