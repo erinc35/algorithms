@@ -1799,30 +1799,49 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var longestCommonPrefix = function(strs) {
-    var len = strs.length,
-        len1,
-        curChar,
-        i,
-        j;
+var restoreIpAddresses = function(s) {
+    var result = [],
+        len = s.length;
 
-    if (len === 0) {
-        return '';
+    if (len > 12) {
+        return result;
     }
 
-    len1 = strs[0].length;
-    for (i = 0; i < len1; i++) {
-        curChar = strs[0].charAt(i);
-        for (j = 1; j < len; j++) {
-            if (strs[j].charAt(i) !== curChar) {
-                return i === 0? '' : strs[0].substr(0, i);
-            }
+    helper(result, s, 0, [], len);
 
-            if (strs[j].length === i) {
-                return strs[j];
-            }
+    return result;
+};
+
+function helper(result, s, index, curArr, len) {
+    if (curArr.length === 4) {
+        if (index === len) {
+            result.push(curArr.join('.'));
         }
+        return;
     }
 
-    return strs[0];
+    var i,
+        num;
 
+    // only 3 situations
+    for (i = index; i < len && i <= index + 3; i++) {
+        num = s.substring(index, i + 1);
+
+        if (isValid(num)) {
+            curArr.push(parseInt(num));
+            helper(result, s, i + 1, curArr.concat(), len);
+            curArr.pop();
+        }
+
+    }
+}
+
+function isValid(s) {
+    if (s.charAt(0) === '0') {
+        return s === '0';
+    }
+
+    var num = parseInt(s);
+
+    return num >= 0 && num <= 255;
+}
