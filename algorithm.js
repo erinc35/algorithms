@@ -1799,49 +1799,33 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var restoreIpAddresses = function(s) {
-    var result = [],
-        len = s.length;
+var removeDuplicateLetters = function(s) {
+    var count = {},
+        len = s.length,
+        startPos = 0,
+        curChar,
+        i;
 
-    if (len > 12) {
-        return result;
+    if (len === 0) {
+        return '';
     }
 
-    helper(result, s, 0, [], len);
+    for (i = 0; i < len; i++) {
+        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
+    }
 
-    return result;
+    for (i = 0; i < len; i++) {
+        if (s.charAt(i) < s.charAt(startPos)) {
+            startPos = i;
+        }
+
+        // find the first non duplicate letter
+        if (--count[s.charAt(i)] === 0) {
+            break;
+        }
+    }
+
+    curChar = s.charAt(startPos);
+
+    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
 };
-
-function helper(result, s, index, curArr, len) {
-    if (curArr.length === 4) {
-        if (index === len) {
-            result.push(curArr.join('.'));
-        }
-        return;
-    }
-
-    var i,
-        num;
-
-    // only 3 situations
-    for (i = index; i < len && i <= index + 3; i++) {
-        num = s.substring(index, i + 1);
-
-        if (isValid(num)) {
-            curArr.push(parseInt(num));
-            helper(result, s, i + 1, curArr.concat(), len);
-            curArr.pop();
-        }
-
-    }
-}
-
-function isValid(s) {
-    if (s.charAt(0) === '0') {
-        return s === '0';
-    }
-
-    var num = parseInt(s);
-
-    return num >= 0 && num <= 255;
-}
