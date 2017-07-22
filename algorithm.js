@@ -1799,44 +1799,24 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isPalindrome = function(head) {
-    var fast = head,
-        slow = head,
-        midPoint;
-
-    if (head === null || head.next === null) {
+var isSymmetric = function(root) {
+    if (root === null) {
         return true;
     }
 
-    while (fast && fast.next) {
-        fast = fast.next.next;
-        slow = slow.next;
-    }
-
-    midPoint = reverse(slow);
-    fast = head;
-
-    while (midPoint && fast && (fast.val === midPoint.val)) {
-        midPoint = midPoint.next;
-        fast = fast.next;
-    }
-
-    return midPoint === null;
+    return isSymmetricHelper(root.left, root.right);
 };
 
-function reverse(head) {
-    if (!head) {
-        return null;
+function isSymmetricHelper(left, right) {
+    if ((left === null && right !== null) || (left !== null && right === null)) {
+        return false;
     }
 
-    if (!head.next) {
-        return head;
+    if (left === null && right === null) {
+        return true;
+    } else if (left.val !== right.val) {
+        return false;
     }
 
-    var newHead = reverse(head.next);
-
-    head.next.next = head;
-    head.next = null;
-
-    return newHead;
-
+    return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
+}
