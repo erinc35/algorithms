@@ -1799,33 +1799,44 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var removeDuplicateLetters = function(s) {
-    var count = {},
-        len = s.length,
-        startPos = 0,
-        curChar,
-        i;
+var isPalindrome = function(head) {
+    var fast = head,
+        slow = head,
+        midPoint;
 
-    if (len === 0) {
-        return '';
+    if (head === null || head.next === null) {
+        return true;
     }
 
-    for (i = 0; i < len; i++) {
-        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
+    while (fast && fast.next) {
+        fast = fast.next.next;
+        slow = slow.next;
     }
 
-    for (i = 0; i < len; i++) {
-        if (s.charAt(i) < s.charAt(startPos)) {
-            startPos = i;
-        }
+    midPoint = reverse(slow);
+    fast = head;
 
-        // find the first non duplicate letter
-        if (--count[s.charAt(i)] === 0) {
-            break;
-        }
+    while (midPoint && fast && (fast.val === midPoint.val)) {
+        midPoint = midPoint.next;
+        fast = fast.next;
     }
 
-    curChar = s.charAt(startPos);
-
-    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
+    return midPoint === null;
 };
+
+function reverse(head) {
+    if (!head) {
+        return null;
+    }
+
+    if (!head.next) {
+        return head;
+    }
+
+    var newHead = reverse(head.next);
+
+    head.next.next = head;
+    head.next = null;
+
+    return newHead;
+
