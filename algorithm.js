@@ -1799,24 +1799,16 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isSymmetric = function(root) {
-    if (root === null) {
-        return true;
+var deleteDuplicates = function(head) {
+    var node = head;
+
+    while (node && node.next) {
+        if (node.val === node.next.val) {
+            node.next = node.next.next;
+        } else {
+            node = node.next;
+        }
     }
 
-    return isSymmetricHelper(root.left, root.right);
+    return head;
 };
-
-function isSymmetricHelper(left, right) {
-    if ((left === null && right !== null) || (left !== null && right === null)) {
-        return false;
-    }
-
-    if (left === null && right === null) {
-        return true;
-    } else if (left.val !== right.val) {
-        return false;
-    }
-
-    return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
-}
