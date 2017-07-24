@@ -1799,16 +1799,46 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var deleteDuplicates = function(head) {
-    var node = head;
+var isMatch = function(s, p) {
+    var lenS = s.length,
+        lenP = p.length,
+        f = [],
+        i,
+        j;
 
-    while (node && node.next) {
-        if (node.val === node.next.val) {
-            node.next = node.next.next;
-        } else {
-            node = node.next;
+    if (p.length === 0) {
+        return s.length === 0;
+    }
+
+    if (p.charAt(0) === '*') {
+        return false;
+    }
+
+    for (i = 0; i <= lenS; i++) {
+        f.push(new Array(lenP + 1));
+        for (j = 0; j <= lenP; j++) {
+            f[i][j] = false;
         }
     }
 
-    return head;
+    f[0][0] = true;
+
+    for (i = 1; i < lenP; i++) {
+        if (p.charAt(i) === '*') {
+            f[0][i + 1] = f[0][i - 1];
+        }
+    }
+
+    for (i = 1; i <= lenS; i++) {
+        for (j = 1; j <= lenP; j++) {
+            if (p.charAt(j - 1) === '*') {
+                f[i][j] = f[i][j - 2] || (f[i - 1][j] && (s.charAt(i - 1) === p.charAt(j - 2) || p.charAt(j - 2) === '.'));
+            } else {
+                f[i][j] = f[i - 1][j - 1] && (s.charAt(i - 1) === p.charAt(j - 1) || p.charAt(j - 1) === '.');
+            }
+        }
+    }
+
+    return f[lenS][lenP];
 };
+
