@@ -1799,46 +1799,24 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isMatch = function(s, p) {
-    var lenS = s.length,
-        lenP = p.length,
-        f = [],
-        i,
-        j;
+var countBits = function(num) {
+    var result = [],
+        pow = 1,
+        copyOfPow = 1,
+        i;
 
-    if (p.length === 0) {
-        return s.length === 0;
-    }
+    result[0] = 0;
 
-    if (p.charAt(0) === '*') {
-        return false;
-    }
-
-    for (i = 0; i <= lenS; i++) {
-        f.push(new Array(lenP + 1));
-        for (j = 0; j <= lenP; j++) {
-            f[i][j] = false;
+    for (i = 1; i <= num; i++) {
+        if (i === pow) {
+            result[i] = 1;
+            copyOfPow = pow;
+            pow *= 2;
+        } else {
+            result[i] = result[copyOfPow] + result[i - copyOfPow];
         }
     }
 
-    f[0][0] = true;
-
-    for (i = 1; i < lenP; i++) {
-        if (p.charAt(i) === '*') {
-            f[0][i + 1] = f[0][i - 1];
-        }
-    }
-
-    for (i = 1; i <= lenS; i++) {
-        for (j = 1; j <= lenP; j++) {
-            if (p.charAt(j - 1) === '*') {
-                f[i][j] = f[i][j - 2] || (f[i - 1][j] && (s.charAt(i - 1) === p.charAt(j - 2) || p.charAt(j - 2) === '.'));
-            } else {
-                f[i][j] = f[i - 1][j - 1] && (s.charAt(i - 1) === p.charAt(j - 1) || p.charAt(j - 1) === '.');
-            }
-        }
-    }
-
-    return f[lenS][lenP];
+    return result;
 };
 
