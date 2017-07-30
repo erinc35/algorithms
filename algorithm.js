@@ -1832,4 +1832,14 @@ var permute = function(nums) {
     initArr.push(initElement);
     return getPerm(initArr, nums, 0);
 
+};var trailingZeroes = function(n) {
+    var divider = 5,
+        reminder = 0;
+
+    while (divider <= n) {
+        reminder += Math.floor(n/divider);
+        divider = divider * 5;
+    }
+
+    return reminder;
 };
