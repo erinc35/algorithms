@@ -1799,39 +1799,37 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var numDecodings = function(s) {
-    var len = s.length,
-        dp = [],
-        x,
-        y,
-        cur,
-        i;
+var permute = function(nums) {
+    function getPerm(arr, numss, n) {
+        var len = arr.length,
+            result = [],
+            len1,
+            x,
+            copy,
+            i,
+            j;
 
-    dp[0] = 1;
-    dp[1] = 1;
+        if (n === numss.length) {
+            return arr;
+        }
 
-    if (len === 0 || s.charAt(0) < '1' || s.charAt(0) > '9') {
-        return 0;
+        x = numss[n];
+        len1 = arr[0].length;
+
+        for (i = 0; i < len; i++) {
+            for (j = 0; j <= len1; j++) {
+                copy = arr[i].slice(0);
+                copy.splice(j, 0, x);
+                result.push(copy);
+            }
+        }
+
+        return getPerm(result, numss, n + 1);
     }
+    var initArr = [],
+        initElement = [];
 
-    for (i = 1; i < len; i++) {
-        x = s.charAt(i - 1) - '0';
-        y = s.charAt(i) - '0';
-        cur = x * 10 + y;
-        dp[i + 1] = 0;
+    initArr.push(initElement);
+    return getPerm(initArr, nums, 0);
 
-        if (cur > 9 && cur <= 26) {
-            dp[i + 1] += dp[i - 1];
-        }
-
-        if (y !== 0) {
-            dp[i + 1] += dp[i];
-        }
-
-        if (dp[i + 1] === 0) {
-            return 0;
-        }
-    }
-
-    return dp[len];
 };
