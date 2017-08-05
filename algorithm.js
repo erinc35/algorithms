@@ -1800,34 +1800,38 @@ var rob = function(nums) {
     return result[len - 1];
 };//
 
-var removeDuplicateLetters = function(s) {
-    var count = {},
-        len = s.length,
-        startPos = 0,
-        curChar,
-        i;
-
-    if (len === 0) {
-        return '';
-    }
+var simplifyPath = function(path) {
+    var paths = [],
+        arr = path.split('/'),
+        len = arr.length,
+        cur,
+        i,
+        result = '';
 
     for (i = 0; i < len; i++) {
-        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
-    }
+        cur = arr[i];
 
-    for (i = 0; i < len; i++) {
-        if (s.charAt(i) < s.charAt(startPos)) {
-            startPos = i;
+        if (cur === '.' || cur.length === 0) {
+            continue;
         }
 
-        // find the first non duplicate letter
-        if (--count[s.charAt(i)] === 0) {
-            break;
+        if (cur === '..') {
+            if (paths.length > 0) {
+                paths.pop();
+            }
+        } else {
+            paths.push(cur);
         }
     }
 
-    curChar = s.charAt(startPos);
+    for (i = 0; i < paths.length; i++) {
+        result += '/' + paths[i];
+    }
 
-    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
+    if (result === '') {
+        result = '/';
+    }
+
+    return result;
 };
 
