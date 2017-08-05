@@ -1689,7 +1689,7 @@ function uniq(arr){
   for(var i=0; i< arr.length; i++){
     if(seen[arr[i]] !== 1){
       seen[arr[i]] = 1;
-      dupless[j++] = 1;
+      dupless[j++] = arr[i];
     }
   }
   return dupless;
@@ -1799,47 +1799,35 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var permute = function(nums) {
-    function getPerm(arr, numss, n) {
-        var len = arr.length,
-            result = [],
-            len1,
-            x,
-            copy,
-            i,
-            j;
 
-        if (n === numss.length) {
-            return arr;
-        }
+var removeDuplicateLetters = function(s) {
+    var count = {},
+        len = s.length,
+        startPos = 0,
+        curChar,
+        i;
 
-        x = numss[n];
-        len1 = arr[0].length;
-
-        for (i = 0; i < len; i++) {
-            for (j = 0; j <= len1; j++) {
-                copy = arr[i].slice(0);
-                copy.splice(j, 0, x);
-                result.push(copy);
-            }
-        }
-
-        return getPerm(result, numss, n + 1);
-    }
-    var initArr = [],
-        initElement = [];
-
-    initArr.push(initElement);
-    return getPerm(initArr, nums, 0);
-
-};var trailingZeroes = function(n) {
-    var divider = 5,
-        reminder = 0;
-
-    while (divider <= n) {
-        reminder += Math.floor(n/divider);
-        divider = divider * 5;
+    if (len === 0) {
+        return '';
     }
 
-    return reminder;
+    for (i = 0; i < len; i++) {
+        count[s.charAt(i)] = (count[s.charAt(i)] ? count[s.charAt(i)] + 1 : 1);
+    }
+
+    for (i = 0; i < len; i++) {
+        if (s.charAt(i) < s.charAt(startPos)) {
+            startPos = i;
+        }
+
+        // find the first non duplicate letter
+        if (--count[s.charAt(i)] === 0) {
+            break;
+        }
+    }
+
+    curChar = s.charAt(startPos);
+
+    return curChar + removeDuplicateLetters(s.substr(startPos + 1).replace(new RegExp(curChar, 'g'), ''));
 };
+
