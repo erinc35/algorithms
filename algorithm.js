@@ -1799,39 +1799,35 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
+var countAndSay = function(n) {
+    function interpret(s, accum, sum) {
+        var times = 1,
+            num,
+            len = s.length,
+            i,
+            result = '';
 
-var simplifyPath = function(path) {
-    var paths = [],
-        arr = path.split('/'),
-        len = arr.length,
-        cur,
-        i,
-        result = '';
+        num = s.charAt(0);
 
-    for (i = 0; i < len; i++) {
-        cur = arr[i];
-
-        if (cur === '.' || cur.length === 0) {
-            continue;
-        }
-
-        if (cur === '..') {
-            if (paths.length > 0) {
-                paths.pop();
+        for (i = 1; i < len; i++) {
+            if (s.charAt(i) !== num) {
+                result += times + num;
+                num = s.charAt(i);
+                times = 1;
+            } else {
+                times++;
             }
+        }
+        if (accum === 1) {
+            result = '1';
         } else {
-            paths.push(cur);
+            result += times + num;
+        }
+        if (accum === sum) {
+            return result;
+        } else {
+            return interpret(result, accum + 1, sum);
         }
     }
-
-    for (i = 0; i < paths.length; i++) {
-        result += '/' + paths[i];
-    }
-
-    if (result === '') {
-        result = '/';
-    }
-
-    return result;
+    return interpret('1', 1, n);
 };
-
