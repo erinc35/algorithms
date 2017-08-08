@@ -1799,44 +1799,30 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var majorityElement = function(num) {
-    var i,
-        length = num.length,
-        max,
-        list = {};
-    if (length === 1) {
-        return num[0];
-    }
-    for (i = 0; i < length; i++) {
-        if (list[num[i]]) {
-            max = ++list[num[i]];
-            if (i > length/2 - 1 && max >= length/2) {
-                return num[i];
-            }
-        } else {
-            list[num[i]] = 1;
-        }
-    }
-
-};
-
-// SOLUTION 2: voting
-var majorityElement = function(num) {
-    var candidate,
-        length = num.length,
-        count = 1,
+var longestValidParentheses = function(s) {
+    var len = s.length,
+        last = -1,
+        left = [],
+        max = 0,
         i;
 
-    candidate = num[0];
-
-    for (i = 1; i < length; i++) {
-        if (count === 0 || num[i] === candidate) {
-            count++;
-            candidate = num[i];
+    // the important thing here is track the last ')'
+    for (i = 0; i < len; i++) {
+        if (s.charAt(i) === '(') {
+            left.push(i);
         } else {
-            count--;
+            if (left.length === 0) {
+                last = i;
+            } else {
+                left.pop();
+                if (left.length === 0) {
+                    max = Math.max(max, i - last);
+                } else {
+                    max = Math.max(max, i - left[left.length - 1]);
+                }
+            }
         }
     }
 
-    return candidate;
+    return max;
 };
