@@ -1799,45 +1799,30 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-MinStack.prototype.push = function(x) {
-    var len = this.min.length;
-    if (this.arr.length === 0) {
-        this.min.push(x);
-    } else if (this.min[len - 1] >= x) {
-        this.min.push(x);
-    }
-    this.arr.push(x);
-};
+var longestValidParentheses = function(s) {
+    var len = s.length,
+        last = -1,
+        left = [],
+        max = 0,
+        i;
 
-/**
- * @returns {void}
- */
-MinStack.prototype.pop = function() {
-    var elem,
-        len = this.min.length;
-    if (this.arr.length > 0) {
-        elem = this.arr.pop();
-    }
-    if (elem === this.min[len - 1]) {
-        this.min.pop();
-    }
-};
-
-/**
- * @returns {number}
- */
-MinStack.prototype.top = function() {
-    var len = this.arr.length;
-    if (len > 0) {
-        return this.arr[len - 1];
+    // the important thing here is track the last ')'
+    for (i = 0; i < len; i++) {
+        if (s.charAt(i) === '(') {
+            left.push(i);
+        } else {
+            if (left.length === 0) {
+                last = i;
+            } else {
+                left.pop();
+                if (left.length === 0) {
+                    max = Math.max(max, i - last);
+                } else {
+                    max = Math.max(max, i - left[left.length - 1]);
+                }
+            }
+        }
     }
 
-};
-
-/**
- * @returns {number}
- */
-MinStack.prototype.getMin = function() {
-    var len = this.min.length;
-    return this.min[len - 1];
+    return max;
 };
