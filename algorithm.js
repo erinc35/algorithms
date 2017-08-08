@@ -1799,45 +1799,44 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-MinStack.prototype.push = function(x) {
-    var len = this.min.length;
-    if (this.arr.length === 0) {
-        this.min.push(x);
-    } else if (this.min[len - 1] >= x) {
-        this.min.push(x);
+var majorityElement = function(num) {
+    var i,
+        length = num.length,
+        max,
+        list = {};
+    if (length === 1) {
+        return num[0];
     }
-    this.arr.push(x);
-};
-
-/**
- * @returns {void}
- */
-MinStack.prototype.pop = function() {
-    var elem,
-        len = this.min.length;
-    if (this.arr.length > 0) {
-        elem = this.arr.pop();
-    }
-    if (elem === this.min[len - 1]) {
-        this.min.pop();
-    }
-};
-
-/**
- * @returns {number}
- */
-MinStack.prototype.top = function() {
-    var len = this.arr.length;
-    if (len > 0) {
-        return this.arr[len - 1];
+    for (i = 0; i < length; i++) {
+        if (list[num[i]]) {
+            max = ++list[num[i]];
+            if (i > length/2 - 1 && max >= length/2) {
+                return num[i];
+            }
+        } else {
+            list[num[i]] = 1;
+        }
     }
 
 };
 
-/**
- * @returns {number}
- */
-MinStack.prototype.getMin = function() {
-    var len = this.min.length;
-    return this.min[len - 1];
+// SOLUTION 2: voting
+var majorityElement = function(num) {
+    var candidate,
+        length = num.length,
+        count = 1,
+        i;
+
+    candidate = num[0];
+
+    for (i = 1; i < length; i++) {
+        if (count === 0 || num[i] === candidate) {
+            count++;
+            candidate = num[i];
+        } else {
+            count--;
+        }
+    }
+
+    return candidate;
 };
