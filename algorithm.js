@@ -1799,30 +1799,63 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var longestValidParentheses = function(s) {
-    var len = s.length,
-        last = -1,
-        left = [],
-        max = 0,
-        i;
+var searchRange = function(nums, target) {
+    var result = [],
+        leftIndex = findLeftMost(target, nums),
+        rightIndex = findRightMost(target, nums);
 
-    // the important thing here is track the last ')'
-    for (i = 0; i < len; i++) {
-        if (s.charAt(i) === '(') {
-            left.push(i);
+    result.push(leftIndex);
+    result.push(rightIndex);
+
+    return result;
+};
+
+function findLeftMost(target, nums) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
+
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+
+        if (nums[mid] > target) {
+            end = mid - 1;
+        } else if (nums[mid] < target) {
+            start = mid + 1;
         } else {
-            if (left.length === 0) {
-                last = i;
-            } else {
-                left.pop();
-                if (left.length === 0) {
-                    max = Math.max(max, i - last);
-                } else {
-                    max = Math.max(max, i - left[left.length - 1]);
-                }
-            }
+            end = mid - 1;
         }
     }
 
-    return max;
-};
+    if (start >= 0 && start < len && nums[start] === target) {
+        return start;
+    }
+
+    return -1;
+}
+
+function findRightMost(target, nums) {
+    var len = nums.length,
+        start = 0,
+        end = len - 1,
+        mid;
+
+    while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+
+        if (nums[mid] > target) {
+            end = mid - 1;
+        } else if (nums[mid] < target) {
+            start = mid + 1;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    if (end >= 0 && end < len && nums[end] === target) {
+        return end;
+    }
+
+    return -1;
+}
