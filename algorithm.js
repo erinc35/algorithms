@@ -1799,63 +1799,65 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var searchRange = function(nums, target) {
-    var result = [],
-        leftIndex = findLeftMost(target, nums),
-        rightIndex = findRightMost(target, nums);
+var reorderList = function(head) {
+    var fast = head,
+        slow = head,
+        next1,
+        next2,
+        midHead;
 
-    result.push(leftIndex);
-    result.push(rightIndex);
+    if (!head || !head.next) {
+        return;
+    }
 
-    return result;
+    while (fast && fast.next) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+
+    if (fast) {
+        midHead = reverse(slow.next);
+    } else {
+        midHead = reverse(slow);
+    }
+
+    fast = head;
+    slow = midHead;
+
+    while(fast && slow) {
+        next1 = fast.next;
+        next2 = slow.next;
+
+        slow.next = fast.next;
+        fast.next = slow;
+
+        fast = next1;
+        slow = next2;
+    }
+
+    if (fast) {
+        fast.next = null;
+    }
 };
 
-function findLeftMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
+function reverse(head) {
+    var dummyNode = new ListNode(0),
+        prev = dummyNode,
+        node,
+        next;
 
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
+    dummyNode.next = head;
 
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            end = mid - 1;
-        }
+    node = head.next;
+    head.next = null;
+
+    while (node) {
+        next = node.next;
+        node.next = prev.next;
+        prev.next = node;
+
+        node = next;
     }
 
-    if (start >= 0 && start < len && nums[start] === target) {
-        return start;
-    }
-
-    return -1;
-}
-
-function findRightMost(target, nums) {
-    var len = nums.length,
-        start = 0,
-        end = len - 1,
-        mid;
-
-    while (start <= end) {
-        mid = Math.floor((start + end) / 2);
-
-        if (nums[mid] > target) {
-            end = mid - 1;
-        } else if (nums[mid] < target) {
-            start = mid + 1;
-        } else {
-            start = mid + 1;
-        }
-    }
-
-    if (end >= 0 && end < len && nums[end] === target) {
-        return end;
-    }
-
-    return -1;
+    return dummyNode.next;
 }
