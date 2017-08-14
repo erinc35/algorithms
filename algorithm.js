@@ -1799,22 +1799,29 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var wordBreak = function(s, wordDict) {
-    var hasFound = [],
-        len = s.length,
+var canCompleteCircuit = function(gas, cost) {
+    var len = gas.length,
+        diff = [],
+        curSum = 0,
+        sum = 0,
         i,
-        j;
+        startNode = 0;
 
-    hasFound[0] = true;
+    for(i = 0; i < len; i++) {
+        diff[i] = gas[i] - cost[i];
+        sum += diff[i];
+        curSum += diff[i];
 
-    for (i = 1; i <= len; i++) {
-        for (j = 0; j < i; j++) {
-            if (hasFound[j] && wordDict.has(s.substring(j, i))) {
-                hasFound[i] = true;
-                break;
-            }
+        if (curSum < 0) {
+            startNode = i + 1;
+            curSum = 0;
         }
     }
 
-    return hasFound[len] === true;
+    if (sum < 0) {
+        return -1;
+    } else {
+        return startNode;
+    }
+
 };
