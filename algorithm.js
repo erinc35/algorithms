@@ -1799,29 +1799,23 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var canCompleteCircuit = function(gas, cost) {
-    var len = gas.length,
-        diff = [],
-        curSum = 0,
-        sum = 0,
-        i,
-        startNode = 0;
-
-    for(i = 0; i < len; i++) {
-        diff[i] = gas[i] - cost[i];
-        sum += diff[i];
-        curSum += diff[i];
-
-        if (curSum < 0) {
-            startNode = i + 1;
-            curSum = 0;
-        }
+Vector2D.prototype.hasNext = function() {
+    if (this.vec.length === 0) {
+        return false;
     }
 
-    if (sum < 0) {
-        return -1;
-    } else {
-        return startNode;
+    if (this.col === this.vec[this.row].length) {
+        this.col = 0;
+        this.row++;
     }
 
+    while (this.row < this.vec.length && this.vec[this.row].length === 0) {
+        this.row++;
+    }
+
+    if (this.row === this.vec.length) {
+        return false;
+    }
+
+    return true;
 };
