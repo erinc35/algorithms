@@ -1799,65 +1799,76 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var reorderList = function(head) {
-    var fast = head,
-        slow = head,
-        next1,
-        next2,
-        midHead;
-
-    if (!head || !head.next) {
-        return;
+var alienOrder = function(words) {
+    if (words.length === 0) {
+        return '';
     }
 
-    while (fast && fast.next) {
-        fast = fast.next.next;
-        slow = slow.next;
+    const len = words.length;
+    let map = {}; // value is the prerequisite of key
+    let charPreReqCount = {};
+    let i;
+    let queue = [];
+    let result = [];
+    let hasCycle = false;
+
+    for (i = 0; i < len; i++) {
+        const chars = words[i].split('');
+
+        let j = 0;
+
+        for (j = 0; j < chars.length; j++) {
+            if (!map[chars[j]]) {
+                map[chars[j]] = [];
+                charPreReqCount[chars[j]] = 0;
+            }
+        }
+
+        if (i === 0 || words[i] === words[i - 1]) {
+            continue;
+        }
+
+        const cur = words[i];
+        const prev = words[i - 1];
+        j = 0;
+
+        while(j < cur.length && j < prev.length && cur.charAt(j) === prev.charAt(j)) {
+            j++;
+        }
+
+        if (j < prev.length && map[prev.charAt(j)].indexOf(cur.charAt(j)) === -1) {
+            map[prev.charAt(j)].push(cur.charAt(j));
+
+            charPreReqCount[cur.charAt(j)]++;
+        }
     }
 
-    if (fast) {
-        midHead = reverse(slow.next);
-    } else {
-        midHead = reverse(slow);
+    Object.keys(charPreReqCount).forEach(char => {
+        if (charPreReqCount[char] === 0) {
+            queue.push(char);
+        }
+    });
+
+    while(queue.length > 0) {
+        const char = queue.shift();
+
+        result.push(char);
+
+        for (i = 0; i < map[char].length; i++) {
+            charPreReqCount[map[char][i]]--;
+
+            if (charPreReqCount[map[char][i]] === 0) {
+                queue.push(map[char][i]);
+            }
+        }
     }
 
-    fast = head;
-    slow = midHead;
+    // detect cycle
+    Object.keys(charPreReqCount).forEach(function(char) {
+        if (charPreReqCount[char] !== 0) {
+            hasCycle = true;
+        }
+    });
 
-    while(fast && slow) {
-        next1 = fast.next;
-        next2 = slow.next;
-
-        slow.next = fast.next;
-        fast.next = slow;
-
-        fast = next1;
-        slow = next2;
-    }
-
-    if (fast) {
-        fast.next = null;
-    }
+    return hasCycle ? '' : result.join('');
 };
-
-function reverse(head) {
-    var dummyNode = new ListNode(0),
-        prev = dummyNode,
-        node,
-        next;
-
-    dummyNode.next = head;
-
-    node = head.next;
-    head.next = null;
-
-    while (node) {
-        next = node.next;
-        node.next = prev.next;
-        prev.next = node;
-
-        node = next;
-    }
-
-    return dummyNode.next;
-}
