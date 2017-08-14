@@ -1799,76 +1799,22 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var alienOrder = function(words) {
-    if (words.length === 0) {
-        return '';
-    }
+var wordBreak = function(s, wordDict) {
+    var hasFound = [],
+        len = s.length,
+        i,
+        j;
 
-    const len = words.length;
-    let map = {}; // value is the prerequisite of key
-    let charPreReqCount = {};
-    let i;
-    let queue = [];
-    let result = [];
-    let hasCycle = false;
+    hasFound[0] = true;
 
-    for (i = 0; i < len; i++) {
-        const chars = words[i].split('');
-
-        let j = 0;
-
-        for (j = 0; j < chars.length; j++) {
-            if (!map[chars[j]]) {
-                map[chars[j]] = [];
-                charPreReqCount[chars[j]] = 0;
-            }
-        }
-
-        if (i === 0 || words[i] === words[i - 1]) {
-            continue;
-        }
-
-        const cur = words[i];
-        const prev = words[i - 1];
-        j = 0;
-
-        while(j < cur.length && j < prev.length && cur.charAt(j) === prev.charAt(j)) {
-            j++;
-        }
-
-        if (j < prev.length && map[prev.charAt(j)].indexOf(cur.charAt(j)) === -1) {
-            map[prev.charAt(j)].push(cur.charAt(j));
-
-            charPreReqCount[cur.charAt(j)]++;
-        }
-    }
-
-    Object.keys(charPreReqCount).forEach(char => {
-        if (charPreReqCount[char] === 0) {
-            queue.push(char);
-        }
-    });
-
-    while(queue.length > 0) {
-        const char = queue.shift();
-
-        result.push(char);
-
-        for (i = 0; i < map[char].length; i++) {
-            charPreReqCount[map[char][i]]--;
-
-            if (charPreReqCount[map[char][i]] === 0) {
-                queue.push(map[char][i]);
+    for (i = 1; i <= len; i++) {
+        for (j = 0; j < i; j++) {
+            if (hasFound[j] && wordDict.has(s.substring(j, i))) {
+                hasFound[i] = true;
+                break;
             }
         }
     }
 
-    // detect cycle
-    Object.keys(charPreReqCount).forEach(function(char) {
-        if (charPreReqCount[char] !== 0) {
-            hasCycle = true;
-        }
-    });
-
-    return hasCycle ? '' : result.join('');
+    return hasFound[len] === true;
 };
