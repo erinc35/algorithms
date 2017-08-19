@@ -1799,73 +1799,19 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var setZeroes = function(matrix) {
-    var rLen = matrix.length,
-        cLen,
-        i,
-        j,
-        firstRowZero,
-        firstColumnZero;
+var canJump = function(nums) {
+    var len = nums.length,
+        cover = 0,
+        i;
 
-    if (rLen === 0) {
-        return;
-    }
-
-    cLen = matrix[0].length;
-
-    if (matrix[0][0] === 0) {
-        firstRowZero = true;
-        firstColumnZero = true;
-    } else {
-        for (i = 1; i < cLen; i++) {
-            if (matrix[0][i] === 0) {
-                firstRowZero = true;
-                break;
+    for(i = 0; i < len; i++) {
+        if (cover >= i) {
+            cover = Math.max(cover, nums[i] + i);
+            if (cover >= len - 1) {
+                return true;
             }
-        }
-
-        for (i = 1; i < rLen; i++) {
-            if (matrix[i][0] === 0) {
-                firstColumnZero = true;
-                break;
-            }
-        }
-    }
-
-    for (i = 1; i < rLen; i++) {
-        for (j = 1; j < cLen; j++) {
-             if (matrix[i][j] === 0) {
-                 matrix[0][j] = 0;
-                 matrix[i][0] = 0;
-             }
-        }
-    }
-
-    for (i = 1; i < cLen; i++) {
-        if (matrix[0][i] === 0) {
-            for (j = 1; j < rLen; j++) {
-                matrix[j][i] = 0;
-            }
-        }
-    }
-
-    for (i = 1; i < rLen; i++) {
-        if (matrix[i][0] === 0) {
-            for (j = 1; j < cLen; j++) {
-                matrix[i][j] = 0;
-            }
-        }
-    }
-
-    if (firstRowZero) {
-        for (i = 0; i < cLen; i++) {
-            matrix[0][i] = 0;
-        }
-    }
-
-    if (firstColumnZero) {
-        for (j = 0; j < rLen; j++) {
-            matrix[j][0] = 0;
+        } else {
+            return false;
         }
     }
 };
