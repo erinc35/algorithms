@@ -1799,23 +1799,73 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-Vector2D.prototype.hasNext = function() {
-    if (this.vec.length === 0) {
-        return false;
+var setZeroes = function(matrix) {
+    var rLen = matrix.length,
+        cLen,
+        i,
+        j,
+        firstRowZero,
+        firstColumnZero;
+
+    if (rLen === 0) {
+        return;
     }
 
-    if (this.col === this.vec[this.row].length) {
-        this.col = 0;
-        this.row++;
+    cLen = matrix[0].length;
+
+    if (matrix[0][0] === 0) {
+        firstRowZero = true;
+        firstColumnZero = true;
+    } else {
+        for (i = 1; i < cLen; i++) {
+            if (matrix[0][i] === 0) {
+                firstRowZero = true;
+                break;
+            }
+        }
+
+        for (i = 1; i < rLen; i++) {
+            if (matrix[i][0] === 0) {
+                firstColumnZero = true;
+                break;
+            }
+        }
     }
 
-    while (this.row < this.vec.length && this.vec[this.row].length === 0) {
-        this.row++;
+    for (i = 1; i < rLen; i++) {
+        for (j = 1; j < cLen; j++) {
+             if (matrix[i][j] === 0) {
+                 matrix[0][j] = 0;
+                 matrix[i][0] = 0;
+             }
+        }
     }
 
-    if (this.row === this.vec.length) {
-        return false;
+    for (i = 1; i < cLen; i++) {
+        if (matrix[0][i] === 0) {
+            for (j = 1; j < rLen; j++) {
+                matrix[j][i] = 0;
+            }
+        }
     }
 
-    return true;
+    for (i = 1; i < rLen; i++) {
+        if (matrix[i][0] === 0) {
+            for (j = 1; j < cLen; j++) {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+
+    if (firstRowZero) {
+        for (i = 0; i < cLen; i++) {
+            matrix[0][i] = 0;
+        }
+    }
+
+    if (firstColumnZero) {
+        for (j = 0; j < rLen; j++) {
+            matrix[j][0] = 0;
+        }
+    }
 };
