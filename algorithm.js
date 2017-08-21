@@ -1799,88 +1799,32 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var fullJustify = function(words, maxWidth) {
-    var len = words.length,
-        lastIndex = -1,
-        result = [],
-        curLen = 0,
-        wordsCount,
-        spaceCount,
-        extraSpace,
-        totalSpace,
-        word = '',
-        i,
-        j;
+var isAnagram = function(s, t) {
+    var len = s.length,
+        arr = {},
+        i;
 
-    if (maxWidth === 0) {
-        return [""];
+    if (t.length !== len) {
+        return false;
+    }
+
+    if (len === 0) {
+        return true;
     }
 
     for (i = 0; i < len; i++) {
-        curLen += words[i].length + 1;
-
-        if (curLen - 1 > maxWidth || i === len - 1) {
-            if (curLen - 1 > maxWidth && (i - lastIndex > 1)) {
-                curLen -= words[i].length + 1;
-                i--;
-            }
-
-            wordsCount = i - lastIndex;
-            curLen -= wordsCount; // by now, curlen is length without any space
-
-            if (wordsCount === 1) {
-                word += words[i];
-                word = appendSpace(word, maxWidth - curLen);
-            } else if (i === len - 1) {
-                totalSpace = maxWidth - curLen;
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (totalSpace > 0) {
-                        totalSpace--;
-                        word += ' ';
-                    }
-                }
-
-                if (totalSpace > 0) {
-                    word = appendSpace(word, totalSpace);
-                }
-            } else {
-                // if n words, then n - 1 spaces
-                spaceCount = parseInt((maxWidth - curLen) / (wordsCount - 1));
-                extraSpace = (maxWidth - curLen) % (wordsCount - 1);
-
-                for (j = lastIndex + 1; j <= i; j++) {
-                    word += words[j];
-
-                    if (j !== i) {
-                        word = appendSpace(word, spaceCount);
-
-                        if (extraSpace > 0) {
-                            word += ' ';
-                            extraSpace--;
-                        }
-                    }
-                }
-            }
-
-            result.push(word);
-            word = '';
-            lastIndex = i;
-            curLen = 0;
+        if (!arr[s.charAt(i)]) {
+            arr[s.charAt(i)] = 1;
+        } else {
+            arr[s.charAt(i)]++;
         }
     }
 
-    return result;
-};
-
-// append k spaces at end of word
-function appendSpace(word, k) {
-    while (k > 0) {
-        word += ' ';
-        k--;
+    for (i = 0; i < len; i++) {
+        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
+            return false;
+        }
     }
 
-    return word;
-}
+    return true;
+};
