@@ -1799,15 +1799,33 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var NumArray = function(nums) {
-    var len = nums.length,
-        i;
+var isMatch = function(s, p) {
+    let sIndex = 0;
+    let pIndex = 0;
+    let startIndex = -1; // startIndex of * in p
+    let match = 0; // the position in s that matches with p
 
-    this.sums = [];
-    this.sums[0] = 0;
-
-    for (i = 0; i < len; i++) {
-        this.sums[i + 1] = this.sums[i] + nums[i];
+    while (sIndex < s.length) {
+        // matches, both advance
+        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
+            pIndex++;
+            sIndex++;
+        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
+            startIndex = pIndex;
+            match = sIndex;
+            pIndex++;
+        } else if (startIndex !== -1) {
+            pIndex = startIndex + 1;
+            match++;
+            sIndex = match;
+        } else {
+            return false;
+        }
     }
 
+    while (pIndex < p.length && p.charAt(pIndex) === '*') {
+        pIndex++;
+    }
+
+    return pIndex === p.length;
 };
