@@ -1799,32 +1799,15 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isAnagram = function(s, t) {
-    var len = s.length,
-        arr = {},
+var NumArray = function(nums) {
+    var len = nums.length,
         i;
 
-    if (t.length !== len) {
-        return false;
-    }
-
-    if (len === 0) {
-        return true;
-    }
+    this.sums = [];
+    this.sums[0] = 0;
 
     for (i = 0; i < len; i++) {
-        if (!arr[s.charAt(i)]) {
-            arr[s.charAt(i)] = 1;
-        } else {
-            arr[s.charAt(i)]++;
-        }
+        this.sums[i + 1] = this.sums[i] + nums[i];
     }
 
-    for (i = 0; i < len; i++) {
-        if (typeof arr[t.charAt(i)] === 'undefined' || --arr[t.charAt(i)] < 0) {
-            return false;
-        }
-    }
-
-    return true;
 };
