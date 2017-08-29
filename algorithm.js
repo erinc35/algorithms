@@ -1799,67 +1799,30 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var addBinary = function(a, b) {
-    var lenA = a.length,
-        lenB = b.length,
-        overFlow = 0,
-        charA,
-        charB,
-        result = '',
-        curVal,
-        i,
-        j;
+var isIsomorphic = function(s, t) {
+    var len = s.length,
+        mapS = {},
+        mapT = {},
+        curS,
+        curT,
+        i;
 
-    for (i = lenA - 1, j = lenB - 1; i >= 0 && j >= 0; i--, j --) {
-        charA = parseInt(a.charAt(i));
-        charB = parseInt(b.charAt(j));
+    for (i = 0; i < len; i++) {
+        curS = s.charAt(i);
+        curT = t.charAt(i);
 
-        curVal = charA + charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
+        if (!mapS.hasOwnProperty(curS)) {
+            mapS[curS] = curT;
+        } else if (mapS[curS] !== curT) {
+            return false;
         }
 
-        result = curVal + result;
-    }
-
-    while (i >= 0) {
-        charA = parseInt(a.charAt(i));
-        curVal = charA + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
+        if (!mapT.hasOwnProperty(curT)) {
+            mapT[curT] = curS;
+        } else if (mapT[curT] !== curS) {
+            return false;
         }
-        result = curVal + result;
-
-        i--;
     }
 
-    while (j >= 0) {
-        charB = parseInt(b.charAt(j));
-        curVal = charB + overFlow;
-
-        if (curVal > 1) {
-            curVal = curVal - 2;
-            overFlow = 1;
-        } else {
-            overFlow = 0;
-        }
-
-        result = curVal + result;
-
-        j--;
-    }
-
-    if (overFlow === 1) {
-        result = '1' + result;
-    }
-
-    return result;
+    return true;
 };
