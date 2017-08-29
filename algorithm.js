@@ -1799,33 +1799,67 @@ var rob = function(nums) {
 
     return result[len - 1];
 };//
-var isMatch = function(s, p) {
-    let sIndex = 0;
-    let pIndex = 0;
-    let startIndex = -1; // startIndex of * in p
-    let match = 0; // the position in s that matches with p
+var addBinary = function(a, b) {
+    var lenA = a.length,
+        lenB = b.length,
+        overFlow = 0,
+        charA,
+        charB,
+        result = '',
+        curVal,
+        i,
+        j;
 
-    while (sIndex < s.length) {
-        // matches, both advance
-        if (pIndex < p.length && (s.charAt(sIndex) === p.charAt(pIndex) || p.charAt(pIndex) === '?')) {
-            pIndex++;
-            sIndex++;
-        } else if (pIndex < p.length && p.charAt(pIndex) === '*') {
-            startIndex = pIndex;
-            match = sIndex;
-            pIndex++;
-        } else if (startIndex !== -1) {
-            pIndex = startIndex + 1;
-            match++;
-            sIndex = match;
+    for (i = lenA - 1, j = lenB - 1; i >= 0 && j >= 0; i--, j --) {
+        charA = parseInt(a.charAt(i));
+        charB = parseInt(b.charAt(j));
+
+        curVal = charA + charB + overFlow;
+
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
         } else {
-            return false;
+            overFlow = 0;
         }
+
+        result = curVal + result;
     }
 
-    while (pIndex < p.length && p.charAt(pIndex) === '*') {
-        pIndex++;
+    while (i >= 0) {
+        charA = parseInt(a.charAt(i));
+        curVal = charA + overFlow;
+
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
+        } else {
+            overFlow = 0;
+        }
+        result = curVal + result;
+
+        i--;
     }
 
-    return pIndex === p.length;
+    while (j >= 0) {
+        charB = parseInt(b.charAt(j));
+        curVal = charB + overFlow;
+
+        if (curVal > 1) {
+            curVal = curVal - 2;
+            overFlow = 1;
+        } else {
+            overFlow = 0;
+        }
+
+        result = curVal + result;
+
+        j--;
+    }
+
+    if (overFlow === 1) {
+        result = '1' + result;
+    }
+
+    return result;
 };
