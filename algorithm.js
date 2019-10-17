@@ -1826,3 +1826,26 @@ var isIsomorphic = function(s, t) {
 
     return true;
 };
+
+//remove duplicates by modifying the original array
+
+var removeDuplicates = function (nums) {
+    let i = 0;
+    let obj = {};
+    while (i < nums.length) {
+        if (nums[i] === nums[i - 1]) {
+            obj[nums[i]] = obj[nums[i]] + 1;
+            if (obj[nums[i]] > 2) {
+                nums.splice(i, 1)
+                i--;
+            }
+        } else if (!obj[nums[i]]) {
+            obj[nums[i]] = 1;
+            obj[nums[i - 1]] = 1;
+        }
+        i++
+    }
+    return nums
+};
+
+//
