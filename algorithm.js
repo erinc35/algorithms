@@ -1848,4 +1848,23 @@ var removeDuplicates = function (nums) {
     return nums
 };
 
-//
+//find the single non-duplicate in a sorted array by binary search
+
+
+var singleNonDuplicate = function (nums) {
+    let start = 0;
+    let stop = nums.length - 1;
+    let middle = Math.floor((start + stop) / 2);
+    while (nums[middle] !== target && start < stop) {
+        if (target < nums[middle]) {
+            stop = middle - 1;
+        } else {
+            start = middle + 1
+        }
+        middle = Math.floor((start + stop) / 2);
+    }
+    return nums[middle] !== target ? -1 : middle
+
+};
+
+singleNonDuplicate([1, 1, 2, 2, 3, 3, 4, 8, 8])
