@@ -1895,4 +1895,14 @@ function binarySearch(list, value) {
 
 const list = [2, 5, 8, 9, 13, 45, 67, 99]
 
+//Squares of sorted array
+
+var sortedSquares = function (A) {
+    let result = [];
+    for (let char of A)
+        result.push(char * char);
+    result.sort((a, b) => (a - b));
+    return result;
+};
+
 //
