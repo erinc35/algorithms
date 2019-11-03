@@ -1905,4 +1905,12 @@ var sortedSquares = function (A) {
     return result;
 };
 
+//PEAK INDEX IN MOUNTAIN ARRAY
+
+var peakIndexInMountainArray = function (A) {
+    for (let i = 0; i < A.length - 1; i++) {
+        if (A[i] > A[i + 1]) return i
+    }
+};
+
 //
