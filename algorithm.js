@@ -1913,4 +1913,22 @@ var peakIndexInMountainArray = function (A) {
     }
 };
 
-//
+// partitionDisjoint
+
+var partitionDisjoint = function(A) {
+   
+  let left = A[0], right = Math.min(...A)
+
+  for(let i = 1 ; i < A.length ; i++) {
+
+    if (left <= right) return i
+      
+    left = Math.max(left, A[i - 1])
+      
+    if(A[i] === right) right = Math.min(...A.slice(i + 1, A.length))
+  
+  }
+
+  return left
+    
+};
