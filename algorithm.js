@@ -1932,3 +1932,33 @@ var partitionDisjoint = function(A) {
   return left
     
 };
+
+//search in rotated sorted array II
+
+var search = function(nums, target) {
+  let start = 0;
+  let end = nums.length-1;
+  while(start <= end) {
+    let medium = Math.floor((start+end) / 2);
+    if(nums[medium] === target) return true;
+    else if(nums[start] < nums[medium]){
+      console.log(';eft')
+      if(target >= nums[start] && target <= nums[medium] ) {
+        end = medium-1;
+      }else {
+        start = medium + 1;
+      }
+    }else if(nums[start] > nums[medium]) {
+      if(target >= nums[medium] && target <= nums[end]) {
+        start = medium + 1;
+      }else{
+        end = medium - 1;
+      }
+    } else{
+      start++
+    }
+  }
+  return false
+};
+
+search([2,5,6,0,0,1,2], 3)
