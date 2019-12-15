@@ -1989,3 +1989,21 @@ function getUrlParams(url) {
 }
 getUrlParams('http://example.com/?product=shirt&color=blue&newuser&size=m')
 ///
+
+
+var canConstruct = function(ransomNote, magazine) {
+  let occ = magazine.split('').reduce((occ, ch) => {
+    occ[ch] = (occ[ch] || 0) + 1;
+    return occ;
+  }, {})
+
+  for(let i = 0; i < ransomNote.length; i++) {
+    let ch = ransomNote[i];
+    if(occ[ch] > 0){
+      occ[ch]--;
+    }else{
+      return false
+    }
+  }
+  return true
+};
