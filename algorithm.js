@@ -2007,3 +2007,14 @@ var canConstruct = function(ransomNote, magazine) {
   }
   return true
 };
+//
+var subtractProductAndSum = function(n) {
+  let sum = 0;
+  let product = 1;
+  let digits = n.toString().split('');
+  for(let i = 0; i < digits.length; i++) {
+    sum += parseInt(digits[i]);
+    product *= parseInt(digits[i]);
+  }
+  return product - sum
+};
