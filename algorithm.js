@@ -2039,3 +2039,27 @@ var balancedStringSplit = function(s) {
 
 	return matches;
 };
+
+//countDown with animation
+
+var timeleft = 10;
+var downloadTimer = setInterval(function(){
+  var counter= document.getElementById("countdown").children[0];  
+  counter.innerHTML = timeleft;
+  counter.animate([
+    {opacity: 1, transform: 'scale(.6)'},
+    {opacity: .5, transform: 'scale(1)'}
+  ], {
+      duration: 500,
+      easing: 'linear',
+      delay: 0,
+      iterations: 1000, //Infinity,
+      direction: 'alternate',
+      fill: 'forwards'
+    });
+  timeleft -= 1;
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("countdown").innerHTML = "Finished"
+  }
+}, 1000);
