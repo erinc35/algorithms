@@ -2020,24 +2020,17 @@ var subtractProductAndSum = function(n) {
 };
 //balancedStringSplit
 var balancedStringSplit = function(s) {
-    
-    let matches = 0;
-	let balance = 0;
-
-	for (let i = 0; i < s.length; i++) {
-
-		if (s[i] === "R") {
-			balance -= 1;
-		} else if (s[i] === "L") {
-			balance += 1;
-		}
-
-		if (balance === 0) {
-			matches += 1;
-		}
-	}
-
-	return matches;
+  let count = 0;
+  let balancer = 0;
+  for(let i = 0; i < s.length; i++){
+    if(s[i] === 'R'){
+      balancer -= 1
+    }else {
+      balancer += 1
+    }
+    if(balancer === 0) count++
+  }
+  return count
 };
 
 //countDown with animation
