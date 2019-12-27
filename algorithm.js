@@ -2056,3 +2056,25 @@ var downloadTimer = setInterval(function(){
     document.getElementById("countdown").innerHTML = "Finished"
   }
 }, 1000);
+
+//N-Repeated Element in Size 2N Array
+var repeatedNTimes = function(A) {
+    let myMap = new Map();
+    let N = A.length/2;
+    let rValue;
+    
+    for(let i=0;i<A.length;i++){
+        if(myMap.has(A[i])){
+            myMap.set(A[i], myMap.get(A[i])+1 )
+        } else{
+            myMap.set(A[i],1);
+        }
+    }
+    
+    myMap.forEach(function(value, key){
+        if(value == N)
+            rValue = key;
+    })
+    
+    return rValue;
+};
