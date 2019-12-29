@@ -2078,3 +2078,18 @@ var repeatedNTimes = function(A) {
     
     return rValue;
 };
+//arrayPairSum
+
+var arrayPairSum = function(nums) {
+    nums.sort(function(a, b){
+    return a - b;
+        });
+    let a=0
+    for(let i=0;i<nums.length;i=i+2){
+        a=a+(Math.min(nums[i],nums[i+1]))
+    }
+    // const sum = a.reduce((partial_sum, a) => partial_sum + a,0); 
+
+    return a
+    
+};
