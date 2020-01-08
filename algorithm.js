@@ -2104,28 +2104,16 @@ var minTimeToVisitAllPoints = function(points) {
 
 /// lengthOfLongestSubstring
 var lengthOfLongestSubstring = function(s) {
-
-    let map = {}  // for storing the indexes of string characters.
-
-    let max = 0   // for storing the max sum
-    let left = 0   // left index of sliding window
-    for (let right = 0; right < s.length; right++) {
-        
-        if (map[s[right]] !== undefined) {
-            // if a character already exists in map then
-		   // we are shifting the left index of our window to the 'found index value + 1
-		   // there can be a case where the current left index can be greater than index of a found character, so I am using Math.max
-            left = Math.max(map[s[right]] + 1, left)
-            
-        }
-		// calculates the current  window length and then if it is greater than  current max sum
-		//then  update the max sum. I am using Math.max for that
-        max = Math.max((right-left) + 1, max)
-		
-		// below line adds new entries to map with key as character
-		// and 'index as its value'.  it also update the character 'index to the most recent value which is the key point in solving this problem
-        map[s[right]] = right
+  let start = 0;
+  let obj = {};
+  let max = 0;
+  for(let i = 0; i < s.length; i++){
+    let ch = s[i];
+    if(obj[ch] !== undefined){ 
+      start = Math.max(obj[ch] + 1, start)
     }
-    
-    return max
-}
+    obj[ch] = i;
+    max = (i-start+1) > max ? (i-start+1) : max
+  }
+  return max
+};
