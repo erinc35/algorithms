@@ -2117,3 +2117,20 @@ var lengthOfLongestSubstring = function(s) {
   }
   return max
 };
+
+
+///zigzag conversion
+
+var convert = function(s, numRows) {
+    var rows = Array.from({length: numRows}, e => []);
+    s = s.split('');
+    while (s.length > 0) {
+        for (var i = 0; i < numRows; i++) {
+            rows[i].push(s.shift());
+        }
+        for (var i = numRows - 2; i >= 1; i--) {
+            rows[i].push(s.shift());
+        }
+    }
+    return rows.map(row => row.join('')).join('');
+};
