@@ -2134,3 +2134,20 @@ var convert = function(s, numRows) {
     }
     return rows.map(row => row.join('')).join('');
 };
+///
+function findMatrix(matrix, n) {
+  let i = 0; 
+  let len = matrix[0].length;
+  let j = len-1;
+  while(i < len && j >= 0) {
+    if(matrix[i][j] === n) {
+      return [i, j]
+    }
+    if(matrix[i][j] > n){
+      j--;
+    }else{
+      i++
+    }
+  }
+  return 'not found'
+}
