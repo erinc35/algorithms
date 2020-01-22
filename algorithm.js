@@ -2189,3 +2189,53 @@ var setZeroes = function(matrix) {
         }
     }
 }
+
+/// combineStarts
+
+
+function combineStars(str) {
+  for (let i = str.length - 1; i > 0; i--) {
+    if (str[i] === "*" && str[i-1] === "*") {
+      str = str.slice(0, i) + str.slice(i+1);
+    }
+  }
+  return str;
+}
+
+const isMatch = function(s, p) {
+  p = combineStars(p);
+
+  let sp = 0;
+  let pp = 0;
+  let sTemp;
+  let pTemp;
+
+  const sLen = s.length;
+  while (sp < sLen) {
+    if (s[sp] === p[pp] || p[pp] === "?") {
+      sp += 1;
+      pp += 1;
+    } else if (p[pp] === "*") {
+      sTemp = sp;
+      pTemp = pp;
+      pp += 1;
+    } else {
+      // end reached
+      if (pTemp == null) {
+        return false
+      } else {
+        // backtrack to last position of wildcard, and try from next char in s
+        sp = sTemp + 1;
+        pp = pTemp + 1;
+        sTemp = sp;
+      }
+    }
+  }
+
+  // end of s reached, if rest of p not all "*", then no match
+  const pLen = p.length;
+  for (let i = pp; i < pLen; i++) {
+    if (p[i] !== "*") return false;
+  }
+  return true;
+};
